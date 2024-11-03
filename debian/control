@@ -23,6 +23,7 @@ Architecture: all
 Suggests: rsyslog
 Depends:
  iptables,
+ procps,
  ucf,
  ${python3:Depends},
  ${misc:Depends}
