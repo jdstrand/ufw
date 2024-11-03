@@ -1,3 +1,11 @@
+ufw (0.36.2-7) unstable; urgency=medium
+
+  * debian/control: Depends on procps (Closes: 1084773)
+  * 0005-add-lxd-to-manpage.patch: mention how to allow ufw and LXD to work
+    well together
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sun, 20 Oct 2024 19:05:50 +0000
+
 ufw (0.36.2-6) unstable; urgency=medium
 
   * debian/control: Build-Depends on python3-setuptools instead of
