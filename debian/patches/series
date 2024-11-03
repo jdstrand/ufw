@@ -2,3 +2,4 @@
 0002-fix-tests-with-python312.patch
 0003-fix-syntax-warnings-with-python312.patch
 0004-fix-manpage-font.patch
+0005-add-lxd-to-manpage.patch

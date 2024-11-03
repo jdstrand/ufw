@@ -1,0 +1,45 @@
+commit c3a3b5e39345f1c72fdeeb2071b3b1cfbd1d01d9
+Author: Jamie Strandboge <jdstrand@ubuntu.com>
+Date:   Sat Sep 16 19:43:36 2023 -0500
+
+    doc/ufw-framework.8: add info for LXD
+    
+    References:
+    * https://discuss.linuxcontainers.org/t/lxd-bridge-doesnt-work-with-ipv4-and-ufw-with-nftables/10034/34
+
+diff --git a/doc/ufw-framework.8 b/doc/ufw-framework.8
+index 32d0c28..7c5d8b0 100644
+--- a/doc/ufw-framework.8
++++ b/doc/ufw-framework.8
+@@ -312,6 +312,31 @@ to allow all traffic to be forwarded across the bridge. Eg, add to
+ 
+   -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
+ 
++.PP
++When using ufw with LXD, additional rules for the LXD bridge (by default,
++lxdbr0) are needed for the guests for DHCP, DNS and outbound connections. Eg:
++
++  ufw allow in on lxdbr0 to any port 67 proto udp
++  ufw allow in on lxdbr0 to any port 53
++  ufw route allow in on lxdbr0 from XXX.YYY.ZZZ.0/24
++
++The first two rules limit access from the guests to the host to only DHCP and
++DNS while the 3rd rule allows access from the guests on the XXX.YYY.ZZZ.0/24
++subnet (as configured by LXD) to the world. Adjust as necessary for your
++environment (site requirements, name of LXD bridge, bridge network, etc).
++
++To allow traffic from the outside to your guests, then additional rules are
++needed. Eg, to allow HTTPS to the 10.210.254.123 guest:
++
++  ufw route allow out on lxdbr0 to 10.210.254.123 port 443 proto tcp
++
++Note: when thinking of 'in on lxdbr0' vs 'out on lxdbr0', think of the traffic
++in the context of the LXD host and the guest: if the traffic is from the guest
++into or through the LXD host, then an 'in on lxdbr0' should be used; if the
++traffic is from anywhere out to the guest, then an 'out on lxdbr0' should be
++used. As always, additional rules may be needed depending on your default
++policy.
++
+ .SH SEE ALSO
+ .PP
+ \fBufw\fR(8), \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
