@@ -1,11 +1,7 @@
-commit c3a3b5e39345f1c72fdeeb2071b3b1cfbd1d01d9
-Author: Jamie Strandboge <jdstrand@ubuntu.com>
-Date:   Sat Sep 16 19:43:36 2023 -0500
-
-    doc/ufw-framework.8: add info for LXD
-    
-    References:
-    * https://discuss.linuxcontainers.org/t/lxd-bridge-doesnt-work-with-ipv4-and-ufw-with-nftables/10034/34
+Origin: c3a3b5e39345f1c72fdeeb2071b3b1cfbd1d01d9
+Applied-Upstream: c3a3b5e39345f1c72fdeeb2071b3b1cfbd1d01d9
+Description: doc/ufw-framework.8: add info for LXD
+Forwarded: yes
 
 diff --git a/doc/ufw-framework.8 b/doc/ufw-framework.8
 index 32d0c28..7c5d8b0 100644

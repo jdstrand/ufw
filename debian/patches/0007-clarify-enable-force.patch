@@ -1,0 +1,27 @@
+Origin: 6dc0ad8bfa5f17581105d3e150bbd8b9ac357525
+Applied-Upstream: 6dc0ad8bfa5f17581105d3e150bbd8b9ac357525
+Description: chore: mention --force with enable earlier
+Forwarded: yes
+
+diff --git a/doc/ufw.8 b/doc/ufw.8
+index 903013f..efdb553 100644
+--- a/doc/ufw.8
++++ b/doc/ufw.8
+@@ -11,6 +11,8 @@ use interface for the user.
+ .TP
+ ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
+ .TP
++ufw [\fB\-\-force\fR] \fBenable\fR
++.TP
+ ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject [incoming|outgoing|routed]
+ .TP
+ ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off|LEVEL
+@@ -43,7 +45,7 @@ show help message and exit
+ don't modify anything, just show the changes
+ .TP
+ \fBenable\fR
+-reloads firewall and enables firewall on boot.
++reloads firewall and enables firewall on boot. See \fBREMOTE MANAGEMENT\fR.
+ .TP
+ \fBdisable\fR
+ unloads firewall and disables firewall on boot

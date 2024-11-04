@@ -3,3 +3,5 @@
 0003-fix-syntax-warnings-with-python312.patch
 0004-fix-manpage-font.patch
 0005-add-lxd-to-manpage.patch
+0006-update-ufw-framework.patch
+0007-clarify-enable-force.patch

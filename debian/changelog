@@ -1,3 +1,11 @@
+ufw (0.36.2-8) unstable; urgency=medium
+
+  * debian/control: update Vcs for branch rename
+  * 0006-update-ufw-framework.patch: mention incus
+  * 0007-clarify-enable-force.patch: mention --force earlier
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 04 Nov 2024 11:46:13 +0000
+
 ufw (0.36.2-7) unstable; urgency=medium
 
   * debian/control: Depends on procps (Closes: 1084773)

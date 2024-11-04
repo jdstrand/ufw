@@ -1,6 +1,7 @@
 Origin: f095c83f1ed9f87c08d599ca4874ca0c76e11537
 Applied-Upstream: f095c83f1ed9f87c08d599ca4874ca0c76e11537
 Description: fix: adjust doc/ufw.8 os properly use bold font
+Forwarded: yes
 
 diff --git a/doc/ufw.8 b/doc/ufw.8
 index e58b9ad..6e37b5a 100644

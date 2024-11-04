@@ -1,0 +1,57 @@
+Origin: deb620238ad2d99a39031797cb12557b7afdeba3
+Applied-Upstream: deb620238ad2d99a39031797cb12557b7afdeba3
+Description: chore: update ufw-framework.8 for incus
+Forwarded: yes
+
+diff --git a/doc/ufw-framework.8 b/doc/ufw-framework.8
+index 7c5d8b0..9bb69a6 100644
+--- a/doc/ufw-framework.8
++++ b/doc/ufw-framework.8
+@@ -1,4 +1,4 @@
+-.TH "UFW FRAMEWORK" "8" "" "May 2023" "May 2023"
++.TH "UFW FRAMEWORK" "8" "" "Nov 2024" "Nov 2024"
+ 
+ .SH NAME
+ ufw\-framework \- using the ufw framework
+@@ -313,7 +313,7 @@ to allow all traffic to be forwarded across the bridge. Eg, add to
+   -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
+ 
+ .PP
+-When using ufw with LXD, additional rules for the LXD bridge (by default,
++When using ufw with LXD or Incus, additional rules for the bridge (by default,
+ lxdbr0) are needed for the guests for DHCP, DNS and outbound connections. Eg:
+ 
+   ufw allow in on lxdbr0 to any port 67 proto udp
+@@ -322,8 +322,8 @@ lxdbr0) are needed for the guests for DHCP, DNS and outbound connections. Eg:
+ 
+ The first two rules limit access from the guests to the host to only DHCP and
+ DNS while the 3rd rule allows access from the guests on the XXX.YYY.ZZZ.0/24
+-subnet (as configured by LXD) to the world. Adjust as necessary for your
+-environment (site requirements, name of LXD bridge, bridge network, etc).
++subnet (as configured by LXD or Incus) to the world. Adjust as necessary for
++your environment (site requirements, name of the bridge, bridge network, etc).
+ 
+ To allow traffic from the outside to your guests, then additional rules are
+ needed. Eg, to allow HTTPS to the 10.210.254.123 guest:
+@@ -331,11 +331,10 @@ needed. Eg, to allow HTTPS to the 10.210.254.123 guest:
+   ufw route allow out on lxdbr0 to 10.210.254.123 port 443 proto tcp
+ 
+ Note: when thinking of 'in on lxdbr0' vs 'out on lxdbr0', think of the traffic
+-in the context of the LXD host and the guest: if the traffic is from the guest
+-into or through the LXD host, then an 'in on lxdbr0' should be used; if the
+-traffic is from anywhere out to the guest, then an 'out on lxdbr0' should be
+-used. As always, additional rules may be needed depending on your default
+-policy.
++in the context of the host and the guest: if the traffic is from the guest into
++or through the host, then an 'in on lxdbr0' should be used; if the traffic is
++from anywhere out to the guest, then an 'out on lxdbr0' should be used. As
++always, additional rules may be needed depending on your default policy.
+ 
+ .SH SEE ALSO
+ .PP
+@@ -343,4 +342,4 @@ policy.
+ 
+ .SH AUTHOR
+ .PP
+-ufw is Copyright 2008-2023, Canonical Ltd.
++ufw is Copyright 2008-2024, Canonical Ltd.
