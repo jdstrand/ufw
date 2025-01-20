@@ -1,7 +1,7 @@
 Author: Jamie Strandboge <jdstrand@ubuntu.com>
 Description: to improve boot speed when disabled, don't source all of
  ufw-init-functions (which also sources in other files).
-Forwarded: no
+Forwarded: not-needed
 
 Index: ufw-0.36.1/src/ufw-init
 ===================================================================

@@ -1,7 +1,6 @@
 Origin: 6e6dbecfc60645ecef68bdffe6ca13c22046b10a
-Description: tests/unit: update to use assertEqual for python 3.12
 Applied-Upstream: 6e6dbecfc60645ecef68bdffe6ca13c22046b10a
-Forwarded: yes
+Description: tests/unit: update to use assertEqual for python 3.12
 
 diff --git a/tests/unit/test_applications.py b/tests/unit/test_applications.py
 index 07467c0..996dea1 100644

@@ -1,7 +1,6 @@
 Origin: deb620238ad2d99a39031797cb12557b7afdeba3
 Applied-Upstream: deb620238ad2d99a39031797cb12557b7afdeba3
 Description: chore: update ufw-framework.8 for incus
-Forwarded: yes
 
 diff --git a/doc/ufw-framework.8 b/doc/ufw-framework.8
 index 7c5d8b0..9bb69a6 100644

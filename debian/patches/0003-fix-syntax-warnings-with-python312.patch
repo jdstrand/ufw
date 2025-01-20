@@ -1,7 +1,6 @@
 Origin: 58220106da29a1530699483bebf78f7e8da8cda1
 Applied-Upstream: 58220106da29a1530699483bebf78f7e8da8cda1
 Description: fix: update 're' invocations for 3.12 syntax warnings
-Forwarded: yes
 
 diff --git a/setup.py b/setup.py
 index 11b446e..97ce5a6 100644

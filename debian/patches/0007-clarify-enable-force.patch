@@ -1,7 +1,6 @@
 Origin: 6dc0ad8bfa5f17581105d3e150bbd8b9ac357525
 Applied-Upstream: 6dc0ad8bfa5f17581105d3e150bbd8b9ac357525
 Description: chore: mention --force with enable earlier
-Forwarded: yes
 
 diff --git a/doc/ufw.8 b/doc/ufw.8
 index 903013f..efdb553 100644
