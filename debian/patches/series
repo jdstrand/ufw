@@ -5,3 +5,4 @@
 0005-add-lxd-to-manpage.patch
 0006-update-ufw-framework.patch
 0007-clarify-enable-force.patch
+0008-fix-tests-with-python313.path

@@ -1,3 +1,9 @@
+ufw (0.36.2-9) unstable; urgency=medium
+
+  * 0008-fix-tests-with-python313.path: (Closes: 1092511)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 20 Jan 2025 15:35:18 +0000
+
 ufw (0.36.2-8) unstable; urgency=medium
 
   * debian/control: update Vcs for branch rename
