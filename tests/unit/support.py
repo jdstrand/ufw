@@ -84,11 +84,7 @@ def run_setup():
         recursive_rm(topdir)
     os.mkdir(topdir)
 
-    exe = "python%d" % sys.version_info[0]
-    if sys.version_info[0] == 2:
-        exe = "python"
-
-    sp = subprocess.Popen([exe,
+    sp = subprocess.Popen([sys.executable,
                            './setup.py',
                            'install',
                            '--home=%s' % install_dir],
@@ -112,7 +108,7 @@ def run_unittest(*classes):
 
     suite = unittest.TestSuite()
     for cls in classes:
-        suite.addTest(unittest.makeSuite(cls))
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(cls))
 
     runner = unittest.TextTestRunner(sys.stdout, verbosity=2)
     result = runner.run(suite)

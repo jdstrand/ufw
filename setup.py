@@ -26,8 +26,8 @@
 #
 
 from __future__ import print_function
-from distutils.command.install import install as _install
-from distutils.core import setup
+from setuptools.command.install import install as _install
+from setuptools import setup
 import errno
 import os
 import re
@@ -48,7 +48,7 @@ def cmd(command):
     return [sp.returncode,out]
 
 class Install(_install, object):
-    '''Override distutils to install the files where we want them.'''
+    '''Override setuptools to install the files where we want them.'''
     def run(self):
         if self.home != None and self.root != None:
             print("Don't specify --home and --root at same time")
