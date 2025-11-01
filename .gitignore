@@ -19,3 +19,4 @@ prime/
 ufw_source.tar.bz2
 *.pyc
 *.swp
+.venv*
