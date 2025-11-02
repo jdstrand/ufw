@@ -22,9 +22,16 @@ import re
 import stat
 import ufw.util
 from ufw.util import debug, warn
-from ufw.common import UFWError
+from ufw.common import UFWError, UFWRule
+import gettext
 
 import sys
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 if sys.version_info[0] < 3:  # pragma: no cover
     import ConfigParser
@@ -200,8 +207,9 @@ def verify_profile(name, profile):
             (port, proto) = ufw.util.parse_port_proto(p)
             # quick checks if error in profile
             if proto == "any" and (":" in port or "," in port):
+                err_msg = _("Invalid ports in profile '%s'") % (name)
                 raise UFWError(err_msg)
-            rule = ufw.common.UFWRule("ACCEPT", proto, port)
+            rule = UFWRule("ACCEPT", proto, port)
             debug(rule)
     except Exception as e:
         debug(e)

@@ -21,6 +21,13 @@ import re
 import socket
 import ufw.util
 from ufw.util import debug
+import gettext
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 programName = "ufw"
 state_dir = "#STATE_PREFIX#"

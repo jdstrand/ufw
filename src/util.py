@@ -35,6 +35,18 @@ import sys
 from functools import reduce
 from tempfile import mkstemp, mktemp
 
+import gettext
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
+
+# Python 2/3 compatibility for long type
+if sys.version_info[0] >= 3:
+    long = int  # type: ignore
+
 DEBUGGING = False
 msg_output = None  # for redirecting stdout in msg() and write_to_file()
 

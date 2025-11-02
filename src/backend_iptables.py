@@ -23,10 +23,19 @@ import shutil
 import stat
 import sys
 import time
+import gettext
 
 from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
 import ufw.backend
+import ufw.common
+import ufw.util
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 
 class UFWBackendIptables(ufw.backend.UFWBackend):
@@ -1460,6 +1469,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 largs = limit_args
 
             for c in self.chains["misc"]:
+                prefix = "[UFW MISC] "  # Default prefix
                 if c.endswith("allow"):
                     prefix = "[UFW ALLOW] "
                 elif c.endswith("deny"):

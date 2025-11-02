@@ -40,6 +40,15 @@ import ufw.util
 import ufw.applications
 from ufw.common import UFWError
 from ufw.util import debug
+import ufw.common
+
+import gettext
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 
 class UFWCommand:
@@ -470,7 +479,8 @@ class UFWCommandRule(UFWCommand):
 
         return r
 
-    def get_command(r):
+    @staticmethod
+    def get_command(r: "ufw.common.UFWRule") -> str:
         """Get command string for rule"""
         res = r.action
 

@@ -27,6 +27,14 @@ import ufw.util
 from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
+import ufw.common
+import gettext
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 
 class UFWBackend:
@@ -53,7 +61,8 @@ class UFWBackend:
         self.do_checks = ufw.common.do_checks
         self._do_checks()
         self._get_defaults()
-        self._read_rules()
+        assert self.defaults is not None, "_get_defaults() should populate defaults"
+        self._read_rules()  # type: ignore  # Abstract method implemented in subclasses
 
         self.profiles = ufw.applications.get_profiles(self.files["apps"])
 
@@ -511,8 +520,8 @@ class UFWBackend:
             rstr += _("Rules updated for profile '%s'") % (profile)
 
             try:
-                self._write_rules(False)  # ipv4
-                self._write_rules(True)  # ipv6
+                self._write_rules(False)  # type: ignore  # ipv4
+                self._write_rules(True)  # type: ignore  # ipv6
             except Exception:  # pragma: no coverage
                 err_msg = _("Couldn't update application rules")
                 raise UFWError(err_msg)

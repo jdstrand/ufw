@@ -26,6 +26,16 @@ import ufw.util
 from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
+import ufw.common
+import ufw.applications
+
+import gettext
+
+# Internationalization - fallback if not installed as builtin
+try:
+    _  # type: ignore
+except NameError:
+    _ = gettext.gettext
 
 
 def parse_command(argv):
