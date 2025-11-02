@@ -30,127 +30,114 @@ class ApplicationsTestCase(unittest.TestCase):
         pass
 
     def test_get_profiles(self):
-        '''Test get_profiles()'''
+        """Test get_profiles()"""
         try:
             ufw.applications.get_profiles("foo")
             self.assertFalse(True)
         except ufw.common.UFWError:
             pass
 
-        self.assertTrue('WWW' in self.profiles.keys(), "Could not find 'WWW'")
-        self.assertEqual(self.profiles['WWW']['ports'], "80/tcp")
-        self.assertEqual(self.profiles['WWW']['title'], "Web Server")
-        self.assertEqual(self.profiles['WWW']['description'], "Web server")
+        self.assertTrue("WWW" in self.profiles.keys(), "Could not find 'WWW'")
+        self.assertEqual(self.profiles["WWW"]["ports"], "80/tcp")
+        self.assertEqual(self.profiles["WWW"]["title"], "Web Server")
+        self.assertEqual(self.profiles["WWW"]["description"], "Web server")
 
     def test_valid_profile_name(self):
-        '''Test valid_profile_name()'''
-        self.assertTrue(ufw.applications.valid_profile_name('ABC'))
-        self.assertFalse(ufw.applications.valid_profile_name('#ABC'))
-        self.assertFalse(ufw.applications.valid_profile_name('all'))
-        self.assertFalse(ufw.applications.valid_profile_name('123'))
-        self.assertFalse(ufw.applications.valid_profile_name('AB*C'))
+        """Test valid_profile_name()"""
+        self.assertTrue(ufw.applications.valid_profile_name("ABC"))
+        self.assertFalse(ufw.applications.valid_profile_name("#ABC"))
+        self.assertFalse(ufw.applications.valid_profile_name("all"))
+        self.assertFalse(ufw.applications.valid_profile_name("123"))
+        self.assertFalse(ufw.applications.valid_profile_name("AB*C"))
 
     def test_verify_profile(self):
-        '''Test verify_profile()'''
-        profiles = [{'title': 'test both',
-                     'description': 'dns',
-                     'ports': '53'},
-                    {'title': 'test tcp',
-                     'description': 'desc',
-                     'ports': '22/tcp'},
-                    {'title': 'test udp',
-                     'description': 'desc',
-                     'ports': '123/udp'},
-                    {'title': 'test multi comma',
-                     'description': 'desc',
-                     'ports': '80,443/tcp'},
-                    {'title': 'test multi range',
-                     'description': 'desc',
-                     'ports': '60000:65000/udp'},
-                    {'title': 'test different',
-                     'description': 'desc',
-                     'ports': '123/udp|80/tcp'},
-                    {'title': 'test man page',
-                     'description': 'desc',
-                     'ports': '12/udp|34|56,78:90/tcp'},
-                    ]
+        """Test verify_profile()"""
+        profiles = [
+            {"title": "test both", "description": "dns", "ports": "53"},
+            {"title": "test tcp", "description": "desc", "ports": "22/tcp"},
+            {"title": "test udp", "description": "desc", "ports": "123/udp"},
+            {"title": "test multi comma", "description": "desc", "ports": "80,443/tcp"},
+            {
+                "title": "test multi range",
+                "description": "desc",
+                "ports": "60000:65000/udp",
+            },
+            {
+                "title": "test different",
+                "description": "desc",
+                "ports": "123/udp|80/tcp",
+            },
+            {
+                "title": "test man page",
+                "description": "desc",
+                "ports": "12/udp|34|56,78:90/tcp",
+            },
+        ]
         for p in profiles:
-            self.assertTrue(ufw.applications.verify_profile('TESTPROFILE', p))
+            self.assertTrue(ufw.applications.verify_profile("TESTPROFILE", p))
 
     def test_verify_profile_bad(self):
-        '''Test verify_profile() - bad'''
-        profiles = [{'description': 'missing title',
-                     'ports': '53'},
-                    {'title': 'missing description',
-                     'ports': '22/tcp'},
-                    {'title': 'missing ports',
-                     'description': 'desc'},
-                    {'title': '',
-                     'description': 'empty title',
-                     'ports': '80'},
-                    {'title': 'empty description',
-                     'description': '',
-                     'ports': '80'},
-                    {'title': 'empty ports',
-                     'description': 'desc',
-                     'ports': ''},
-                    {'title': 'bad missing proto - list',
-                     'description': 'desc',
-                     'ports': '80,443'},
-                    {'title': 'bad missing proto - range',
-                     'description': 'desc',
-                     'ports': '80:443'},
-                    {'title': 'bad range too big',
-                     'description': 'desc',
-                     'ports': '80:70000/tcp'},
-                    {'title': 'bad protocol - ah',
-                     'description': 'desc',
-                     'ports': '80/ah'},
-                    {'title': 'bad protocol - esp',
-                     'description': 'desc',
-                     'ports': '80/esp'},
-                    {'title': 'bad protocol - gre',
-                     'description': 'desc',
-                     'ports': '80/gre'},
-                    {'title': 'bad protocol - igmp',
-                     'description': 'desc',
-                     'ports': '80/igmp'},
-                    {'title': 'bad protocol - ipv6',
-                     'description': 'desc',
-                     'ports': '80/ipv6'},
-                    {'title': 'bad protocol - vrrp',
-                     'description': 'desc',
-                     'ports': '80/vrrp'},
-                    ]
+        """Test verify_profile() - bad"""
+        profiles = [
+            {"description": "missing title", "ports": "53"},
+            {"title": "missing description", "ports": "22/tcp"},
+            {"title": "missing ports", "description": "desc"},
+            {"title": "", "description": "empty title", "ports": "80"},
+            {"title": "empty description", "description": "", "ports": "80"},
+            {"title": "empty ports", "description": "desc", "ports": ""},
+            {
+                "title": "bad missing proto - list",
+                "description": "desc",
+                "ports": "80,443",
+            },
+            {
+                "title": "bad missing proto - range",
+                "description": "desc",
+                "ports": "80:443",
+            },
+            {
+                "title": "bad range too big",
+                "description": "desc",
+                "ports": "80:70000/tcp",
+            },
+            {"title": "bad protocol - ah", "description": "desc", "ports": "80/ah"},
+            {"title": "bad protocol - esp", "description": "desc", "ports": "80/esp"},
+            {"title": "bad protocol - gre", "description": "desc", "ports": "80/gre"},
+            {"title": "bad protocol - igmp", "description": "desc", "ports": "80/igmp"},
+            {"title": "bad protocol - ipv6", "description": "desc", "ports": "80/ipv6"},
+            {"title": "bad protocol - vrrp", "description": "desc", "ports": "80/vrrp"},
+        ]
         for p in profiles:
             print(" %s" % p)
-            tests.unit.support.check_for_exception(self,
-                                                   ufw.common.UFWError,
-                                                   ufw.applications.verify_profile,
-                                                   'TESTPROFILE', p)
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.applications.verify_profile,
+                "TESTPROFILE",
+                p,
+            )
 
     def test_get_title(self):
-        '''Test get_title()'''
-        self.assertEqual(ufw.applications.get_title(self.profiles['WWW']),
-                'Web Server')
+        """Test get_title()"""
+        self.assertEqual(ufw.applications.get_title(self.profiles["WWW"]), "Web Server")
 
     def test_get_description(self):
-        '''Test get_description()'''
-        self.assertEqual(ufw.applications.get_description(self.profiles['WWW']),
-                'Web server')
+        """Test get_description()"""
+        self.assertEqual(
+            ufw.applications.get_description(self.profiles["WWW"]), "Web server"
+        )
 
     def test_get_ports(self):
-        '''Test get_ports()'''
-        expected_ports = ['80/tcp']
-        self.assertEqual(ufw.applications.get_ports(self.profiles['WWW']),
-                expected_ports)
+        """Test get_ports()"""
+        expected_ports = ["80/tcp"]
+        self.assertEqual(
+            ufw.applications.get_ports(self.profiles["WWW"]), expected_ports
+        )
 
 
-def test_main(): # used by runner.py
-    tests.unit.support.run_unittest(
-            ApplicationsTestCase
-    )
+def test_main():  # used by runner.py
+    tests.unit.support.run_unittest(ApplicationsTestCase)
 
 
-if __name__ == "__main__": # used when standalone
+if __name__ == "__main__":  # used when standalone
     unittest.main()

@@ -26,9 +26,9 @@ import sys
 
 
 def find_tests(testdir=None, testscripts=[]):
-    '''Find tests'''
+    """Find tests"""
     if not testdir:
-        if __name__ == '__main__':
+        if __name__ == "__main__":
             fn = sys.argv[0]
         else:
             print("TODO: find_tests() when imported")
@@ -49,7 +49,7 @@ def find_tests(testdir=None, testscripts=[]):
 
 
 def runtest(test):
-    '''Run test'''
+    """Run test"""
     pkg = __import__("tests.unit." + test, globals(), locals(), [])
     unit_pkg = getattr(pkg, "unit")
     mod = getattr(unit_pkg, test)
@@ -57,7 +57,7 @@ def runtest(test):
     mod.test_main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Create the unittest symlink so imports work
     if not os.path.islink("./ufw"):
         os.symlink("./src", "./ufw")
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         try:
             runtest(test)
             passed.append(test)
-        except KeyboardInterrupt: # kill this test, but still do others
+        except KeyboardInterrupt:  # kill this test, but still do others
             print("")
             break
         except TestFailed as e:
@@ -111,8 +111,9 @@ if __name__ == '__main__':
     print("------------------")
     print("Unit tests summary")
     print("------------------")
-    print("Total=%d (Passed=%d, Failed=%d)" % (len(passed) + len(failed),
-                                               len(passed),
-                                               len(failed)))
+    print(
+        "Total=%d (Passed=%d, Failed=%d)"
+        % (len(passed) + len(failed), len(passed), len(failed))
+    )
     if len(failed) > 0:
         sys.exit(1)

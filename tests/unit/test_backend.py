@@ -35,27 +35,21 @@ class BackendTestCase(unittest.TestCase):
         pass
 
     def test_installation_defaults(self):
-        '''Test installation defaults'''
-        self.assertEqual(self.backend.defaults['default_input_policy'],
-                          "drop")
-        self.assertEqual(self.backend.defaults['default_forward_policy'],
-                          "drop")
-        self.assertEqual(self.backend.defaults['default_output_policy'],
-                          "accept")
+        """Test installation defaults"""
+        self.assertEqual(self.backend.defaults["default_input_policy"], "drop")
+        self.assertEqual(self.backend.defaults["default_forward_policy"], "drop")
+        self.assertEqual(self.backend.defaults["default_output_policy"], "accept")
         self.assertTrue("ipt_modules" not in self.backend.defaults)
-        self.assertEqual(self.backend.defaults['loglevel'], 'low')
-        self.assertEqual(self.backend.defaults['manage_builtins'], 'no')
-        self.assertEqual(self.backend.defaults['enabled'], 'no')
-        self.assertEqual(self.backend.defaults['ipv6'], 'yes')
-        self.assertEqual(self.backend.defaults['default_application_policy'],
-                          'skip')
+        self.assertEqual(self.backend.defaults["loglevel"], "low")
+        self.assertEqual(self.backend.defaults["manage_builtins"], "no")
+        self.assertEqual(self.backend.defaults["enabled"], "no")
+        self.assertEqual(self.backend.defaults["ipv6"], "yes")
+        self.assertEqual(self.backend.defaults["default_application_policy"], "skip")
 
 
-def test_main(): # used by runner.py
-    tests.unit.support.run_unittest(
-            BackendTestCase
-    )
+def test_main():  # used by runner.py
+    tests.unit.support.run_unittest(BackendTestCase)
 
 
-if __name__ == "__main__": # used when standalone
+if __name__ == "__main__":  # used when standalone
     unittest.main()
