@@ -20,6 +20,7 @@ import sys
 import unittest
 import tests.unit.support
 import ufw.parser
+import ufw.common
 
 
 class ParserTestCase(unittest.TestCase):

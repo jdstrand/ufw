@@ -19,6 +19,7 @@ import os
 import unittest
 import tests.unit.support
 import ufw.applications
+import ufw.common
 
 
 class ApplicationsTestCase(unittest.TestCase):

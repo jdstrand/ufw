@@ -19,7 +19,7 @@ import unittest
 import os
 
 try:  # python 2
-    from StringIO import StringIO
+    from StringIO import StringIO  # type: ignore  # Python 2 compatibility
 except ImportError:
     from io import StringIO
 

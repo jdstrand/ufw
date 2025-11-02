@@ -20,13 +20,15 @@ import tests.unit.support
 import ufw.backend_iptables
 import ufw.common
 import ufw.frontend
+import ufw.util
+import ufw.applications
 import os
 import re
 import shutil
 import time
 
 try:  # python 2
-    from StringIO import StringIO
+    from StringIO import StringIO  # type: ignore  # Python 2 compatibility
 except ImportError:
     from io import StringIO
 
@@ -70,7 +72,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         os.rename(f + ".new", f)
 
     def tearDown(self):
-        self.ui.backend = None
+        self.ui.backend = None  # type: ignore  # Test teardown cleanup
         self.ui = None
         self.backend = None
         os.environ["PATH"] = self.prevpath

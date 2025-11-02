@@ -78,18 +78,18 @@ class CommonTestCase(unittest.TestCase):
         }
         self.rules["dapp"].dapp = "Apache"
         self.rules["dapp"].dport = "80"
-        self.rules["dapp"].proto = "tcp"
+        self.rules["dapp"].proto = "tcp"  # type: ignore  # Test code internal attribute access
 
         self.rules["sapp"].sapp = "Apache"
         self.rules["sapp"].sport = "80"
-        self.rules["sapp"].proto = "tcp"
+        self.rules["sapp"].proto = "tcp"  # type: ignore  # Test code internal attribute access
 
         self.rules["app-both"].dapp = "Apache"
         self.rules["app-both"].dport = "80"
-        self.rules["app-both"].proto = "tcp"
+        self.rules["app-both"].proto = "tcp"  # type: ignore  # Test code internal attribute access
         self.rules["app-both"].sapp = "Apache"
         self.rules["app-both"].sport = "80"
-        self.rules["app-both"].proto = "tcp"
+        self.rules["app-both"].proto = "tcp"  # type: ignore  # Test code internal attribute access
 
         self.rules["log"].set_logtype("log")
         self.rules["log-all"].set_logtype("log-all")

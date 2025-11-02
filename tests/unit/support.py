@@ -143,7 +143,7 @@ def init_gettext():
         # BAW: I'm not sure why both this and the .install() above is here, but
         # let's roll with it for now.  This is the Python 2 version, which
         # ensures we get unicodes.
-        _ = gettext.ugettext
+        _ = gettext.ugettext  # type: ignore  # Python 2 compatibility
     except AttributeError:
         # Python 3 always returns unicodes.
         _ = gettext.gettext
