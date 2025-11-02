@@ -24,6 +24,7 @@ import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError, UFWRule
 import gettext
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 import sys
 
@@ -39,7 +40,7 @@ else:  # pragma: no cover
     import configparser
 
 
-def get_profiles(profiles_dir):
+def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
     """Get profiles found in profiles database.  Returns dictionary with
     profile name as key and tuples for fields
     """
@@ -164,7 +165,7 @@ def get_profiles(profiles_dir):
     return profiles
 
 
-def valid_profile_name(name):
+def valid_profile_name(name: str) -> bool:
     """Only accept a limited set of characters for name"""
     # Reserved profile name
     if name == "all":
@@ -184,7 +185,7 @@ def valid_profile_name(name):
     return False
 
 
-def verify_profile(name, profile):
+def verify_profile(name: str, profile: Dict[str, str]) -> bool:
     """Make sure profile has everything needed"""
     app_fields = ["title", "description", "ports"]
 
@@ -219,7 +220,7 @@ def verify_profile(name, profile):
     return True
 
 
-def get_title(profile):
+def get_title(profile: Dict[str, str]) -> str:
     """Retrieve the title from the profile"""
     s = ""
     field = "title"
@@ -228,7 +229,7 @@ def get_title(profile):
     return s
 
 
-def get_description(profile):
+def get_description(profile: Dict[str, str]) -> str:
     """Retrieve the description from the profile"""
     s = ""
     field = "description"
@@ -237,7 +238,7 @@ def get_description(profile):
     return s
 
 
-def get_ports(profile):
+def get_ports(profile: Dict[str, str]) -> List[str]:
     """Retrieve a list of ports from a profile"""
     ports = []
     field = "ports"

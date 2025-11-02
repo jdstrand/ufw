@@ -20,6 +20,7 @@
 import os
 import sys
 import warnings
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 from ufw.common import UFWError
 import ufw.util
@@ -38,7 +39,7 @@ except NameError:
     _ = gettext.gettext
 
 
-def parse_command(argv):
+def parse_command(argv: List[str]) -> Any:
     """Parse command. Returns tuple for action, rule, ip_version and dryrun."""
     p = ufw.parser.UFWParser()
 
@@ -119,7 +120,7 @@ def parse_command(argv):
     return pr
 
 
-def get_command_help():
+def get_command_help() -> str:
     """Print help message"""
     help_msg = _(
         """
@@ -201,7 +202,13 @@ Usage: %(progname)s %(command)s
 class UFWFrontend:
     """UI"""
 
-    def __init__(self, dryrun, backend_type="iptables", rootdir=None, datadir=None):
+    def __init__(
+        self,
+        dryrun: bool,
+        backend_type: str = "iptables",
+        rootdir: Optional[str] = None,
+        datadir: Optional[str] = None,
+    ) -> None:
         if backend_type == "iptables":
             try:
                 self.backend = UFWBackendIptables(
@@ -217,7 +224,7 @@ class UFWFrontend:
         self.yes = _("y")
         self.yes_full = _("yes")
 
-    def set_enabled(self, enabled):
+    def set_enabled(self, enabled: bool) -> str:
         """Toggles ENABLED state in <config_dir>/ufw/ufw.conf and starts or
         stops running firewall.
         """
@@ -274,7 +281,7 @@ class UFWFrontend:
 
         return res
 
-    def set_default_policy(self, policy, direction):
+    def set_default_policy(self, policy: str, direction: str) -> str:
         """Sets default policy of firewall"""
         res = ""
         try:
@@ -287,7 +294,7 @@ class UFWFrontend:
 
         return res
 
-    def set_loglevel(self, level):
+    def set_loglevel(self, level: str) -> str:
         """Sets log level of firewall"""
         res = ""
         try:
@@ -297,7 +304,7 @@ class UFWFrontend:
 
         return res
 
-    def get_status(self, verbose=False, show_count=False):
+    def get_status(self, verbose: bool = False, show_count: bool = False) -> str:
         """Shows status of firewall"""
         try:
             out = self.backend.get_status(verbose, show_count)
@@ -306,7 +313,7 @@ class UFWFrontend:
 
         return out
 
-    def get_show_raw(self, rules_type="raw"):
+    def get_show_raw(self, rules_type: str = "raw") -> str:
         """Shows raw output of firewall"""
         try:
             out = self.backend.get_running_raw(rules_type)
@@ -315,7 +322,7 @@ class UFWFrontend:
 
         return out
 
-    def get_show_listening(self):
+    def get_show_listening(self) -> str:
         """Shows listening services and incoming rules that might affect
         them"""
         res = ""
@@ -388,7 +395,7 @@ class UFWFrontend:
 
         return res
 
-    def get_show_added(self):
+    def get_show_added(self) -> str:
         """Shows added rules to the firewall"""
         rules = self.backend.get_rules()
 
@@ -416,7 +423,7 @@ class UFWFrontend:
 
         return out
 
-    def set_rule(self, rule, ip_version):
+    def set_rule(self, rule: Any, ip_version: str) -> str:
         """Updates firewall with rule"""
         res = ""
         err_msg = ""
@@ -613,7 +620,7 @@ class UFWFrontend:
 
         return res
 
-    def delete_rule(self, number, force=False):
+    def delete_rule(self, number: str, force: bool = False) -> str:
         """Delete rule"""
         try:
             n = int(number)
@@ -659,7 +666,9 @@ class UFWFrontend:
 
         return res
 
-    def do_action(self, action, rule, ip_version, force=False):
+    def do_action(
+        self, action: str, rule: Any, ip_version: str, force: bool = False
+    ) -> str:
         """Perform action on rule. action, rule and ip_version are usually
         based on return values from parse_command().
         """
@@ -749,7 +758,7 @@ class UFWFrontend:
 
         return res
 
-    def set_default_application_policy(self, policy):
+    def set_default_application_policy(self, policy: str) -> str:
         """Sets default application policy of firewall"""
         res = ""
         try:
@@ -759,7 +768,7 @@ class UFWFrontend:
 
         return res
 
-    def get_application_list(self):
+    def get_application_list(self) -> str:
         """Display list of known application profiles"""
         names = list(self.backend.profiles.keys())
         names.sort()
@@ -768,7 +777,7 @@ class UFWFrontend:
             rstr += "\n  %s" % (n)
         return rstr
 
-    def get_application_info(self, pname):
+    def get_application_info(self, pname: str) -> str:
         """Display information on profile"""
         names = []
         if pname == "all":
@@ -813,7 +822,7 @@ class UFWFrontend:
 
         return ufw.util.wrap_text(rstr)
 
-    def application_update(self, profile):
+    def application_update(self, profile: str) -> str:
         """Refresh application profile"""
         rstr = ""
         allow_reload = True
@@ -856,7 +865,7 @@ class UFWFrontend:
 
         return rstr
 
-    def application_add(self, profile):
+    def application_add(self, profile: str) -> str:
         """Refresh application profile"""
         rstr = ""
         policy = ""
@@ -898,7 +907,7 @@ class UFWFrontend:
 
         return rstr
 
-    def do_application_action(self, action, profile):
+    def do_application_action(self, action: str, profile: str) -> str:
         """Perform action on profile. action and profile are usually based on
         return values from parse_command().
         """
@@ -930,7 +939,7 @@ class UFWFrontend:
 
         return res
 
-    def continue_under_ssh(self):
+    def continue_under_ssh(self) -> bool:
         """If running under ssh, prompt the user for confirmation"""
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():  # pragma: no cover
@@ -945,7 +954,7 @@ class UFWFrontend:
 
         return proceed
 
-    def reset(self, force=False):
+    def reset(self, force: bool = False) -> str:
         """Reset the firewall"""
         res = ""
         prompt = _(

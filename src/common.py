@@ -22,6 +22,7 @@ import socket
 import ufw.util
 from ufw.util import debug
 import gettext
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 # Internationalization - fallback if not installed as builtin
 try:
@@ -42,10 +43,10 @@ do_checks = True
 class UFWError(Exception):
     """This class represents ufw exceptions"""
 
-    def __init__(self, value):
+    def __init__(self, value: str) -> None:
         self.value = value
 
-    def __str__(self):
+    def __str__(self) -> str:
         return repr(self.value)
 
 
@@ -54,16 +55,16 @@ class UFWRule:
 
     def __init__(
         self,
-        action,
-        protocol,
-        dport="any",
-        dst="0.0.0.0/0",
-        sport="any",
-        src="0.0.0.0/0",
-        direction="in",
-        forward=False,
-        comment="",
-    ):
+        action: str,
+        protocol: str,
+        dport: str = "any",
+        dst: str = "0.0.0.0/0",
+        sport: str = "any",
+        src: str = "0.0.0.0/0",
+        direction: str = "in",
+        forward: bool = False,
+        comment: str = "",
+    ) -> None:
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -96,10 +97,10 @@ class UFWRule:
         except UFWError:
             raise
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.format_rule()
 
-    def _get_attrib(self):
+    def _get_attrib(self) -> str:
         """Print rule to stdout"""
         res = "'%s'" % (self)
         keys = list(self.__dict__)
@@ -108,7 +109,7 @@ class UFWRule:
             res += ", %s=%s" % (k, self.__dict__[k])
         return res
 
-    def dup_rule(self):
+    def dup_rule(self) -> "UFWRule":
         """Return a duplicate of a rule"""
         rule = UFWRule(self.action, self.protocol)
         rule.remove = self.remove
@@ -131,7 +132,7 @@ class UFWRule:
 
         return rule
 
-    def format_rule(self):
+    def format_rule(self) -> str:
         """Format rule for later parsing"""
         rule_str = ""
 
@@ -198,7 +199,7 @@ class UFWRule:
 
         return rule_str.strip()
 
-    def set_action(self, action):
+    def set_action(self, action: str) -> None:
         """Sets action of the rule"""
         tmp = action.lower().split("_")
         if tmp[0] == "allow" or tmp[0] == "reject" or tmp[0] == "limit":
@@ -211,7 +212,7 @@ class UFWRule:
             logtype = tmp[1]
         self.set_logtype(logtype)
 
-    def set_port(self, port, loc="dst"):
+    def set_port(self, port: str, loc: str = "dst") -> None:
         """Sets port and location (destination or source) of the rule"""
         err_msg = _("Bad port '%s'") % (port)
         if port == "any":
@@ -264,7 +265,7 @@ class UFWRule:
         else:
             self.dport = str(port)
 
-    def set_protocol(self, protocol):
+    def set_protocol(self, protocol: str) -> None:
         """Sets protocol of the rule"""
         if protocol in ufw.util.supported_protocols + ["any"]:
             self.protocol = protocol
@@ -272,7 +273,7 @@ class UFWRule:
             err_msg = _("Unsupported protocol '%s'") % (protocol)
             raise UFWError(err_msg)
 
-    def _fix_anywhere(self):
+    def _fix_anywhere(self) -> None:
         """Adjusts src and dst based on v6"""
         if self.v6:
             if self.dst and (self.dst == "any" or self.dst == "0.0.0.0/0"):
@@ -285,14 +286,14 @@ class UFWRule:
             if self.src and (self.src == "any" or self.src == "::/0"):
                 self.src = "0.0.0.0/0"
 
-    def set_v6(self, v6):
+    def set_v6(self, v6: bool) -> None:
         """Sets whether this is ipv6 rule, and adjusts src and dst
         accordingly.
         """
         self.v6 = v6
         self._fix_anywhere()
 
-    def set_src(self, addr):
+    def set_src(self, addr: str) -> None:
         """Sets source address of rule"""
         tmp = addr.lower()
 
@@ -302,7 +303,7 @@ class UFWRule:
         self.src = tmp
         self._fix_anywhere()
 
-    def set_dst(self, addr):
+    def set_dst(self, addr: str) -> None:
         """Sets destination address of rule"""
         tmp = addr.lower()
 
@@ -312,7 +313,7 @@ class UFWRule:
         self.dst = tmp
         self._fix_anywhere()
 
-    def set_interface(self, if_type, name):
+    def set_interface(self, if_type: str, name: str) -> None:
         """Sets an interface for rule"""
         # libxtables/xtables.c xtables_parse_interface() specifies
         # - < 16
@@ -360,7 +361,7 @@ class UFWRule:
         else:
             self.interface_out = name
 
-    def set_position(self, num):
+    def set_position(self, num: Union[int, str]) -> None:
         """Sets the position of the rule"""
         # -1 prepend
         #  0 append
@@ -370,7 +371,7 @@ class UFWRule:
             raise UFWError(err_msg)
         self.position = int(num)
 
-    def set_logtype(self, logtype):
+    def set_logtype(self, logtype: str) -> None:
         """Sets logtype of the rule"""
         if logtype.lower() == "log" or logtype.lower() == "log-all" or logtype == "":
             self.logtype = logtype.lower()
@@ -378,7 +379,7 @@ class UFWRule:
             err_msg = _("Invalid log type '%s'") % (logtype)
             raise UFWError(err_msg)
 
-    def set_direction(self, direction):
+    def set_direction(self, direction: str) -> None:
         """Sets direction of the rule"""
         if direction == "in" or direction == "out":
             self.direction = direction
@@ -386,15 +387,15 @@ class UFWRule:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
-    def get_comment(self):
+    def get_comment(self) -> str:
         """Get decoded comment of the rule"""
         return ufw.util.hex_decode(self.comment)
 
-    def set_comment(self, comment):
+    def set_comment(self, comment: str) -> None:
         """Sets comment of the rule"""
         self.comment = comment
 
-    def normalize(self):
+    def normalize(self) -> None:
         """Normalize src and dst to standard form"""
         changed = False
         if self.src:
@@ -427,7 +428,7 @@ class UFWRule:
             ufw.util.human_sort(ports)
             self.sport = ",".join(ports)
 
-    def match(x, y):
+    def match(x: "UFWRule", y: "UFWRule") -> int:
         """Check if rules match
         Return codes:
           0  match
@@ -500,7 +501,7 @@ class UFWRule:
         debug(dbg_msg)
         return -1
 
-    def fuzzy_dst_match(x, y):
+    def fuzzy_dst_match(x: "UFWRule", y: "UFWRule") -> int:
         """This will match if x is more specific than y. Eg, for protocol if x
         is tcp and y is all or for address if y is a network and x is a
         subset of y (where x is either an address or network). Returns:
@@ -513,7 +514,7 @@ class UFWRule:
         are not considered, and (currently) only incoming.
         """
 
-        def _match_ports(test_p, to_match):
+        def _match_ports(test_p: str, to_match: str) -> bool:
             """Returns True if p is an exact match or within a multi rule"""
             if "," in test_p or ":" in test_p:
                 if test_p == to_match:
@@ -625,13 +626,13 @@ class UFWRule:
         debug("(fuzzy match) '%s (v6=%s)' '%s (v6=%s)'" % (x, x.v6, y, y.v6))
         return -1
 
-    def _is_anywhere(self, addr):
+    def _is_anywhere(self, addr: str) -> bool:
         """Check if address is anywhere"""
         if addr == "::/0" or addr == "0.0.0.0/0":
             return True
         return False
 
-    def get_app_tuple(self):
+    def get_app_tuple(self) -> str:
         """Returns a tuple to identify an app rule. Tuple is:
           dapp dst sapp src direction_iface|direction
         or
@@ -663,7 +664,7 @@ class UFWRule:
 
         return tupl
 
-    def verify(self, rule_iptype):
+    def verify(self, rule_iptype: str) -> None:
         """Verify rule"""
         # Verify protocol not specified with application rule
         if self.protocol != "any" and (self.sapp != "" or self.dapp != ""):

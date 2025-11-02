@@ -24,6 +24,7 @@ import re
 import stat
 import sys
 import ufw.util
+from typing import Optional, List, Dict, Tuple, Union, Any
 from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
@@ -40,8 +41,15 @@ except NameError:
 class UFWBackend:
     """Interface for backends"""
 
-    def __init__(self, name, dryrun, extra_files=None, rootdir=None, datadir=None):
-        self.defaults = None
+    def __init__(
+        self,
+        name: str,
+        dryrun: bool,
+        extra_files: Optional[Dict[str, str]] = None,
+        rootdir: Optional[str] = None,
+        datadir: Optional[str] = None,
+    ) -> None:
+        self.defaults: Optional[Dict[str, str]] = None
         self.name = name
         self.dryrun = dryrun
         self.rules = []
@@ -84,7 +92,7 @@ class UFWBackend:
         # Initialize via initcaps only when we need it (LP: #1044361)
         self.caps = None
 
-    def initcaps(self):
+    def initcaps(self) -> None:
         """Initialize the capabilities database. This needs to be called
         before accessing the database."""
 
@@ -130,13 +138,13 @@ class UFWBackend:
                 else:
                     self.caps["limit"]["6"] = False
 
-    def is_enabled(self):
+    def is_enabled(self) -> bool:
         """Is firewall configured as enabled"""
         if "enabled" in self.defaults and self.defaults["enabled"] == "yes":
             return True
         return False
 
-    def use_ipv6(self):
+    def use_ipv6(self) -> bool:
         """Is firewall configured to use IPv6"""
         if (
             "ipv6" in self.defaults
@@ -146,7 +154,9 @@ class UFWBackend:
             return True
         return False
 
-    def _get_default_policy(self, primary="input", check_forward=False):
+    def _get_default_policy(
+        self, primary: str = "input", check_forward: bool = False
+    ) -> str:
         """Get default policy for specified primary chain"""
         policy = "default_" + primary + "_policy"
 
@@ -184,7 +194,7 @@ class UFWBackend:
         return rstr
 
     # Don't do coverage on this cause we don't run the unit tests as root
-    def _do_checks(self):  # pragma: no coverage
+    def _do_checks(self) -> bool:  # pragma: no coverage
         """Perform basic security checks:
         is setuid or setgid (for non-Linux systems)
         checks that script is owned by root
@@ -305,7 +315,9 @@ class UFWBackend:
                 )
                 raise UFWError(err_msg)
 
-    def _get_defaults(self):
+        return True
+
+    def _get_defaults(self) -> None:
         """Get all settings from defaults file"""
         self.defaults = {}
         for f in [self.files["defaults"], self.files["conf"]]:
@@ -336,7 +348,7 @@ class UFWBackend:
                 )
                 raise UFWError(err_msg)
 
-    def set_default(self, fn, opt, value):
+    def set_default(self, fn: str, opt: str, value: str) -> None:
         """Sets option in defaults file"""
         if not re.match(r"^[\w_]+$", opt):
             err_msg = _("Invalid option")
@@ -372,7 +384,7 @@ class UFWBackend:
         # Now that the files are written out, update value in memory
         self.defaults[opt.lower()] = value.lower().strip("\"'")
 
-    def set_default_application_policy(self, policy):
+    def set_default_application_policy(self, policy: str) -> str:
         """Sets default application policy of firewall"""
         if not self.dryrun:
             if policy == "allow":
@@ -399,7 +411,7 @@ class UFWBackend:
 
         return rstr
 
-    def get_app_rules_from_template(self, template):
+    def get_app_rules_from_template(self, template: UFWRule) -> List[UFWRule]:
         """Return a list of UFWRules based on the template rule"""
         rules = []
         profile_names = list(self.profiles.keys())
@@ -467,7 +479,7 @@ class UFWBackend:
 
         return rules
 
-    def update_app_rule(self, profile):
+    def update_app_rule(self, profile: str) -> Tuple[str, bool]:
         """Update rule for profile in place. Returns result string and bool
         on whether or not the profile is used in the current ruleset.
         """
@@ -528,7 +540,7 @@ class UFWBackend:
 
         return (rstr, updated_profile)
 
-    def find_application_name(self, profile_name):
+    def find_application_name(self, profile_name: str) -> str:
         """Find the application profile name for profile_name"""
         if profile_name in self.profiles:
             return profile_name
@@ -552,7 +564,7 @@ class UFWBackend:
             err_msg = _("Could not find a profile matching '%s'") % (profile_name)
         raise UFWError(err_msg)
 
-    def find_other_position(self, position, v6):
+    def find_other_position(self, position: int, v6: bool) -> int:
         """Return the absolute position in the other list of the rule with the
         user position of the given list. For example, find_other_position(4,
         True) will return the absolute position of the rule in the ipv4 list
@@ -612,7 +624,7 @@ class UFWBackend:
 
         return 0
 
-    def get_loglevel(self):
+    def get_loglevel(self) -> Tuple[int, str]:
         """Gets current log level of firewall"""
         level = 0
         rstr = _("Logging: ")
@@ -629,7 +641,7 @@ class UFWBackend:
                 rstr += "on (%s)" % (self.defaults["loglevel"])
         return (level, rstr)
 
-    def set_loglevel(self, level):
+    def set_loglevel(self, level: str) -> str:
         """Sets log level of firewall"""
         if level not in list(self.loglevels.keys()) + ["on"]:
             err_msg = _("Invalid log level '%s'") % (level)
@@ -650,19 +662,19 @@ class UFWBackend:
         else:
             return _("Logging enabled")
 
-    def get_rules(self):
+    def get_rules(self) -> List[UFWRule]:
         """Return list of all rules"""
         return self.get_rules_ipv4() + self.get_rules_ipv6()
 
-    def get_rules_ipv4(self):
+    def get_rules_ipv4(self) -> List[UFWRule]:
         """Return list of IPv4 rules"""
         return self.rules
 
-    def get_rules_ipv6(self):
+    def get_rules_ipv6(self) -> List[UFWRule]:
         """Return list of IPv6 rules"""
         return self.rules6
 
-    def get_rules_count(self, v6):
+    def get_rules_count(self, v6: bool) -> int:
         """Return number of ufw rules (not iptables rules)"""
         rules = []
         if v6:
@@ -686,7 +698,7 @@ class UFWBackend:
 
         return count
 
-    def get_rule_by_number(self, num):
+    def get_rule_by_number(self, num: int) -> Optional[UFWRule]:
         '''Return rule specified by number seen via "status numbered"'''
         rules = self.get_rules()
 
@@ -708,7 +720,7 @@ class UFWBackend:
 
         return None
 
-    def get_matching(self, rule):
+    def get_matching(self, rule: UFWRule) -> List[int]:
         """See if there is a matching rule in the existing ruleset. Note this
         does not group rules by tuples."""
         matched = []
@@ -722,38 +734,46 @@ class UFWBackend:
         return matched
 
     # API overrides
-    def set_default_policy(self, policy, direction):  # pragma: no coverage
+    def set_default_policy(
+        self, policy: str, direction: str
+    ) -> str:  # pragma: no coverage
         """Set default policy for specified direction"""
         raise UFWError("UFWBackend.set_default_policy: need to override")
 
-    def get_running_raw(self, rules_type):  # pragma: no coverage
+    def get_running_raw(
+        self, rules_type: str
+    ) -> Tuple[str, str]:  # pragma: no coverage
         """Get status of running firewall"""
         raise UFWError("UFWBackend.get_running_raw: need to override")
 
-    def get_status(self, verbose, show_count):  # pragma: no coverage
+    def get_status(self, verbose: bool, show_count: bool) -> str:  # pragma: no coverage
         """Get managed rules"""
         raise UFWError("UFWBackend.get_status: need to override")
 
-    def set_rule(self, rule, allow_reload):  # pragma: no coverage
+    def set_rule(
+        self, rule: UFWRule, allow_reload: bool
+    ) -> Tuple[str, Optional[UFWRule]]:  # pragma: no coverage
         """Update firewall with rule"""
         raise UFWError("UFWBackend.set_rule: need to override")
 
-    def start_firewall(self):  # pragma: no coverage
+    def start_firewall(self) -> Tuple[str, str]:  # pragma: no coverage
         """Start the firewall"""
         raise UFWError("UFWBackend.start_firewall: need to override")
 
-    def stop_firewall(self):  # pragma: no coverage
+    def stop_firewall(self) -> Tuple[str, str]:  # pragma: no coverage
         """Stop the firewall"""
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
-    def get_app_rules_from_system(self, template, v6):  # pragma: no coverage
+    def get_app_rules_from_system(
+        self, template: UFWRule, v6: bool
+    ) -> List[UFWRule]:  # pragma: no coverage
         """Get a list if rules based on template"""
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + "override")
 
-    def update_logging(self, level):  # pragma: no coverage
+    def update_logging(self, level: str) -> None:  # pragma: no coverage
         """Update loglevel of running firewall"""
         raise UFWError("UFWBackend.update_logging: need to override")
 
-    def reset(self):  # pragma: no coverage
+    def reset(self) -> str:  # pragma: no coverage
         """Reset the firewall"""
         raise UFWError("UFWBackend.reset: need to override")

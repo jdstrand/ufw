@@ -34,6 +34,7 @@ import sys
 
 from functools import reduce
 from tempfile import mkstemp, mktemp
+from typing import Optional, List, Dict, Tuple, Union, Any, IO
 
 import gettext
 
@@ -57,7 +58,7 @@ portless_protocols = ["ipv6", "esp", "ah", "igmp", "gre", "vrrp"]
 ipv4_only_protocols = ["ipv6", "igmp"]
 
 
-def get_services_proto(port):
+def get_services_proto(port: str) -> str:
     """Get the protocol for a specified port from /etc/services"""
     proto = ""
     try:
@@ -83,7 +84,7 @@ def get_services_proto(port):
     return proto
 
 
-def parse_port_proto(p_str):
+def parse_port_proto(p_str: str) -> Tuple[str, str]:
     """Parse port or port and protocol"""
     port = ""
     proto = ""
@@ -103,7 +104,7 @@ def parse_port_proto(p_str):
     return (port, proto)
 
 
-def valid_address6(addr):
+def valid_address6(addr: str) -> bool:
     """Verifies if valid IPv6 address"""
     if not socket.has_ipv6:
         warn("python does not have IPv6 support.")
@@ -129,7 +130,7 @@ def valid_address6(addr):
     return True
 
 
-def valid_address4(addr):
+def valid_address4(addr: str) -> bool:
     """Verifies if valid IPv4 address"""
     # quick and dirty test
     if len(addr) > 31 or not re.match(r"^[0-9\./]+$", addr):
@@ -154,7 +155,7 @@ def valid_address4(addr):
     return True
 
 
-def valid_netmask(nm, v6):
+def valid_netmask(nm: str, v6: bool) -> bool:
     """Verifies if valid cidr or dotted netmask"""
     return _valid_cidr_netmask(nm, v6) or _valid_dotted_quads(nm, v6)
 
@@ -165,7 +166,7 @@ def valid_netmask(nm, v6):
 #    version="4" tests if a valid IPv4 address
 #    version="any" tests if a valid IP address (IPv4 or IPv6)
 #
-def valid_address(addr, version="any"):
+def valid_address(addr: str, version: str = "any") -> bool:
     """Validate IP addresses"""
     if version == "6":
         return valid_address6(addr)
@@ -177,7 +178,7 @@ def valid_address(addr, version="any"):
     raise ValueError
 
 
-def normalize_address(orig, v6):
+def normalize_address(orig: str, v6: bool) -> Tuple[str, bool]:
     """Convert address to standard form. Use no netmask for IP addresses. If
     netmask is specified and not all 1's, for IPv4 use cidr if possible,
     otherwise dotted netmask and for IPv6, use cidr.
@@ -232,12 +233,12 @@ def normalize_address(orig, v6):
     return (addr, changed)
 
 
-def open_file_read(fn):
+def open_file_read(fn: str) -> IO[Any]:
     """Opens the specified file read-only"""
     return open(fn, "r")
 
 
-def open_files(fn):
+def open_files(fn: str) -> Dict[str, Any]:
     """Opens the specified file read-only and a tempfile read-write."""
     orig = open_file_read(fn)
 
@@ -250,7 +251,7 @@ def open_files(fn):
     return {"orig": orig, "origname": fn, "tmp": tmp, "tmpname": tmpname}
 
 
-def write_to_file(fd, out):
+def write_to_file(fd: int, out: str) -> None:
     """Write to the file descriptor and error out of 0 bytes written. Intended
     to be used with open_files() and close_files()."""
     if out == "":
@@ -275,7 +276,7 @@ def write_to_file(fd, out):
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
-def close_files(fns, update=True):
+def close_files(fns: Dict[str, Any], update: bool = True) -> None:
     """Closes the specified files (as returned by open_files), and update
     original file with the temporary file.
     """
@@ -289,7 +290,7 @@ def close_files(fns, update=True):
     os.unlink(fns["tmpname"])
 
 
-def cmd(command):
+def cmd(command: List[str]) -> List[Union[int, str]]:
     """Try to execute the given command."""
     debug(command)
     try:
@@ -306,7 +307,7 @@ def cmd(command):
     return [sp.returncode, str(out)]
 
 
-def cmd_pipe(command1, command2):
+def cmd_pipe(command1: List[str], command2: List[str]) -> List[Union[int, str]]:
     """Try to pipe command1 into command2."""
     try:
         sp1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
@@ -320,11 +321,11 @@ def cmd_pipe(command1, command2):
 
 # TODO: this is pretty horrible. We should be using only unicode strings
 #       internally and decode() when printing rather than doing this.
-def _print(output, s):
+def _print(output: IO[Any], s: str) -> None:
     """Implement our own print statement that will output utf-8 when
     appropriate."""
     try:  # python3
-        writer = output.buffer
+        writer = output.buffer  # type: ignore  # Python 3 TextIO has buffer attribute
     except Exception:
         writer = output
 
@@ -341,7 +342,7 @@ def _print(output, s):
     output.flush()
 
 
-def error(out, do_exit=True):
+def error(out: str, do_exit: bool = True) -> None:
     """Print error message and exit"""
     try:
         _print(sys.stderr, "ERROR: %s\n" % out)
@@ -352,7 +353,7 @@ def error(out, do_exit=True):
         sys.exit(1)
 
 
-def warn(out):
+def warn(out: str) -> None:
     """Print warning message"""
     try:
         _print(sys.stderr, "WARN: %s\n" % out)
@@ -360,7 +361,7 @@ def warn(out):
         pass
 
 
-def msg(out, output=sys.stdout, newline=True):
+def msg(out: str, output: IO[Any] = sys.stdout, newline: bool = True) -> None:
     """Print message"""
     if msg_output and output == sys.stdout:
         output = msg_output
@@ -374,7 +375,7 @@ def msg(out, output=sys.stdout, newline=True):
         pass
 
 
-def debug(out):
+def debug(out: Union[str, List[str]]) -> None:
     """Print debug message"""
     if DEBUGGING:
         try:
@@ -383,7 +384,7 @@ def debug(out):
             pass
 
 
-def word_wrap(text, width):
+def word_wrap(text: str, width: int) -> str:
     """
     A word-wrap function that preserves existing line breaks
     and most spaces in the text. Expects that existing line
@@ -405,12 +406,12 @@ def word_wrap(text, width):
     )
 
 
-def wrap_text(text):
+def wrap_text(text: str) -> str:
     """Word wrap to a specific width"""
     return word_wrap(text, 75)
 
 
-def human_sort(lst):
+def human_sort(lst: List[str]) -> None:
     """Sorts list of strings into numeric order, with text case-insensitive.
     Modifies list in place.
 
@@ -424,7 +425,7 @@ def human_sort(lst):
     lst.sort(key=lambda k: [norm(c) for c in re.split("([0-9]+)", k)])
 
 
-def get_ppid(mypid=os.getpid()):
+def get_ppid(mypid: int = os.getpid()) -> int:
     """Finds parent process id for pid based on /proc/<pid>/stat. See
     'man 5 proc' for details.
     """
@@ -447,7 +448,7 @@ def get_ppid(mypid=os.getpid()):
     return int(ppid)
 
 
-def under_ssh(pid=os.getpid()):
+def under_ssh(pid: int = os.getpid()) -> bool:
     """Determine if current process is running under ssh"""
     try:
         ppid = get_ppid(pid)
@@ -486,7 +487,7 @@ def under_ssh(pid=os.getpid()):
 #
 # Internal helper functions
 #
-def _valid_cidr_netmask(nm, v6):
+def _valid_cidr_netmask(nm: str, v6: bool) -> bool:
     """Verifies cidr netmasks"""
     num = 32
     if v6:
@@ -498,7 +499,7 @@ def _valid_cidr_netmask(nm, v6):
     return True
 
 
-def _valid_dotted_quads(nm, v6):
+def _valid_dotted_quads(nm: str, v6: bool) -> bool:
     """Verifies dotted quad ip addresses and netmasks"""
     if v6:
         return False
@@ -523,7 +524,7 @@ def _valid_dotted_quads(nm, v6):
 #
 # Raises exception if cidr cannot be found
 #
-def _dotted_netmask_to_cidr(nm, v6):
+def _dotted_netmask_to_cidr(nm: str, v6: bool) -> str:
     """Convert netmask to cidr. IPv6 dotted netmasks are not supported."""
     cidr = ""
     if v6:
@@ -569,7 +570,7 @@ def _dotted_netmask_to_cidr(nm, v6):
 #
 # Raises exception if dotted netmask cannot be found
 #
-def _cidr_to_dotted_netmask(cidr, v6):
+def _cidr_to_dotted_netmask(cidr: str, v6: bool) -> str:
     """Convert cidr to netmask. IPv6 dotted netmasks not supported."""
     nm = ""
     if v6:
@@ -598,7 +599,7 @@ def _cidr_to_dotted_netmask(cidr, v6):
     return nm
 
 
-def _address4_to_network(addr):
+def _address4_to_network(addr: str) -> str:
     """Convert an IPv4 address and netmask to a network address"""
     if "/" not in addr:
         debug("_address4_to_network: skipping address without a netmask")
@@ -633,10 +634,10 @@ def _address4_to_network(addr):
     return "%s/%s" % (network, orig_nm)
 
 
-def _address6_to_network(addr):
+def _address6_to_network(addr: str) -> str:
     """Convert an IPv6 address and netmask to a network address"""
 
-    def dec2bin(num, count):
+    def dec2bin(num: int, count: int) -> str:
         """Decimal to binary"""
         return "".join([str((num >> y) & 1) for y in range(count - 1, -1, -1)])
 
@@ -693,7 +694,7 @@ def _address6_to_network(addr):
     return "%s/%s" % (network, netmask)
 
 
-def in_network(tested_add, tested_net, v6):
+def in_network(tested_add: str, tested_net: str, v6: bool) -> bool:
     """Determine if address x is in network y"""
     tmp = tested_net.split("/")
     if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
@@ -745,7 +746,7 @@ def in_network(tested_add, tested_net, v6):
 # path, _find_system_iptables() is implemented for get_iptables_version() and
 # get_netfilter_capabilities() so as to not break API for external consumers
 # since these have historically used a default for 'exe'.
-def _find_system_iptables():
+def _find_system_iptables() -> str:
     exe = ""
     for d in [
         "/sbin",
@@ -765,7 +766,7 @@ def _find_system_iptables():
     return exe
 
 
-def get_iptables_version(exe=None):
+def get_iptables_version(exe: Optional[str] = None) -> str:
     """Return iptables version"""
     if exe is None:
         exe = _find_system_iptables()
@@ -773,16 +774,18 @@ def get_iptables_version(exe=None):
     (rc, out) = cmd([exe, "-V"])
     if rc != 0:
         raise OSError(errno.ENOENT, "Error running '%s'" % (exe))
-    tmp = out.split()
+    tmp = str(out).split()  # type narrowing: out is str from iptables -V
     return re.sub("^v", "", tmp[1])
 
 
 # must be root, so don't report coverage in unit tests
-def get_netfilter_capabilities(exe=None, do_checks=True):
+def get_netfilter_capabilities(
+    exe: Optional[str] = None, do_checks: bool = True
+) -> List[str]:
     """Return capabilities set for netfilter to support new features. Callers
     must be root."""
 
-    def test_cap(exe, chain, rule):
+    def test_cap(exe: str, chain: str, rule: List[str]) -> bool:
         args = [exe, "-A", chain]
         (rc, out) = cmd(args + rule)
         if rc == 0:
@@ -850,7 +853,7 @@ def get_netfilter_capabilities(exe=None, do_checks=True):
     return caps
 
 
-def parse_netstat_output(v6):
+def parse_netstat_output(v6: bool) -> Dict[str, Dict[str, List[Dict[str, str]]]]:
     """Get and parse netstat the output from get_netstat_output()"""
 
     # d[proto][port] -> list of dicts:
@@ -890,7 +893,7 @@ def parse_netstat_output(v6):
     return d
 
 
-def get_ip_from_if(ifname, v6=False):
+def get_ip_from_if(ifname: str, v6: bool = False) -> str:
     """Get IP address for interface"""
     addr = ""
 
@@ -922,7 +925,7 @@ def get_ip_from_if(ifname, v6=False):
     return normalize_address(addr, v6)[0]
 
 
-def get_if_from_ip(addr):
+def get_if_from_ip(addr: str) -> str:
     """Get interface for IP address"""
     v6 = False
     proc = '/proc/net/dev'  # fmt: skip
@@ -969,7 +972,7 @@ def get_if_from_ip(addr):
     return matched
 
 
-def _get_proc_inodes():
+def _get_proc_inodes() -> Dict[int, str]:
     """Get inodes of files in /proc"""
     proc_files = os.listdir("/proc")
     proc_files.sort()
@@ -1006,7 +1009,7 @@ def _get_proc_inodes():
     return inodes
 
 
-def _read_proc_net_protocol(protocol):
+def _read_proc_net_protocol(protocol: str) -> List[Tuple[str, int, str, str, str]]:
     """Read /proc/net/(tcp|udp)[6] file and return a list of tuples"""
     tcp_states = {
         1: "ESTABLISHED",
@@ -1050,7 +1053,7 @@ def _read_proc_net_protocol(protocol):
     return lst
 
 
-def convert_proc_address(paddr):
+def convert_proc_address(paddr: str) -> str:
     """Convert an address from /proc/net/(tcp|udp)* to a normalized address"""
     converted = ""
     if len(paddr) > 8:
@@ -1069,7 +1072,7 @@ def convert_proc_address(paddr):
     return converted
 
 
-def get_netstat_output(v6):
+def get_netstat_output(v6: bool) -> str:
     """netstat-style output, without IPv6 address truncation"""
     proc_net_data = dict()
     proto = ["tcp", "udp"]
@@ -1109,7 +1112,7 @@ def get_netstat_output(v6):
     return s
 
 
-def _findpath(dir, prefix):
+def _findpath(dir: str, prefix: Optional[str]) -> str:
     """Add prefix to dir"""
     if prefix is None:
         return dir
@@ -1123,7 +1126,7 @@ def _findpath(dir, prefix):
     return newdir
 
 
-def hex_encode(s):
+def hex_encode(s: str) -> str:
     """Take a string and convert it to a hex string"""
     if sys.version_info[0] < 3:
         return codecs.encode(s, "hex")
@@ -1132,7 +1135,7 @@ def hex_encode(s):
     return binascii.hexlify(s.encode("utf-8", errors="ignore")).decode("ascii")
 
 
-def hex_decode(h):
+def hex_decode(h: str) -> str:
     """Take a hex string and convert it to a string"""
     if sys.version_info[0] < 3:
         return h.decode(encoding="hex").decode("utf-8")
@@ -1147,7 +1150,9 @@ def hex_decode(h):
     )
 
 
-def create_lock(lockfile="/run/ufw.lock", dryrun=False):
+def create_lock(
+    lockfile: str = "/run/ufw.lock", dryrun: bool = False
+) -> Optional[IO[Any]]:
     """Create a blocking lockfile"""
     lock = None
     if not dryrun:
@@ -1156,7 +1161,7 @@ def create_lock(lockfile="/run/ufw.lock", dryrun=False):
     return lock
 
 
-def release_lock(lock):
+def release_lock(lock: Optional[IO[Any]]) -> None:
     """Free lockfile created with create_lock()"""
     if lock is None:
         return

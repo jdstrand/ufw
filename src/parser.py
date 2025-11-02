@@ -43,6 +43,7 @@ from ufw.util import debug
 import ufw.common
 
 import gettext
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 # Internationalization - fallback if not installed as builtin
 try:
@@ -54,14 +55,14 @@ except NameError:
 class UFWCommand:
     """Generic class for parser commands."""
 
-    def __init__(self, type, command):
-        self.command = command
-        self.types = []
+    def __init__(self, type: str, command: str) -> None:
+        self.command: str = command
+        self.types: List[str] = []
         if type not in self.types:
             self.types.append(type)
-        self.type = type
+        self.type: str = type
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         if len(argv) < 1:
             raise ValueError()
 
@@ -69,18 +70,18 @@ class UFWCommand:
 
         return r
 
-    def help(self, args):
+    def help(self, args: List[str]) -> None:
         raise UFWError("UFWCommand.help: need to override")
 
 
 class UFWCommandRule(UFWCommand):
     """Class for parsing ufw rule commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "rule"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         action = ""
         rule = ""
         type = ""
@@ -564,17 +565,15 @@ class UFWCommandRule(UFWCommand):
 
         return res
 
-    get_command = staticmethod(get_command)
-
 
 class UFWCommandRouteRule(UFWCommandRule):
     """Class for parsing ufw route rule commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         UFWCommandRule.__init__(self, command)
         self.type = "route"
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         assert argv[0] == "route"
 
         # 'ufw delete NUM' is the correct usage, not 'ufw route delete NUM'
@@ -640,11 +639,11 @@ class UFWCommandRouteRule(UFWCommandRule):
 class UFWCommandApp(UFWCommand):
     """Class for parsing ufw application commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "app"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         """Parse applications command."""
         name = ""
         action = ""
@@ -700,11 +699,11 @@ class UFWCommandApp(UFWCommand):
 class UFWCommandBasic(UFWCommand):
     """Class for parsing ufw basic commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "basic"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         if len(argv) != 1:
             raise ValueError()
         return UFWCommand.parse(self, argv)
@@ -713,11 +712,11 @@ class UFWCommandBasic(UFWCommand):
 class UFWCommandDefault(UFWCommand):
     """Class for parsing ufw default commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "default"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         # Basic sanity check
         if len(argv) < 2:
             raise ValueError()
@@ -762,11 +761,11 @@ class UFWCommandDefault(UFWCommand):
 class UFWCommandLogging(UFWCommand):
     """Class for parsing ufw logging commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "logging"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         action = ""
         if len(argv) < 2:
             raise ValueError()
@@ -791,11 +790,11 @@ class UFWCommandLogging(UFWCommand):
 class UFWCommandStatus(UFWCommand):
     """Class for parsing ufw status commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "status"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         r = UFWCommand.parse(self, argv)
         if len(argv) == 1:
             r.action = "status"
@@ -812,11 +811,11 @@ class UFWCommandStatus(UFWCommand):
 class UFWCommandShow(UFWCommand):
     """Class for parsing ufw show commands"""
 
-    def __init__(self, command):
+    def __init__(self, command: str) -> None:
         type = "show"
         UFWCommand.__init__(self, type, command)
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> "UFWParserResponse":
         action = ""
         if len(argv) == 1:
             raise ValueError()
@@ -845,13 +844,13 @@ class UFWCommandShow(UFWCommand):
 class UFWParserResponse:
     """Class for ufw parser response"""
 
-    def __init__(self, action):
-        self.action = action.lower()
-        self.dryrun = False
-        self.force = False
-        self.data = {}
+    def __init__(self, action: str) -> None:
+        self.action: str = action.lower()
+        self.dryrun: bool = False
+        self.force: bool = False
+        self.data: Dict[str, Any] = {}
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = "action='%s'" % (self.action)
         keys = list(self.data.keys())
         keys.sort()
@@ -865,10 +864,10 @@ class UFWParserResponse:
 class UFWParser:
     """Class for ufw parser"""
 
-    def __init__(self):
-        self.commands = {}
+    def __init__(self) -> None:
+        self.commands: Dict[str, Dict[str, UFWCommand]] = {}
 
-    def allowed_command(self, type, cmd):
+    def allowed_command(self, type: str, cmd: str) -> str:
         """Return command if it is allowed, otherwise raise an exception"""
         if type.lower() not in list(self.commands.keys()):
             raise ValueError()
@@ -878,7 +877,7 @@ class UFWParser:
 
         return cmd.lower()
 
-    def parse_command(self, args):
+    def parse_command(self, args: List[str]) -> UFWParserResponse:
         """Parse command. Returns a UFWParserAction"""
         dryrun = False
         if len(args) > 0 and args[0].lower() == "--dry-run":
@@ -928,7 +927,7 @@ class UFWParser:
 
         return response
 
-    def register_command(self, c):
+    def register_command(self, c: UFWCommand) -> None:
         """Register a command with the parser"""
         if c.command is None or c.command == "":
             # If the command is empty, then use 'type' as command

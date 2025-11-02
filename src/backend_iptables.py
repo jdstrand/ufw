@@ -24,6 +24,7 @@ import stat
 import sys
 import time
 import gettext
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
@@ -41,7 +42,9 @@ except NameError:
 class UFWBackendIptables(ufw.backend.UFWBackend):
     """Instance class for UFWBackend"""
 
-    def __init__(self, dryrun, rootdir=None, datadir=None):
+    def __init__(
+        self, dryrun: bool, rootdir: Optional[str] = None, datadir: Optional[str] = None
+    ) -> None:
         """UFWBackendIptables initialization"""
         self.comment_str = "# " + ufw.common.programName + "_comment #"
         self.rootdir = rootdir
@@ -97,7 +100,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ]
         self.ufw_user_limit_log_text = "[UFW LIMIT BLOCK]"
 
-    def get_default_application_policy(self):
+    def get_default_application_policy(self) -> str:
         """Get current policy"""
         rstr = _("New profiles:")
         if self.defaults["default_application_policy"] == "accept":
@@ -111,7 +114,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
-    def set_default_policy(self, policy, direction):
+    def set_default_policy(self, policy: str, direction: str) -> str:
         """Sets default policy of firewall"""
         if not self.dryrun:
             if policy != "allow" and policy != "deny" and policy != "reject":
@@ -193,7 +196,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
-    def get_running_raw(self, rules_type):
+    def get_running_raw(self, rules_type: str) -> str:
         """Show current running status of firewall"""
         if self.dryrun:
             out = "> " + _("Checking raw iptables\n")
@@ -285,7 +288,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return out
 
-    def get_status(self, verbose=False, show_count=False):
+    def get_status(self, verbose: bool = False, show_count: bool = False) -> str:
         """Show ufw managed rules"""
         out = ""
         if self.dryrun:
@@ -532,7 +535,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Status: active%s") % (s)
 
-    def stop_firewall(self):
+    def stop_firewall(self) -> None:
         """Stop the firewall"""
         if self.dryrun:
             msg("> " + _("running ufw-init"))
@@ -550,7 +553,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = _("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
 
-    def start_firewall(self):
+    def start_firewall(self) -> None:
         """Start the firewall"""
         if self.dryrun:
             msg("> " + _("running ufw-init"))
@@ -584,7 +587,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     err_msg = _("Could not load logging rules")
                     raise UFWError(err_msg)
 
-    def _need_reload(self, v6):
+    def _need_reload(self, v6: bool) -> bool:
         """Check if all chains exist"""
         if self.dryrun:
             return False
@@ -612,7 +615,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return False
 
-    def _reload_user_rules(self):
+    def _reload_user_rules(self) -> None:
         """Reload firewall rules file"""
         err_msg = _("problem running")
         if self.dryrun:
@@ -642,7 +645,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
-    def _get_rules_from_formatted(self, frule, prefix, suffix):
+    def _get_rules_from_formatted(
+        self, frule: str, prefix: str, suffix: str
+    ) -> List[str]:
         """Return list of iptables rules appropriate for sending"""
         snippets = []
 
@@ -724,7 +729,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return snippets
 
-    def _get_lists_from_formatted(self, frule, prefix, suffix):
+    def _get_lists_from_formatted(
+        self, frule: str, prefix: str, suffix: str
+    ) -> List[List[str]]:
         """Return list of iptables rules appropriate for sending as arguments
         to cmd()
         """
@@ -742,7 +749,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return snippets
 
-    def _read_rules(self):
+    def _read_rules(self) -> None:
         """Read in rules that were added by ufw"""
         rfns = [self.files["rules"]]
         if self.use_ipv6():
@@ -860,7 +867,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             orig.close()
 
-    def _write_rules(self, v6=False):
+    def _write_rules(self, v6: bool = False) -> None:
         """Write out new rules to file to user chain file"""
         rules_file = self.files["rules"]
         if v6:
@@ -1055,7 +1062,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise
 
-    def set_rule(self, rule, allow_reload=True):
+    def set_rule(self, rule: UFWRule, allow_reload: bool = True) -> str:
         """Updates firewall with rule by:
         * appending the rule to the chain if new rule and firewall enabled
         * deleting the rule from the chain if found and firewall enabled
@@ -1285,7 +1292,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
-    def get_app_rules_from_system(self, template, v6):
+    def get_app_rules_from_system(self, template: UFWRule, v6: bool) -> List[UFWRule]:
         """Return a list of UFWRules from the system based on template rule"""
         rules = []
         app_rules = []
@@ -1309,7 +1316,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return app_rules
 
-    def _chain_cmd(self, chain, args, fail_ok=False):
+    def _chain_cmd(self, chain: str, args: List[str], fail_ok: bool = False) -> None:
         """Perform command on chain"""
         exe = self.iptables
         if chain.startswith("ufw6"):
@@ -1322,7 +1329,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             else:
                 raise UFWError(err_msg)
 
-    def update_logging(self, level):
+    def update_logging(self, level: str) -> None:
         """Update loglevel of running firewall"""
         if self.dryrun:
             return
@@ -1406,7 +1413,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         fail_ok=True,
                     )
 
-    def _get_logging_rules(self, level):
+    def _get_logging_rules(self, level: str) -> List[List[Any]]:
         """Get rules for specified logging level"""
         rules_t = []
 
@@ -1538,7 +1545,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rules_t
 
-    def reset(self):
+    def reset(self) -> str:
         """Reset the firewall"""
         res = ""
         share_dir = _findpath(ufw.common.share_dir, self.rootdir)
