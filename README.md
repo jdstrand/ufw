@@ -5,7 +5,9 @@
 This repo is a community fork of https://launchpad.net/ufw starting with
 https://git.launchpad.net/ufw/commit/?id=f095c83f1ed as allowed by the
 [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) license that `ufw` is
-licensed under.
+licensed under. The fork was created by `ufw`s primary author on 2025-11-03 and
+all source files modified with updated copyright information (ie, assigned to
+Canonical for 2024 and before).
 
 
 ## What's in a name?
@@ -485,5 +487,3 @@ Eg:
 ```bash
 $ python3 -m unittest tests.unit.test_backend_iptables.BackendIptablesTestCase.test_get_status
 ```
-
-Copyright 2008-2019 Canonical Ltd.
