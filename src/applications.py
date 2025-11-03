@@ -17,27 +17,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import configparser
+import gettext
 import os
 import re
 import stat
 import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError, UFWRule
-import gettext
-from typing import Optional, List, Dict, Tuple, Union, Any
+from typing import List, Dict
 
-import sys
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
-
-if sys.version_info[0] < 3:  # pragma: no cover
-    import ConfigParser
-else:  # pragma: no cover
-    import configparser
+# Internationalization
+tr = gettext.gettext
 
 
 def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
@@ -45,7 +37,7 @@ def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
     profile name as key and tuples for fields
     """
     if not os.path.isdir(profiles_dir):
-        err_msg = _("Profiles directory does not exist")
+        err_msg = tr("Profiles directory does not exist")
         raise UFWError(err_msg)
 
     max_size = 10 * 1024 * 1024  # 10MB
@@ -82,49 +74,46 @@ def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
         try:
             size = os.stat(abs_path)[stat.ST_SIZE]
         except Exception:
-            warn_msg = _("Skipping '%s': couldn't stat") % (f)
+            warn_msg = tr("Skipping '%s': couldn't stat") % (f)
             warn(warn_msg)
             continue
 
         if size > max_size:
-            warn_msg = _("Skipping '%s': too big") % (f)
+            warn_msg = tr("Skipping '%s': too big") % (f)
             warn(warn_msg)
             continue
 
         if total_size + size > max_size:
-            warn_msg = _("Skipping '%s': too many files read already") % (f)
+            warn_msg = tr("Skipping '%s': too many files read already") % (f)
             warn(warn_msg)
             continue
 
         total_size += size
 
-        if sys.version_info[0] < 3:  # pragma: no cover
-            cdict = ConfigParser.RawConfigParser()
-        else:  # pragma: no cover
-            cdict = configparser.RawConfigParser()
+        cdict = configparser.RawConfigParser()
 
         try:
             cdict.read(abs_path)
         except Exception:
-            warn_msg = _("Skipping '%s': couldn't process") % (f)
+            warn_msg = tr("Skipping '%s': couldn't process") % (f)
             warn(warn_msg)
             continue
 
         # If multiple occurences of profile name, use the last one
         for p in cdict.sections():
             if len(p) > 64:
-                warn_msg = _("Skipping '%s': name too long") % (p)
+                warn_msg = tr("Skipping '%s': name too long") % (p)
                 warn(warn_msg)
                 continue
 
             if not valid_profile_name(p):
-                warn_msg = _("Skipping '%s': invalid name") % (p)
+                warn_msg = tr("Skipping '%s': invalid name") % (p)
                 warn(warn_msg)
                 continue
 
             try:
                 ufw.util.get_services_proto(p)
-                warn_msg = _("Skipping '%s': also in /etc/services") % (p)
+                warn_msg = tr("Skipping '%s': also in /etc/services") % (p)
                 warn(warn_msg)
                 continue
             except Exception:
@@ -133,12 +122,12 @@ def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
             skip = False
             for key, value in cdict.items(p):
                 if len(key) > 64:
-                    warn_msg = _("Skipping '%s': field too long") % (p)
+                    warn_msg = tr("Skipping '%s': field too long") % (p)
                     warn(warn_msg)
                     skip = True
                     break
                 if len(value) > 1024:
-                    warn_msg = _(
+                    warn_msg = tr(
                         "Skipping '%(value)s': value too long for " "'%(field)s'"
                     ) % ({"value": p, "field": key})
                     warn(warn_msg)
@@ -148,7 +137,7 @@ def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
                 continue
 
             if p in profiles:
-                warn_msg = _("Duplicate profile '%s', using last found") % (p)
+                warn_msg = tr("Duplicate profile '%s', using last found") % (p)
                 warn(warn_msg)
 
             pdict = {}
@@ -160,7 +149,7 @@ def get_profiles(profiles_dir: str) -> Dict[str, Dict[str, str]]:
                 verify_profile(p, pdict)
                 profiles[p] = pdict
             except UFWError as e:
-                warn(e)
+                warn(str(e))
 
     return profiles
 
@@ -191,13 +180,13 @@ def verify_profile(name: str, profile: Dict[str, str]) -> bool:
 
     for f in app_fields:
         if f not in profile:
-            err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % (
+            err_msg = tr("Profile '%(fn)s' missing required field '%(f)s'") % (
                 {"fn": name, "f": f}
             )
 
             raise UFWError(err_msg)
         elif not profile[f]:
-            err_msg = _("Profile '%(fn)s' has empty required field '%(f)s'") % (
+            err_msg = tr("Profile '%(fn)s' has empty required field '%(f)s'") % (
                 {"fn": name, "f": f}
             )
             raise UFWError(err_msg)
@@ -208,13 +197,13 @@ def verify_profile(name: str, profile: Dict[str, str]) -> bool:
             (port, proto) = ufw.util.parse_port_proto(p)
             # quick checks if error in profile
             if proto == "any" and (":" in port or "," in port):
-                err_msg = _("Invalid ports in profile '%s'") % (name)
+                err_msg = tr("Invalid ports in profile '%s'") % (name)
                 raise UFWError(err_msg)
             rule = UFWRule("ACCEPT", proto, port)
-            debug(rule)
+            debug(str(rule))
     except Exception as e:
-        debug(e)
-        err_msg = _("Invalid ports in profile '%s'") % (name)
+        debug(str(e))
+        err_msg = tr("Invalid ports in profile '%s'") % (name)
         raise UFWError(err_msg)
 
     return True

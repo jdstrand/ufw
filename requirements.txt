@@ -8,4 +8,5 @@ pathspec==0.12.1
 platformdirs==4.5.0
 pyright==1.1.407
 pytokens==0.2.0
+setuptools==80.9.0
 typing_extensions==4.15.0

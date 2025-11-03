@@ -19,11 +19,8 @@
 
 from __future__ import print_function
 import binascii
-import codecs
 import errno
 import fcntl
-import io
-import inspect
 import os
 import re
 import shutil
@@ -34,19 +31,15 @@ import sys
 
 from functools import reduce
 from tempfile import mkstemp, mktemp
-from typing import Optional, List, Dict, Tuple, Union, Any, IO
+from typing import Optional, List, Dict, Tuple, Union, Any, IO, cast
 
 import gettext
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
+# Internationalization
+tr = gettext.gettext
 
 # Python 2/3 compatibility for long type
-if sys.version_info[0] >= 3:
-    long = int  # type: ignore
+long = int
 
 DEBUGGING = False
 msg_output = None  # for redirecting stdout in msg() and write_to_file()
@@ -96,10 +89,10 @@ def parse_port_proto(p_str: str) -> Tuple[str, str]:
         port = tmp[0]
         proto = tmp[1]
         if proto in portless_protocols:
-            err_msg = _("Invalid port with protocol '%s'" % proto)
+            err_msg = tr("Invalid port with protocol '%s'" % proto)
             raise ValueError(err_msg)
     else:
-        err_msg = _("Bad port")
+        err_msg = tr("Bad port")
         raise ValueError(err_msg)
     return (port, proto)
 
@@ -265,13 +258,7 @@ def write_to_file(fd: int, out: str) -> None:
         msg_output.write(out)
         return
 
-    rc = -1
-    # cover not in python3, so can't test for this
-    if sys.version_info[0] >= 3:  # pragma: no cover
-        rc = os.write(fd, bytes(out, "ascii"))
-    else:
-        rc = os.write(fd, out)
-
+    rc = os.write(fd, bytes(out, "ascii"))
     if rc <= 0:  # pragma: no cover
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
@@ -322,23 +309,13 @@ def cmd_pipe(command1: List[str], command2: List[str]) -> List[Union[int, str]]:
 # TODO: this is pretty horrible. We should be using only unicode strings
 #       internally and decode() when printing rather than doing this.
 def _print(output: IO[Any], s: str) -> None:
-    """Implement our own print statement that will output utf-8 when
-    appropriate."""
-    try:  # python3
-        writer = output.buffer  # type: ignore  # Python 3 TextIO has buffer attribute
-    except Exception:
-        writer = output
-
-    try:
-        out = s.encode("utf-8", "ignore")
-    # Depends on python version
-    except Exception:  # pragma: no cover
-        out = s
-
-    if msg_output and inspect.isclass(io.StringIO):
-        writer.write(s)
+    """Print UTF-8 output."""
+    if hasattr(output, "buffer"):
+        # Writing to a TextIO with binary buffer (e.g., sys.stdout)
+        cast(Any, output).buffer.write(s.encode("utf-8", "ignore"))
     else:
-        writer.write(bytes(out))
+        # Writing to StringIO or other text stream
+        output.write(s)
     output.flush()
 
 
@@ -453,11 +430,11 @@ def under_ssh(pid: int = os.getpid()) -> bool:
     try:
         ppid = get_ppid(pid)
     except IOError:
-        warn_msg = _("Couldn't find pid (is /proc mounted?)")
+        warn_msg = tr("Couldn't find pid (is /proc mounted?)")
         warn(warn_msg)
         return False
     except Exception:
-        err_msg = _("Couldn't find parent pid for '%s'") % (str(pid))
+        err_msg = tr("Couldn't find parent pid for '%s'") % (str(pid))
         raise ValueError(err_msg)
 
     # pid '1' is 'init' and '0' is the kernel. This should still work when
@@ -467,13 +444,13 @@ def under_ssh(pid: int = os.getpid()) -> bool:
 
     path = os.path.join("/proc", str(ppid), "stat")
     if not os.path.isfile(path):  # pragma: no cover
-        err_msg = _("Couldn't find '%s'") % (path)
+        err_msg = tr("Couldn't find '%s'") % (path)
         raise ValueError(err_msg)
 
     try:
         exe = open(path).readlines()[0].split()[1]
     except Exception:  # pragma: no cover
-        err_msg = _("Could not find executable for '%s'") % (path)
+        err_msg = tr("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))
 
@@ -535,13 +512,7 @@ def _dotted_netmask_to_cidr(nm: str, v6: bool) -> str:
 
         mbits = 0
 
-        # python3 doesn't have long(). We could technically use int() here
-        # since python2 guarantees at least 32 bits for int(), but this helps
-        # future-proof.
-        try:  # pragma: no cover
-            bits = long(struct.unpack(">L", socket.inet_aton(nm))[0])
-        except NameError:  # pragma: no cover
-            bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
+        bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
 
         found_one = False
         for n in range(32):
@@ -579,13 +550,7 @@ def _cidr_to_dotted_netmask(cidr: str, v6: bool) -> str:
         if not _valid_cidr_netmask(cidr, v6):
             raise ValueError
 
-        # python3 doesn't have long(). We could technically use int() here
-        # since python2 guarantees at least 32 bits for int(), but this helps
-        # future-proof.
-        try:  # pragma: no cover
-            bits = long(0)
-        except NameError:  # pragma: no cover
-            bits = 0
+        bits = 0
 
         for n in range(32):
             if n < int(cidr):
@@ -621,12 +586,8 @@ def _address4_to_network(addr: str) -> str:
     # python3 doesn't have long(). We could technically use int() here
     # since python2 guarantees at least 32 bits for int(), but this helps
     # future-proof.
-    try:  # pragma: no cover
-        host_bits = long(struct.unpack(">L", socket.inet_aton(host))[0])
-        nm_bits = long(struct.unpack(">L", socket.inet_aton(nm))[0])
-    except NameError:  # pragma: no cover
-        host_bits = int(struct.unpack(">L", socket.inet_aton(host))[0])
-        nm_bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
+    host_bits = int(struct.unpack(">L", socket.inet_aton(host))[0])
+    nm_bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack(">L", network_bits))
@@ -655,10 +616,7 @@ def _address6_to_network(addr: str) -> str:
     unpacked = struct.unpack(">8H", socket.inet_pton(socket.AF_INET6, orig_host))
 
     # Get the host bits
-    try:  # python3 doesn't have long()
-        host_bits = long(0)
-    except NameError:  # pragma: no cover
-        host_bits = 0
+    host_bits = 0
 
     for i in range(8):
         n = dec2bin(unpacked[i], 16)
@@ -666,10 +624,7 @@ def _address6_to_network(addr: str) -> str:
             host_bits |= (1 & int(n[j])) << (127 - j - i * 16)
 
     # Create netmask bits
-    try:  # python3 doesn't have long()
-        nm_bits = long(0)
-    except NameError:  # pragma: no cover
-        nm_bits = 0
+    nm_bits = 0
 
     for i in range(128):
         if i < int(netmask):
@@ -787,7 +742,7 @@ def get_netfilter_capabilities(
 
     def test_cap(exe: str, chain: str, rule: List[str]) -> bool:
         args = [exe, "-A", chain]
-        (rc, out) = cmd(args + rule)
+        (rc, _) = cmd(args + rule)
         if rc == 0:
             return True
         return False  # pragma: no cover
@@ -1082,7 +1037,7 @@ def get_netstat_output(v6: bool) -> str:
         try:
             proc_net_data[p] = _read_proc_net_protocol(p)
         except Exception:  # pragma: no cover
-            warn_msg = _("Could not get statistics for '%s'" % (p))
+            warn_msg = tr("Could not get statistics for '%s'" % (p))
             warn(warn_msg)
             continue
 
@@ -1128,8 +1083,6 @@ def _findpath(dir: str, prefix: Optional[str]) -> str:
 
 def hex_encode(s: str) -> str:
     """Take a string and convert it to a hex string"""
-    if sys.version_info[0] < 3:
-        return codecs.encode(s, "hex")
     # hexlify returns a bytes string (eg, b'ab12cd') so decode that to ascii
     # to have identical output as python2
     return binascii.hexlify(s.encode("utf-8", errors="ignore")).decode("ascii")
@@ -1137,8 +1090,6 @@ def hex_encode(s: str) -> str:
 
 def hex_decode(h: str) -> str:
     """Take a hex string and convert it to a string"""
-    if sys.version_info[0] < 3:
-        return h.decode(encoding="hex").decode("utf-8")
     # unhexlify requires an even length string, which should normally happen
     # since hex_encode() will create a string and decode to ascii, which has 2
     # bytes per character. If we happen to get an odd length string, instead of

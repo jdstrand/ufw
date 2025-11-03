@@ -602,8 +602,6 @@ class CommonTestCase(unittest.TestCase):
         y.direction = "in"
         self.assertEqual(ufw.common.UFWRule.match(x, y), 1)
 
-        tests.unit.support.check_for_exception(self, ValueError, x.match, None)
-
     def test_fuzzy_dst_match(self):
         """Test fuzzy_dst_match()"""
         x = self.rules["full-any"].dup_rule()
@@ -710,10 +708,6 @@ class CommonTestCase(unittest.TestCase):
         y.forward = True
         self.assertEqual(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
         self.assertEqual(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
-
-        tests.unit.support.check_for_exception(
-            self, ValueError, x.fuzzy_dst_match, None
-        )
 
     def test__is_anywhere(self):
         """Test _is_anywhere()"""

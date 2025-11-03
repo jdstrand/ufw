@@ -1,5 +1,4 @@
 """frontend.py: frontend interface for ufw"""
-
 #
 # Copyright 2008-2024 Canonical Ltd.
 # Copyright 2025 Jamie Strandboge
@@ -20,9 +19,9 @@
 import os
 import sys
 import warnings
-from typing import Optional, List, Dict, Tuple, Union, Any
+from typing import Optional, List, Any
 
-from ufw.common import UFWError
+from ufw.common import UFWError, UFWRule
 import ufw.util
 from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
@@ -32,11 +31,8 @@ import ufw.applications
 
 import gettext
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
+# Internationalization
+tr = gettext.gettext
 
 
 def parse_command(argv: List[str]) -> Any:
@@ -113,6 +109,7 @@ def parse_command(argv: List[str]) -> Any:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
         error("%s" % (e.value))  # pragma: no cover
+        raise
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
@@ -122,7 +119,7 @@ def parse_command(argv: List[str]) -> Any:
 
 def get_command_help() -> str:
     """Print help message"""
-    help_msg = _(
+    help_msg = tr(
         """
 Usage: %(progname)s %(command)s
 
@@ -220,9 +217,9 @@ class UFWFrontend:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))
 
         # Initialize input strings for translations
-        self.no = _("n")
-        self.yes = _("y")
-        self.yes_full = _("yes")
+        self.no = tr("n")
+        self.yes = tr("y")
+        self.yes_full = tr("yes")
 
     def set_enabled(self, enabled: bool) -> str:
         """Toggles ENABLED state in <config_dir>/ufw/ufw.conf and starts or
@@ -270,14 +267,14 @@ class UFWFrontend:
                 # Report the error
                 error(error_str)
 
-            res = _("Firewall is active and enabled on system startup")
+            res = tr("Firewall is active and enabled on system startup")
         else:
             try:
                 self.backend.stop_firewall()
             except UFWError as e:  # pragma: no cover
                 error(e.value)
 
-            res = _("Firewall stopped and disabled on system startup")
+            res = tr("Firewall stopped and disabled on system startup")
 
         return res
 
@@ -310,6 +307,7 @@ class UFWFrontend:
             out = self.backend.get_status(verbose, show_count)
         except UFWError as e:  # pragma: no cover
             error(e.value)
+            raise
 
         return out
 
@@ -319,6 +317,7 @@ class UFWFrontend:
             out = self.backend.get_running_raw(rules_type)
         except UFWError as e:  # pragma: no cover
             error(e.value)
+            raise
 
         return out
 
@@ -329,7 +328,7 @@ class UFWFrontend:
         try:
             d = ufw.util.parse_netstat_output(self.backend.use_ipv6())
         except Exception:  # pragma: no cover
-            err_msg = _("Could not get listening status")
+            err_msg = tr("Could not get listening status")
             raise UFWError(err_msg)
 
         rules = self.backend.get_rules()
@@ -399,10 +398,10 @@ class UFWFrontend:
         """Shows added rules to the firewall"""
         rules = self.backend.get_rules()
 
-        out = _("Added user rules (see 'ufw status' for running firewall):")
+        out = tr("Added user rules (see 'ufw status' for running firewall):")
 
         if len(rules) == 0:
-            return out + _("\n(None)")
+            return out + tr("\n(None)")
 
         added = []
         for r in self.backend.get_rules():
@@ -449,16 +448,16 @@ class UFWFrontend:
                             for y in tmprules6:
                                 prev6 = y.v6
                                 y.v6 = False
-                                if not x.match(y):
+                                if not UFWRule.match(x, y):
                                     y.v6 = prev6
                                     tmprules.append(y)
                     else:
-                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        err_msg = tr("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
 
                     # Don't process removal of non-existing application rules
                     if len(tmprules) == 0 and not self.backend.dryrun:
-                        tmp = _("Could not delete non-existent rule")
+                        tmp = tr("Could not delete non-existent rule")
                         if ip_version == "v4":
                             res = tmp
                         elif ip_version == "v6":
@@ -484,7 +483,7 @@ class UFWFrontend:
 
         count = 0
         set_error = False
-        pos_err_msg = _("Invalid position '")
+        pos_err_msg = tr("Invalid position '")
         num_v4 = self.backend.get_rules_count(False)
         num_v6 = self.backend.get_rules_count(True)
         for i, r in enumerate(rules):
@@ -562,7 +561,7 @@ class UFWFrontend:
 
                         tmp += self.backend.set_rule(r)
                     else:
-                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        err_msg = tr("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
                 else:
                     if r.position == -1:  # prepend
@@ -572,10 +571,10 @@ class UFWFrontend:
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "v6":
-                        err_msg = _("IPv6 support not enabled")
+                        err_msg = tr("IPv6 support not enabled")
                         raise UFWError(err_msg)
                     else:
-                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        err_msg = tr("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
             except UFWError as e:
                 err_msg = e.value
@@ -583,12 +582,12 @@ class UFWFrontend:
                 break
 
             if r.updated:
-                warn_msg = _("Rule changed after normalization")
+                warn_msg = tr("Rule changed after normalization")
                 warnings.warn(warn_msg)
 
         if not set_error:
             # Just return the last result if no error
-            res += tmp
+            res += str(tmp)
         elif len(rules) == 1:
             # If no error, and just one rule, error out
             error(err_msg)  # pragma: no cover
@@ -607,14 +606,14 @@ class UFWFrontend:
                     except Exception:
                         # Don't fail, so we can try to backout more
                         undo_error = True
-                        warn_msg = _("Could not back out rule '%s'") % r.format_rule()
+                        warn_msg = tr("Could not back out rule '%s'") % backout_rule.format_rule()
                         warn(warn_msg)
 
-            err_msg += _("\nError applying application rules.")
+            err_msg += tr("\nError applying application rules.")
             if undo_error:
-                err_msg += _(" Some rules could not be unapplied.")
+                err_msg += tr(" Some rules could not be unapplied.")
             else:
-                err_msg += _(" Attempted rules successfully unapplied.")
+                err_msg += tr(" Attempted rules successfully unapplied.")
 
             raise UFWError(err_msg)
 
@@ -625,17 +624,17 @@ class UFWFrontend:
         try:
             n = int(number)
         except Exception:
-            err_msg = _("Could not find rule '%s'") % number
+            err_msg = tr("Could not find rule '%s'") % number
             raise UFWError(err_msg)
 
         rules = self.backend.get_rules()
         if n <= 0 or n > len(rules):
-            err_msg = _("Could not find rule '%d'") % n
+            err_msg = tr("Could not find rule '%d'") % n
             raise UFWError(err_msg)
 
         rule = self.backend.get_rule_by_number(n)
         if not rule:
-            err_msg = _("Could not find rule '%d'") % n
+            err_msg = tr("Could not find rule '%d'") % n
             raise UFWError(err_msg)
 
         rule.remove = True
@@ -650,7 +649,7 @@ class UFWFrontend:
                 rstr = "route %s" % ufw.parser.UFWCommandRouteRule.get_command(rule)
             else:
                 rstr = ufw.parser.UFWCommandRule.get_command(rule)
-            prompt = _(
+            prompt = tr(
                 "Deleting:\n %(rule)s\nProceed with operation " "(%(yes)s|%(no)s)? "
             ) % ({"rule": rstr, "yes": self.yes, "no": self.no})
             msg(prompt, output=sys.stdout, newline=False)
@@ -662,7 +661,7 @@ class UFWFrontend:
         if proceed:
             res = self.set_rule(rule, ip_version)
         else:
-            res = _("Aborted")
+            res = tr("Aborted")
 
         return res
 
@@ -682,7 +681,7 @@ class UFWFrontend:
         elif action == "logging-off":
             res = self.set_loglevel("off")
         elif action.startswith("default-"):
-            err_msg = _("Unsupported default policy")
+            err_msg = tr("Unsupported default policy")
             tmp = action.split("-")
             if len(tmp) != 3:
                 raise UFWError(err_msg)
@@ -711,9 +710,9 @@ class UFWFrontend:
             if self.backend.is_enabled():
                 self.set_enabled(False)
                 self.set_enabled(True)
-                res = _("Firewall reloaded")
+                res = tr("Firewall reloaded")
             else:
-                res = _("Firewall not enabled (skipping reload)")
+                res = tr("Firewall not enabled (skipping reload)")
         elif action.startswith("delete-"):
             res = self.delete_rule(action.split("-")[1], force)
         elif (
@@ -734,7 +733,7 @@ class UFWFrontend:
                     if not rule.remove:  # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.dapp):
-                        err_msg = _("Invalid profile name")
+                        err_msg = tr("Invalid profile name")
                         raise UFWError(err_msg)
 
             if rule.sapp != "":
@@ -748,12 +747,12 @@ class UFWFrontend:
                     if not rule.remove:  # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.sapp):
-                        err_msg = _("Invalid profile name")
+                        err_msg = tr("Invalid profile name")
                         raise UFWError(err_msg)
 
             res = self.set_rule(rule, ip_version)
         else:
-            err_msg = _("Unsupported action '%s'") % (action)
+            err_msg = tr("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)
 
         return res
@@ -772,7 +771,7 @@ class UFWFrontend:
         """Display list of known application profiles"""
         names = list(self.backend.profiles.keys())
         names.sort()
-        rstr = _("Available applications:")
+        rstr = tr("Available applications:")
         for n in names:
             rstr += "\n  %s" % (n)
         return rstr
@@ -785,34 +784,34 @@ class UFWFrontend:
             names.sort()
         else:
             if not ufw.applications.valid_profile_name(pname):
-                err_msg = _("Invalid profile name")
+                err_msg = tr("Invalid profile name")
                 raise UFWError(err_msg)
             names.append(pname)
 
         rstr = ""
         for name in names:
             if name not in self.backend.profiles or not self.backend.profiles[name]:
-                err_msg = _("Could not find profile '%s'") % (name)
+                err_msg = tr("Could not find profile '%s'") % (name)
                 raise UFWError(err_msg)
 
             if not ufw.applications.verify_profile(name, self.backend.profiles[name]):
-                err_msg = _("Invalid profile")
+                err_msg = tr("Invalid profile")
                 raise UFWError(err_msg)
 
-            rstr += _("Profile: %s\n") % (name)
-            rstr += _("Title: %s\n") % (
+            rstr += tr("Profile: %s\n") % (name)
+            rstr += tr("Title: %s\n") % (
                 ufw.applications.get_title(self.backend.profiles[name])
             )
 
-            rstr += _("Description: %s\n\n") % (
+            rstr += tr("Description: %s\n\n") % (
                 ufw.applications.get_description(self.backend.profiles[name])
             )
 
             ports = ufw.applications.get_ports(self.backend.profiles[name])
             if len(ports) > 1 or "," in ports[0]:
-                rstr += _("Ports:")
+                rstr += tr("Ports:")
             else:
-                rstr += _("Port:")
+                rstr += tr("Port:")
 
             for p in ports:
                 rstr += "\n  %s" % (p)
@@ -859,9 +858,9 @@ class UFWFrontend:
                     self.backend._reload_user_rules()
                 except Exception:
                     raise
-                rstr += _("Firewall reloaded")
+                rstr += tr("Firewall reloaded")
             else:
-                rstr += _("Skipped reloading firewall")
+                rstr += tr("Skipped reloading firewall")
 
         return rstr
 
@@ -871,7 +870,7 @@ class UFWFrontend:
         policy = ""
 
         if profile == "all":
-            err_msg = _("Cannot specify 'all' with '--add-new'")
+            err_msg = tr("Cannot specify 'all' with '--add-new'")
             raise UFWError(err_msg)
 
         default = self.backend.defaults["default_application_policy"]
@@ -887,7 +886,7 @@ class UFWFrontend:
         elif default == "reject":
             policy = "reject"
         else:
-            err_msg = _("Unknown policy '%s'") % (default)
+            err_msg = tr("Unknown policy '%s'") % (default)
             raise UFWError(err_msg)
 
         args = ["ufw"]
@@ -934,7 +933,7 @@ class UFWFrontend:
                 str1 += "\n"
             res = str1 + str2
         else:
-            err_msg = _("Unsupported action '%s'") % (action)
+            err_msg = tr("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)
 
         return res
@@ -943,7 +942,7 @@ class UFWFrontend:
         """If running under ssh, prompt the user for confirmation"""
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():  # pragma: no cover
-            prompt = _(
+            prompt = tr(
                 "Command may disrupt existing ssh connections. "
                 "Proceed with operation (%(yes)s|%(no)s)? "
             ) % ({"yes": self.yes, "no": self.no})
@@ -957,12 +956,12 @@ class UFWFrontend:
     def reset(self, force: bool = False) -> str:
         """Reset the firewall"""
         res = ""
-        prompt = _(
+        prompt = tr(
             "Resetting all rules to installed defaults. Proceed with "
             "operation (%(yes)s|%(no)s)? "
         ) % ({"yes": self.yes, "no": self.no})
         if self.backend.do_checks and ufw.util.under_ssh():
-            prompt = _(
+            prompt = tr(
                 "Resetting all rules to installed defaults. This may "
                 "disrupt existing ssh connections. Proceed with "
                 "operation (%(yes)s|%(no)s)? "
@@ -972,7 +971,7 @@ class UFWFrontend:
             msg(ufw.util.wrap_text(prompt), output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
-                res = _("Aborted")
+                res = tr("Aborted")
                 return res
 
         if self.backend.is_enabled():

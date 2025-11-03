@@ -17,28 +17,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import abc
 import errno
+import gettext
 import os
 import pwd
 import re
 import stat
 import sys
+from typing import Optional, List, Dict, Tuple
+
 import ufw.util
-from typing import Optional, List, Dict, Tuple, Union, Any
 from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
 import ufw.common
-import gettext
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
+# Internationalization
+tr = gettext.gettext
 
 
-class UFWBackend:
+class UFWBackend(metaclass=abc.ABCMeta):
     """Interface for backends"""
 
     def __init__(
@@ -49,9 +48,11 @@ class UFWBackend:
         rootdir: Optional[str] = None,
         datadir: Optional[str] = None,
     ) -> None:
-        self.defaults: Optional[Dict[str, str]] = None
+        self.defaults: Dict[str, str] = {}
         self.name = name
         self.dryrun = dryrun
+        self.rootdir = rootdir if rootdir is not None else None
+        self.datadir = datadir if rootdir is not None else None
         self.rules = []
         self.rules6 = []
 
@@ -69,8 +70,7 @@ class UFWBackend:
         self.do_checks = ufw.common.do_checks
         self._do_checks()
         self._get_defaults()
-        assert self.defaults is not None, "_get_defaults() should populate defaults"
-        self._read_rules()  # type: ignore  # Abstract method implemented in subclasses
+        self._read_rules()  # Abstract method implemented in subclasses
 
         self.profiles = ufw.applications.get_profiles(self.files["apps"])
 
@@ -86,7 +86,7 @@ class UFWBackend:
         try:
             self.iptables_version = ufw.util.get_iptables_version(self.iptables)
         except OSError:  # pragma: no coverage
-            err_msg = _("Couldn't determine iptables version")
+            err_msg = tr("Couldn't determine iptables version")
             raise UFWError(err_msg)
 
         # Initialize via initcaps only when we need it (LP: #1044361)
@@ -170,22 +170,22 @@ class UFWBackend:
 
         if check_forward and primary == "forward":
             enabled = False
-            err_msg = _("problem running sysctl")
+            err_msg = tr("problem running sysctl")
 
             (rc, out) = ufw.util.cmd(["sysctl", "net.ipv4.ip_forward"])
             if rc != 0:  # pragma: no cover
                 raise UFWError(err_msg)
-            if "1" in out:
+            if "1" in str(out):
                 enabled = True
 
             # IPv6 may be disabled, so ignore sysctl output
             if self.use_ipv6():
                 (rc, out) = ufw.util.cmd(["sysctl", "net.ipv6.conf.default.forwarding"])
-                if rc == 0 and "1" in out:
+                if rc == 0 and "1" in str(out):
                     enabled = True
 
                 (rc, out) = ufw.util.cmd(["sysctl", "net.ipv6.conf.all.forwarding"])
-                if rc == 0 and "1" in out:
+                if rc == 0 and "1" in str(out):
                     enabled = True
 
             if not enabled:
@@ -209,21 +209,21 @@ class UFWBackend:
         """
 
         if not self.do_checks:
-            err_msg = _("Checks disabled")
+            err_msg = tr("Checks disabled")
             warn(err_msg)
             return True
 
         # Not needed on Linux, but who knows the places we will go...
         if os.getuid() != os.geteuid():
-            err_msg = _("ERROR: this script should not be SUID")
+            err_msg = tr("ERROR: this script should not be SUID")
             raise UFWError(err_msg)
         if os.getgid() != os.getegid():
-            err_msg = _("ERROR: this script should not be SGID")
+            err_msg = tr("ERROR: this script should not be SGID")
             raise UFWError(err_msg)
 
         uid = os.getuid()
         if uid != 0:
-            err_msg = _("You need to be root to run this script")
+            err_msg = tr("You need to be root to run this script")
             raise UFWError(err_msg)
 
         # Use these so we only warn once
@@ -233,7 +233,7 @@ class UFWBackend:
 
         profiles = []
         if not os.path.isdir(self.files["apps"]):
-            warn_msg = _("'%s' does not exist") % (self.files["apps"])
+            warn_msg = tr("'%s' does not exist") % (self.files["apps"])
             warn(warn_msg)
         else:
             pat = re.compile(r"^\.")
@@ -255,7 +255,7 @@ class UFWBackend:
                     statinfo = os.stat(path)
                     mode = statinfo[stat.ST_MODE]
                 except OSError:
-                    err_msg = _("Couldn't stat '%s'") % (path)
+                    err_msg = tr("Couldn't stat '%s'") % (path)
                     raise UFWError(err_msg)
                 except Exception:
                     raise
@@ -278,7 +278,7 @@ class UFWBackend:
                     and not is_unpack_user
                     and path not in warned_owner
                 ):
-                    warn_msg = _(
+                    warn_msg = tr(
                         "uid is %(uid)s but '%(path)s' is owned by " "%(st_uid)s"
                     ) % (
                         {"uid": str(uid), "path": path, "st_uid": str(statinfo.st_uid)}
@@ -286,7 +286,7 @@ class UFWBackend:
                     warn(warn_msg)
                     warned_owner[path] = True
                 if mode & stat.S_IWOTH and path not in warned_world_write:
-                    warn_msg = _("%s is world writable!") % (path)
+                    warn_msg = tr("%s is world writable!") % (path)
                     warn(warn_msg)
                     warned_world_write[path] = True
                 if (
@@ -294,7 +294,7 @@ class UFWBackend:
                     and path not in warned_group_write
                     and statinfo.st_gid != 0
                 ):
-                    warn_msg = _("%s is group writable!") % (path)
+                    warn_msg = tr("%s is group writable!") % (path)
                     warn(warn_msg)
                     warned_group_write[path] = True
 
@@ -310,7 +310,7 @@ class UFWBackend:
 
         for f in self.files:
             if f != "apps" and not os.path.isfile(self.files[f]):
-                err_msg = _("'%(f)s' file '%(name)s' does not exist") % (
+                err_msg = tr("'%(f)s' file '%(name)s' does not exist") % (
                     {"f": f, "name": self.files[f]}
                 )
                 raise UFWError(err_msg)
@@ -324,7 +324,7 @@ class UFWBackend:
             try:
                 orig = ufw.util.open_file_read(f)
             except Exception:  # pragma: no coverage
-                err_msg = _("Couldn't open '%s' for reading") % (f)
+                err_msg = tr("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
             pat = re.compile(r'^\w+="?\w+"?')
             for line in orig:
@@ -338,11 +338,11 @@ class UFWBackend:
         policies = ["accept", "drop", "reject"]
         for c in ["input", "output", "forward"]:
             if "default_%s_policy" % (c) not in self.defaults:
-                err_msg = _("Missing policy for '%s'" % (c))
+                err_msg = tr("Missing policy for '%s'" % (c))
                 raise UFWError(err_msg)
             p = self.defaults["default_%s_policy" % (c)]
             if p not in policies:
-                err_msg = _(
+                err_msg = tr(
                     "Invalid policy '%(policy)s' for '%(chain)s'"
                     % ({"policy": p, "chain": c})
                 )
@@ -351,13 +351,13 @@ class UFWBackend:
     def set_default(self, fn: str, opt: str, value: str) -> None:
         """Sets option in defaults file"""
         if not re.match(r"^[\w_]+$", opt):
-            err_msg = _("Invalid option")
+            err_msg = tr("Invalid option")
             raise UFWError(err_msg)
 
         # Perform this here so we can present a nice error to the user rather
         # than a traceback
         if not os.access(fn, os.W_OK):
-            err_msg = _("'%s' is not writable" % (fn))
+            err_msg = tr("'%s' is not writable" % (fn))
             raise UFWError(err_msg)
 
         fns = ufw.util.open_files(fn)
@@ -404,10 +404,10 @@ class UFWBackend:
                     self.files["defaults"], "DEFAULT_APPLICATION_POLICY", '"SKIP"'
                 )
             else:
-                err_msg = _("Unsupported policy '%s'") % (policy)
+                err_msg = tr("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
-        rstr = _("Default application policy changed to '%s'") % (policy)
+        rstr = tr("Default application policy changed to '%s'") % (policy)
 
         return rstr
 
@@ -474,7 +474,7 @@ class UFWBackend:
                 rules.append(rule)
 
         if len(rules) < 1:
-            err_msg = _("No rules found for application profile")
+            err_msg = tr("No rules found for application profile")
             raise UFWError(err_msg)
 
         return rules
@@ -529,13 +529,13 @@ class UFWBackend:
         if updated_profile:
             self.rules = updated_rules
             self.rules6 = updated_rules6
-            rstr += _("Rules updated for profile '%s'") % (profile)
+            rstr += tr("Rules updated for profile '%s'") % (profile)
 
             try:
-                self._write_rules(False)  # type: ignore  # ipv4
-                self._write_rules(True)  # type: ignore  # ipv6
+                self._write_rules(False)  # ipv4
+                self._write_rules(True)  # ipv6
             except Exception:  # pragma: no coverage
-                err_msg = _("Couldn't update application rules")
+                err_msg = tr("Couldn't update application rules")
                 raise UFWError(err_msg)
 
         return (rstr, updated_profile)
@@ -557,11 +557,11 @@ class UFWBackend:
         if matches == 1:
             return match
         elif matches > 1:
-            err_msg = _(
+            err_msg = tr(
                 "Found multiple matches for '%s'. Please use exact profile name"
             ) % (profile_name)
         else:
-            err_msg = _("Could not find a profile matching '%s'") % (profile_name)
+            err_msg = tr("Could not find a profile matching '%s'") % (profile_name)
         raise UFWError(err_msg)
 
     def find_other_position(self, position: int, v6: bool) -> int:
@@ -627,12 +627,12 @@ class UFWBackend:
     def get_loglevel(self) -> Tuple[int, str]:
         """Gets current log level of firewall"""
         level = 0
-        rstr = _("Logging: ")
+        rstr = tr("Logging: ")
         if "loglevel" not in self.defaults or self.defaults["loglevel"] not in list(
             self.loglevels.keys()
         ):
             level = -1
-            rstr += _("unknown")
+            rstr += tr("unknown")
         else:
             level = self.loglevels[self.defaults["loglevel"]]
             if level == 0:
@@ -644,7 +644,7 @@ class UFWBackend:
     def set_loglevel(self, level: str) -> str:
         """Sets log level of firewall"""
         if level not in list(self.loglevels.keys()) + ["on"]:
-            err_msg = _("Invalid log level '%s'") % (level)
+            err_msg = tr("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
         new_level = level
@@ -658,9 +658,9 @@ class UFWBackend:
         self.update_logging(new_level)
 
         if new_level == "off":
-            return _("Logging disabled")
+            return tr("Logging disabled")
         else:
-            return _("Logging enabled")
+            return tr("Logging enabled")
 
     def get_rules(self) -> List[UFWRule]:
         """Return list of all rules"""
@@ -727,53 +727,69 @@ class UFWBackend:
         count = 0
         for r in self.get_rules():
             count += 1
-            ret = rule.fuzzy_dst_match(r)
+            ret = ufw.common.UFWRule.fuzzy_dst_match(rule, r)
             if ret < 1:
                 matched.append(count)
 
         return matched
 
     # API overrides
+    @abc.abstractmethod
     def set_default_policy(
         self, policy: str, direction: str
-    ) -> str:  # pragma: no coverage
+    ) -> str:
         """Set default policy for specified direction"""
-        raise UFWError("UFWBackend.set_default_policy: need to override")
+        raise NotImplementedError  # pragma: nocover
 
-    def get_running_raw(
-        self, rules_type: str
-    ) -> Tuple[str, str]:  # pragma: no coverage
+    @abc.abstractmethod
+    def get_running_raw(self, rules_type: str) -> str:
         """Get status of running firewall"""
-        raise UFWError("UFWBackend.get_running_raw: need to override")
+        raise NotImplementedError  # pragma: nocover
 
-    def get_status(self, verbose: bool, show_count: bool) -> str:  # pragma: no coverage
+    @abc.abstractmethod
+    def get_status(self, verbose: bool, show_count: bool) -> str:
         """Get managed rules"""
-        raise UFWError("UFWBackend.get_status: need to override")
+        raise NotImplementedError  # pragma: nocover
 
-    def set_rule(
-        self, rule: UFWRule, allow_reload: bool
-    ) -> Tuple[str, Optional[UFWRule]]:  # pragma: no coverage
+    @abc.abstractmethod
+    def set_rule(self, rule: UFWRule, allow_reload: bool) -> str:
         """Update firewall with rule"""
-        raise UFWError("UFWBackend.set_rule: need to override")
+        raise NotImplementedError  # pragma: nocover
 
-    def start_firewall(self) -> Tuple[str, str]:  # pragma: no coverage
+    @abc.abstractmethod
+    def start_firewall(self) -> None:
         """Start the firewall"""
-        raise UFWError("UFWBackend.start_firewall: need to override")
+        raise NotImplementedError  # pragma: nocover
 
-    def stop_firewall(self) -> Tuple[str, str]:  # pragma: no coverage
+    @abc.abstractmethod
+    def stop_firewall(self) -> None:
         """Stop the firewall"""
-        raise UFWError("UFWBackend.stop_firewall: need to override")
+        raise NotImplementedError  # pragma: nocover
 
+    @abc.abstractmethod
     def get_app_rules_from_system(
         self, template: UFWRule, v6: bool
-    ) -> List[UFWRule]:  # pragma: no coverage
+    ) -> List[UFWRule]:
         """Get a list if rules based on template"""
-        raise UFWError("UFWBackend.get_app_rules_from_system: need to " + "override")
+        raise NotImplementedError  # pragma: nocover
 
-    def update_logging(self, level: str) -> None:  # pragma: no coverage
+    @abc.abstractmethod
+    def update_logging(self, level: str) -> None:
         """Update loglevel of running firewall"""
-        raise UFWError("UFWBackend.update_logging: need to override")
+        pass
+        raise NotImplementedError  # pragma: nocover
 
-    def reset(self) -> str:  # pragma: no coverage
+    @abc.abstractmethod
+    def reset(self) -> str:
         """Reset the firewall"""
-        raise UFWError("UFWBackend.reset: need to override")
+        raise NotImplementedError  # pragma: nocover
+
+    @abc.abstractmethod
+    def _read_rules(self) -> None:
+        """Read rules from the system"""
+        raise NotImplementedError  # pragma: nocover
+
+    @abc.abstractmethod
+    def _write_rules(self, v6: bool = False) -> None:
+        """Write rules to the system"""
+        raise NotImplementedError  # pragma: nocover

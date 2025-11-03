@@ -23,7 +23,7 @@ import os
 import subprocess
 import sys
 
-_ = None
+tr = None
 
 topdir = "./tests/unit/tmp"
 
@@ -60,8 +60,8 @@ def recursive_rm(dirPath, contents_only=False):
 def initvars(install_dir):
     import ufw.common
 
-    global _
-    _ = init_gettext()
+    global tr
+    tr = init_gettext()
 
     global topdir
     d = os.path.join(os.path.dirname(os.path.realpath(topdir)), "fake-binaries")
@@ -143,12 +143,12 @@ def init_gettext():
         # BAW: I'm not sure why both this and the .install() above is here, but
         # let's roll with it for now.  This is the Python 2 version, which
         # ensures we get unicodes.
-        _ = gettext.ugettext  # type: ignore  # Python 2 compatibility
+        tr = gettext.gettext
     except AttributeError:
         # Python 3 always returns unicodes.
-        _ = gettext.gettext
+        tr = gettext.gettext
 
-    return _
+    return tr
 
 
 def check_for_exception(t, expectedException, func, *args):

@@ -27,10 +27,7 @@ import re
 import shutil
 import time
 
-try:  # python 2
-    from StringIO import StringIO  # type: ignore  # Python 2 compatibility
-except ImportError:
-    from io import StringIO
+from io import StringIO
 
 
 class BackendIptablesTestCase(unittest.TestCase):

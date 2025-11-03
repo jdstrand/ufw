@@ -1,5 +1,4 @@
 """backend_iptables.py: iptables backend for ufw"""
-
 #
 # Copyright 2008-2024 Canonical Ltd.
 # Copyright 2025 Jamie Strandboge
@@ -24,7 +23,7 @@ import stat
 import sys
 import time
 import gettext
-from typing import Optional, List, Dict, Tuple, Union, Any
+from typing import Optional, List, Any
 
 from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
@@ -32,11 +31,8 @@ import ufw.backend
 import ufw.common
 import ufw.util
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
+# Internationalization
+tr = gettext.gettext
 
 
 class UFWBackendIptables(ufw.backend.UFWBackend):
@@ -47,8 +43,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
     ) -> None:
         """UFWBackendIptables initialization"""
         self.comment_str = "# " + ufw.common.programName + "_comment #"
-        self.rootdir = rootdir
-        self.datadir = datadir
 
         files = {}
         config_dir = _findpath(ufw.common.config_dir, datadir)
@@ -102,7 +96,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def get_default_application_policy(self) -> str:
         """Get current policy"""
-        rstr = _("New profiles:")
+        rstr = tr("New profiles:")
         if self.defaults["default_application_policy"] == "accept":
             rstr += " allow"
         elif self.defaults["default_application_policy"] == "drop":
@@ -118,7 +112,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         """Sets default policy of firewall"""
         if not self.dryrun:
             if policy != "allow" and policy != "deny" and policy != "reject":
-                err_msg = _("Unsupported policy '%s'") % (policy)
+                err_msg = tr("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
             if (
@@ -126,7 +120,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 and direction != "outgoing"
                 and direction != "routed"
             ):
-                err_msg = _("Unsupported policy for direction '%s'") % (direction)
+                err_msg = tr("Unsupported policy for direction '%s'") % (direction)
                 raise UFWError(err_msg)
 
             chain = "INPUT"
@@ -189,18 +183,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 except Exception:
                     raise
 
-        rstr = _("Default %(direction)s policy changed to '%(policy)s'\n") % (
+        rstr = tr("Default %(direction)s policy changed to '%(policy)s'\n") % (
             {"direction": direction, "policy": policy}
         )
-        rstr += _("(be sure to update your rules accordingly)")
+        rstr += tr("(be sure to update your rules accordingly)")
 
         return rstr
 
     def get_running_raw(self, rules_type: str) -> str:
         """Show current running status of firewall"""
         if self.dryrun:
-            out = "> " + _("Checking raw iptables\n")
-            out += "> " + _("Checking raw ip6tables\n")
+            out = "> " + tr("Checking raw iptables\n")
+            out += "> " + tr("Checking raw ip6tables\n")
             return out
 
         # Initialize the capabilities database
@@ -234,10 +228,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             for b in ["input", "forward", "output"]:
                 items.append("ufw-user-%s" % b)
                 items6.append("ufw6-user-%s" % b)
-            if self.caps["limit"]["4"]:
+            if self.caps is not None and self.caps["limit"]["4"]:
                 items.append("ufw-user-limit-accept")
                 items.append("ufw-user-limit")
-            if self.caps["limit"]["6"]:
+            if self.caps is not None and self.caps["limit"]["6"]:
                 items6.append("ufw6-user-limit-accept")
                 items6.append("ufw6-user-limit")
         elif rules_type == "after":
@@ -257,7 +251,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             items6.append("ufw6-logging-allow")
             items6.append("ufw6-logging-deny")
 
-        out = "IPV4 (%s):\n" % (rules_type)
+        out: str = "IPV4 (%s):\n" % (rules_type)
         for i in items:
             if ":" in i:
                 (t, c) = i.split(":")
@@ -265,7 +259,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 (rc, tmp) = cmd([self.iptables] + args + [c, "-t", t])
             else:
                 (rc, tmp) = cmd([self.iptables] + args + [i])
-            out += tmp
+            out += str(tmp)
             if rules_type != "raw":
                 out += "\n"
             if rc != 0:
@@ -280,7 +274,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     (rc, tmp) = cmd([self.iptables] + args + [c, "-t", t])
                 else:
                     (rc, tmp) = cmd([self.ip6tables] + args + [i])
-                out += tmp
+                out += str(tmp)
                 if rules_type != "raw":
                     out += "\n"
                 if rc != 0:
@@ -292,22 +286,22 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         """Show ufw managed rules"""
         out = ""
         if self.dryrun:
-            out = "> " + _("Checking iptables\n")
+            out = "> " + tr("Checking iptables\n")
             if self.use_ipv6():
-                out += "> " + _("Checking ip6tables\n")
+                out += "> " + tr("Checking ip6tables\n")
             return out
 
-        err_msg = _("problem running")
+        err_msg = tr("problem running")
         for direction in ["input", "output", "forward"]:
             # Is the firewall loaded at all?
             (rc, out) = cmd([self.iptables, "-L", "ufw-user-%s" % (direction), "-n"])
             if rc == 1:
-                return _("Status: inactive")
+                return tr("Status: inactive")
             elif rc != 0:
                 raise UFWError(err_msg + " iptables: %s\n" % (out))
 
             if self.use_ipv6():
-                (rc, out6) = cmd(
+                (rc, _) = cmd(
                     [self.ip6tables, "-L", "ufw6-user-%s" % (direction), "-n"]
                 )
                 if rc != 0:
@@ -481,9 +475,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             full_str = "\n\n"
             if show_count:
                 full_str += "     "
-            str_to = _("To")
-            str_from = _("From")
-            str_action = _("Action")
+            str_to = tr("To")
+            str_from = tr("From")
+            str_action = tr("Action")
             rules_header_fmt = "%-26s %-12s%s\n"
 
             rules_header = rules_header_fmt % (str_to, str_action, str_from)
@@ -500,19 +494,19 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if s != "":
                 full_str += s
             if s != "" and str_out != "":
-                full_str += _("\n")
+                full_str += tr("\n")
             if str_out != "":
                 full_str += str_out
             if s != "" and str_rte != "":
-                full_str += _("\n")
+                full_str += tr("\n")
             if str_rte != "":
                 full_str += str_rte
 
             s = full_str
 
         if verbose:
-            (level, logging_str) = self.get_loglevel()
-            policy_str = _(
+            (_, logging_str) = self.get_loglevel()
+            policy_str = tr(
                 "Default: %(in)s (incoming), "
                 + "%(out)s (outgoing), "
                 + "%(routed)s (routed)"
@@ -524,7 +518,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 }
             )
             app_policy_str = self.get_default_application_policy()
-            return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % (
+            return tr("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % (
                 {
                     "log": logging_str,
                     "pol": policy_str,
@@ -533,12 +527,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 }
             )
         else:
-            return _("Status: active%s") % (s)
+            return tr("Status: active%s") % (s)
 
     def stop_firewall(self) -> None:
         """Stop the firewall"""
         if self.dryrun:
-            msg("> " + _("running ufw-init"))
+            msg("> " + tr("running ufw-init"))
         else:
             args = []
             args.append(self.files["init"])
@@ -550,13 +544,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             args.append("force-stop")
             (rc, out) = cmd(args)
             if rc != 0:
-                err_msg = _("problem running ufw-init\n%s" % out)
+                err_msg = tr("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
 
     def start_firewall(self) -> None:
         """Start the firewall"""
         if self.dryrun:
-            msg("> " + _("running ufw-init"))
+            msg("> " + tr("running ufw-init"))
         else:
             args = []
             args.append(self.files["init"])
@@ -568,7 +562,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             args.append("start")
             (rc, out) = cmd(args)
             if rc != 0:
-                err_msg = _("problem running ufw-init\n%s" % out)
+                err_msg = tr("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
 
             if "loglevel" not in self.defaults or self.defaults["loglevel"] not in list(
@@ -578,13 +572,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 try:
                     self.set_loglevel("low")
                 except Exception:
-                    err_msg = _("Could not set LOGLEVEL")
+                    err_msg = tr("Could not set LOGLEVEL")
                     raise UFWError(err_msg)
             else:
                 try:
                     self.update_logging(self.defaults["loglevel"])
                 except Exception:
-                    err_msg = _("Could not load logging rules")
+                    err_msg = tr("Could not load logging rules")
                     raise UFWError(err_msg)
 
     def _need_reload(self, v6: bool) -> bool:
@@ -603,12 +597,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         for chain in ["input", "output", "forward", "limit", "limit-accept"]:
             if chain == "limit" or chain == "limit-accept":
-                if v6 and not self.caps["limit"]["6"]:
+                if v6 and self.caps is not None and not self.caps["limit"]["6"]:
                     continue
-                elif not v6 and not self.caps["limit"]["4"]:
+                elif not v6 and self.caps is not None and not self.caps["limit"]["4"]:
                     continue
 
-            (rc, out) = cmd([exe, "-n", "-L", prefix + "-user-" + chain])
+            (rc, _) = cmd([exe, "-n", "-L", prefix + "-user-" + chain])
             if rc != 0:
                 debug("_need_reload: forcing reload")
                 return True
@@ -617,7 +611,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def _reload_user_rules(self) -> None:
         """Reload firewall rules file"""
-        err_msg = _("problem running")
+        err_msg = tr("problem running")
         if self.dryrun:
             msg("> | iptables-restore")
             if self.use_ipv6():
@@ -632,14 +626,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 raise UFWError(err_msg)
 
             # then restore the system rules
-            (rc, out) = cmd_pipe(
+            (rc, _) = cmd_pipe(
                 ["cat", self.files["rules"]], [self.iptables_restore, "-n"]
             )
             if rc != 0:
                 raise UFWError(err_msg + " iptables")
 
             if self.use_ipv6():
-                (rc, out) = cmd_pipe(
+                (rc, _) = cmd_pipe(
                     ["cat", self.files["rules6"]], [self.ip6tables_restore, "-n"]
                 )
                 if rc != 0:
@@ -759,7 +753,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             try:
                 orig = ufw.util.open_file_read(f)
             except Exception:
-                err_msg = _("Couldn't open '%s' for reading") % (f)
+                err_msg = tr("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
 
             pat_tuple = re.compile(r"^### tuple ###\s*")
@@ -778,7 +772,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tupl = pat_tuple.sub("", line)
                     tmp = re.split(r"\s+", tupl.strip())
                     if len(tmp) < 6 or len(tmp) > 9:
-                        wmsg = _("Skipping malformed tuple (bad length): %s") % (tupl)
+                        wmsg = tr("Skipping malformed tuple (bad length): %s") % (tupl)
                         warn(wmsg)
                         continue
                     else:
@@ -788,7 +782,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         interface_in = ""
                         interface_out = ""
                         if len(tmp) == 7 or len(tmp) == 9:
-                            wmsg = _("Skipping malformed tuple (iface): %s") % (tupl)
+                            wmsg = tr("Skipping malformed tuple (iface): %s") % (tupl)
                             dtype = tmp[-1].split("_")[0]
                             if "_" in tmp[-1]:
                                 if (
@@ -855,7 +849,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                 rule.set_interface("out", interface_out)
 
                         except UFWError:
-                            warn_msg = _("Skipping malformed tuple: %s") % (tupl)
+                            warn_msg = tr("Skipping malformed tuple: %s") % (tupl)
                             warn(warn_msg)
                             continue
                         if f == self.files["rules6"]:
@@ -876,7 +870,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Perform this here so we can present a nice error to the user rather
         # than a traceback
         if not os.access(rules_file, os.W_OK):
-            err_msg = _("'%s' is not writable" % (rules_file))
+            err_msg = tr("'%s' is not writable" % (rules_file))
             raise UFWError(err_msg)
 
         try:
@@ -933,8 +927,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
 
         # Rate limiting is runtime supported
-        if (chain_prefix == "ufw" and self.caps["limit"]["4"]) or (
-            chain_prefix == "ufw6" and self.caps["limit"]["6"]
+        if (chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]) or (
+            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
         ):
             ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
             ufw.util.write_to_file(
@@ -1021,7 +1015,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             lrules_t = self._get_logging_rules(self.defaults["loglevel"])
         except Exception:
             raise
-        for c, r, q in lrules_t:
+        for c, r, _ in lrules_t:
             if len(r) > 0 and r[0] == "-D":
                 continue
             if c.startswith(chain_prefix + "-"):
@@ -1031,8 +1025,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, "### END LOGGING ###\n")
 
         # Rate limiting is runtime supported
-        if (chain_prefix == "ufw" and self.caps["limit"]["4"]) or (
-            chain_prefix == "ufw6" and self.caps["limit"]["6"]
+        if (chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]) or (
+            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
         ):
             ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
             if self.defaults["loglevel"] != "off":
@@ -1078,18 +1072,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         if rule.v6:
             if not self.use_ipv6():
-                err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
+                err_msg = tr("Adding IPv6 rule failed: IPv6 not enabled")
                 raise UFWError(err_msg)
-            if rule.action == "limit" and not self.caps["limit"]["6"]:
+            if rule.action == "limit" and self.caps is not None and not self.caps["limit"]["6"]:
                 # Rate limiting is runtime supported
-                return _("Skipping unsupported IPv6 '%s' rule") % (rule.action)
+                return tr("Skipping unsupported IPv6 '%s' rule") % (rule.action)
         else:
-            if rule.action == "limit" and not self.caps["limit"]["4"]:
+            if rule.action == "limit" and self.caps is not None and not self.caps["limit"]["4"]:
                 # Rate limiting is runtime supported
-                return _("Skipping unsupported IPv4 '%s' rule") % (rule.action)
+                return tr("Skipping unsupported IPv4 '%s' rule") % (rule.action)
 
         if rule.multi and rule.protocol != "udp" and rule.protocol != "tcp":
-            err_msg = _("Must specify 'tcp' or 'udp' with multiple ports")
+            err_msg = tr("Must specify 'tcp' or 'udp' with multiple ports")
             raise UFWError(err_msg)
 
         newrules = []
@@ -1100,16 +1094,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         position = rule.position
         if rule.v6:
             if self.iptables_version < "1.4" and (rule.dapp != "" or rule.sapp != ""):
-                return _("Skipping IPv6 application rule. Need at least iptables 1.4")
+                return tr("Skipping IPv6 application rule. Need at least iptables 1.4")
             rules = self.rules6
 
         # bail if we have a bad position
         if position < 0 or position > len(rules):
-            err_msg = _("Invalid position '%d'") % (position)
+            err_msg = tr("Invalid position '%d'") % (position)
             raise UFWError(err_msg)
 
         if position > 0 and rule.remove:
-            err_msg = _("Cannot specify insert and delete")
+            err_msg = tr("Cannot specify insert and delete")
             raise UFWError(err_msg)
 
         # First construct the new rules list
@@ -1172,7 +1166,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         if inserted:
             if matches > 0:
-                rstr = _("Skipping inserting existing rule")
+                rstr = tr("Skipping inserting existing rule")
                 if rule.v6:
                     rstr += " (v6)"
                 return rstr
@@ -1183,12 +1177,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             # Don't process non-existing or unchanged pre-exisiting rules
             if not found and rule.remove and not self.dryrun:
-                rstr = _("Could not delete non-existent rule")
+                rstr = tr("Could not delete non-existent rule")
                 if rule.v6:
                     rstr += " (v6)"
                 return rstr
             elif found and not rule.remove and not modified:
-                rstr = _("Skipping adding existing rule")
+                rstr = tr("Skipping adding existing rule")
                 if rule.v6:
                     rstr += " (v6)"
                 return rstr
@@ -1204,14 +1198,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except UFWError:
             raise
         except Exception:
-            err_msg = _("Couldn't update rules file")
+            err_msg = tr("Couldn't update rules file")
             UFWError(err_msg)
 
         # We wrote out the rules, so set reasonable string. We will change
         # this below when operating on the live firewall.
-        rstr = _("Rules updated")
+        rstr = tr("Rules updated")
         if rule.v6:
-            rstr = _("Rules updated (v6)")
+            rstr = tr("Rules updated (v6)")
 
         # Operate on the chains
         if self.is_enabled() and not self.dryrun:
@@ -1219,9 +1213,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if modified or self._need_reload(rule.v6) or inserted:
                 rstr = ""
                 if inserted:
-                    rstr += _("Rule inserted")
+                    rstr += tr("Rule inserted")
                 else:
-                    rstr += _("Rule updated")
+                    rstr += tr("Rule updated")
                 if rule.v6:
                     rstr += " (v6)"
                 if allow_reload:
@@ -1231,10 +1225,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     except Exception:
                         raise
                 else:
-                    rstr += _(" (skipped reloading firewall)")
+                    rstr += tr(" (skipped reloading firewall)")
             elif found and rule.remove:
                 flag = "-D"
-                rstr = _("Rule deleted")
+                rstr = tr("Rule deleted")
                 # TODO: we only need to reload on delete when there are
                 # overlapping proto-specific and 'proto any' rules, but for
                 # now, unconditionally reload with all deletes. LP: #1933117
@@ -1248,10 +1242,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         raise
                     flag = ""
                 else:
-                    rstr += _(" (skipped reloading firewall)")
+                    rstr += tr(" (skipped reloading firewall)")
             elif not found and not modified and not rule.remove:
                 flag = "-A"
-                rstr = _("Rule added")
+                rstr = tr("Rule added")
 
             if flag != "":
                 exe = self.iptables
@@ -1268,7 +1262,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 chain = "%s-user-%s" % (chain_prefix, chain_suffix)
 
                 # Is the firewall running?
-                err_msg = _("Could not update running firewall")
+                err_msg = tr("Could not update running firewall")
                 (rc, out) = cmd([exe, "-L", chain, "-n"])
                 if rc != 0:
                     raise UFWError(err_msg)
@@ -1280,7 +1274,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 ):
                     (rc, out) = cmd([exe] + s)
                     if rc != 0:
-                        msg(out, sys.stderr)
+                        msg(str(out), sys.stderr)
                         UFWError(err_msg)
 
                     # delete any lingering RETURN rules (needed for upgrades)
@@ -1321,9 +1315,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         exe = self.iptables
         if chain.startswith("ufw6"):
             exe = self.ip6tables
-        (rc, out) = cmd([exe] + args)
+        (rc, _) = cmd([exe] + args)
         if rc != 0:
-            err_msg = _("Could not perform '%s'" % (args))
+            err_msg = tr("Could not perform '%s'" % (args))
             if fail_ok:
                 debug("FAILOK: " + err_msg)
             else:
@@ -1350,7 +1344,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except UFWError:
             raise
         except Exception:
-            err_msg = _("Couldn't update rules file for logging")
+            err_msg = tr("Couldn't update rules file for logging")
             UFWError(err_msg)
 
         # Don't update the running firewall if not enabled
@@ -1359,7 +1353,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # make sure all the chains are here, it's redundant but helps make
         # sure the chains are in a consistent state
-        err_msg = _("Could not update running firewall")
+        err_msg = tr("Could not update running firewall")
         for c in (
             self.chains["before"]
             + self.chains["user"]
@@ -1394,8 +1388,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Rate limiting is runtime supported
         # Always delete these and re-add them so that we don't have extras
         for chain in ["ufw-user-limit", "ufw6-user-limit"]:
-            if (self.caps["limit"]["4"] and chain == "ufw-user-limit") or (
-                self.caps["limit"]["6"] and chain == "ufw6-user-limit"
+            if (self.caps is not None and self.caps["limit"]["4"] and chain == "ufw-user-limit") or (
+                self.caps is not None and self.caps["limit"]["6"] and chain == "ufw6-user-limit"
             ):
                 self._chain_cmd(
                     chain,
@@ -1418,7 +1412,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         rules_t = []
 
         if level not in list(self.loglevels.keys()):
-            err_msg = _("Invalid log level '%s'") % (level)
+            err_msg = tr("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
         if level == "off":
@@ -1557,7 +1551,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             allfiles.append(self.files[i])
             fn = os.path.join(share_dir, "iptables", os.path.basename(self.files[i]))
             if not os.path.isfile(fn):
-                err_msg = _("Could not find '%s'. Aborting") % (fn)
+                err_msg = tr("Could not find '%s'. Aborting") % (fn)
                 raise UFWError(err_msg)
 
         ext = time.strftime("%Y%m%d_%H%M%S")
@@ -1569,13 +1563,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         for i in allfiles:
             fn = "%s.%s" % (i, ext)
             if os.path.exists(fn):
-                err_msg = _("'%s' already exists. Aborting") % (fn)
+                err_msg = tr("'%s' already exists. Aborting") % (fn)
                 raise UFWError(err_msg)
 
         # Move the old to the new
         for i in allfiles:
             fn = "%s.%s" % (i, ext)
-            res += _("Backing up '%(old)s' to '%(new)s'\n") % (
+            res += tr("Backing up '%(old)s' to '%(new)s'\n") % (
                 {"old": os.path.basename(i), "new": fn}
             )
             os.rename(i, fn)
@@ -1593,13 +1587,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 statinfo = os.stat(i)
                 mode = statinfo[stat.ST_MODE]
             except Exception:
-                warn_msg = _("Couldn't stat '%s'") % (i)
+                warn_msg = tr("Couldn't stat '%s'") % (i)
                 warn(warn_msg)
                 continue
 
             if mode & stat.S_IWOTH:
-                res += _("WARN: '%s' is world writable") % (i)
+                res += tr("WARN: '%s' is world writable") % (i)
             elif mode & stat.S_IROTH:
-                res += _("WARN: '%s' is world readable") % (i)
+                res += tr("WARN: '%s' is world readable") % (i)
 
         return res

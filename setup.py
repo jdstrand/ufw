@@ -235,10 +235,6 @@ class Install(_install, object):
                       user_rules, user6_rules ]:
             self.copy_file(f, rulesdir)
 
-if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    print("ERROR: Need at least python 2.6", file=sys.stderr)
-    sys.exit(1)
 
 if os.path.exists('staging'):
     shutil.rmtree('staging')

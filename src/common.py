@@ -22,13 +22,10 @@ import socket
 import ufw.util
 from ufw.util import debug
 import gettext
-from typing import Optional, List, Dict, Tuple, Union, Any
+from typing import Union
 
-# Internationalization - fallback if not installed as builtin
-try:
-    _  # type: ignore
-except NameError:
-    _ = gettext.gettext
+# Internationalization
+tr = gettext.gettext
 
 programName = "ufw"
 state_dir = "#STATE_PREFIX#"
@@ -214,7 +211,7 @@ class UFWRule:
 
     def set_port(self, port: str, loc: str = "dst") -> None:
         """Sets port and location (destination or source) of the rule"""
-        err_msg = _("Bad port '%s'") % (port)
+        err_msg = tr("Bad port '%s'") % (port)
         if port == "any":
             pass
         elif loc == "dst" and self.dapp:
@@ -270,7 +267,7 @@ class UFWRule:
         if protocol in ufw.util.supported_protocols + ["any"]:
             self.protocol = protocol
         else:
-            err_msg = _("Unsupported protocol '%s'") % (protocol)
+            err_msg = tr("Unsupported protocol '%s'") % (protocol)
             raise UFWError(err_msg)
 
     def _fix_anywhere(self) -> None:
@@ -298,7 +295,7 @@ class UFWRule:
         tmp = addr.lower()
 
         if tmp != "any" and not ufw.util.valid_address(tmp, "any"):
-            err_msg = _("Bad source address")
+            err_msg = tr("Bad source address")
             raise UFWError(err_msg)
         self.src = tmp
         self._fix_anywhere()
@@ -308,7 +305,7 @@ class UFWRule:
         tmp = addr.lower()
 
         if tmp != "any" and not ufw.util.valid_address(tmp, "any"):
-            err_msg = _("Bad destination address")
+            err_msg = tr("Bad destination address")
             raise UFWError(err_msg)
         self.dst = tmp
         self._fix_anywhere()
@@ -327,33 +324,33 @@ class UFWRule:
         # - != '.' or '..'
         # - doesn't contain '/', ':' or whitespace
         if if_type != "in" and if_type != "out":
-            err_msg = _("Bad interface type")
+            err_msg = tr("Bad interface type")
             raise UFWError(err_msg)
 
         # Separate a few of the invalid checks out so we can give a nice error
         if "!" in str(name):
-            err_msg = _("Bad interface name: reserved character: '!'")
+            err_msg = tr("Bad interface name: reserved character: '!'")
             raise UFWError(err_msg)
 
         if ":" in str(name):
-            err_msg = _("Bad interface name: can't use interface aliases")
+            err_msg = tr("Bad interface name: can't use interface aliases")
             raise UFWError(err_msg)
 
         if str(name) == "." or str(name) == "..":
-            err_msg = _("Bad interface name: can't use '.' or '..'")
+            err_msg = tr("Bad interface name: can't use '.' or '..'")
             raise UFWError(err_msg)
 
         if len(str(name)) == 0:
-            err_msg = _("Bad interface name: interface name is empty")
+            err_msg = tr("Bad interface name: interface name is empty")
             raise UFWError(err_msg)
 
         if len(str(name)) > 15:
-            err_msg = _("Bad interface name: interface name too long")
+            err_msg = tr("Bad interface name: interface name too long")
             raise UFWError(err_msg)
 
         # We are going to limit this even further to avoid shell meta
         if not re.match(r"^[a-zA-Z0-9_\-\.\+,=%@]+$", str(name)):
-            err_msg = _("Bad interface name")
+            err_msg = tr("Bad interface name")
             raise UFWError(err_msg)
 
         if if_type == "in":
@@ -367,7 +364,7 @@ class UFWRule:
         #  0 append
         # >0 insert
         if str(num) != "-1" and not re.match(r"^[0-9]+", str(num)):
-            err_msg = _("Insert position '%s' is not a valid position") % (num)
+            err_msg = tr("Insert position '%s' is not a valid position") % (num)
             raise UFWError(err_msg)
         self.position = int(num)
 
@@ -376,7 +373,7 @@ class UFWRule:
         if logtype.lower() == "log" or logtype.lower() == "log-all" or logtype == "":
             self.logtype = logtype.lower()
         else:
-            err_msg = _("Invalid log type '%s'") % (logtype)
+            err_msg = tr("Invalid log type '%s'") % (logtype)
             raise UFWError(err_msg)
 
     def set_direction(self, direction: str) -> None:
@@ -384,7 +381,7 @@ class UFWRule:
         if direction == "in" or direction == "out":
             self.direction = direction
         else:
-            err_msg = _("Unsupported direction '%s'") % (direction)
+            err_msg = tr("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
     def get_comment(self) -> str:
@@ -402,7 +399,7 @@ class UFWRule:
             try:
                 (self.src, changed) = ufw.util.normalize_address(self.src, self.v6)
             except Exception:
-                err_msg = _("Could not normalize source address")
+                err_msg = tr("Could not normalize source address")
                 raise UFWError(err_msg)
 
             if changed:
@@ -412,7 +409,7 @@ class UFWRule:
             try:
                 (self.dst, changed) = ufw.util.normalize_address(self.dst, self.v6)
             except Exception:
-                err_msg = _("Could not normalize destination address")
+                err_msg = tr("Could not normalize destination address")
                 raise UFWError(err_msg)
 
             if changed:
@@ -428,6 +425,7 @@ class UFWRule:
             ufw.util.human_sort(ports)
             self.sport = ",".join(ports)
 
+    @staticmethod
     def match(x: "UFWRule", y: "UFWRule") -> int:
         """Check if rules match
         Return codes:
@@ -436,8 +434,7 @@ class UFWRule:
          -1  match all but action, log-type and/or comment
          -2  match all but comment
         """
-        if not x or not y:
-            raise ValueError()
+        assert(x and y)
 
         dbg_msg = "No match '%s' '%s'" % (x, y)
         if x.dport != y.dport:
@@ -477,15 +474,15 @@ class UFWRule:
             debug(dbg_msg)
             return 1
         if x.action == y.action and x.logtype == y.logtype and x.comment == y.comment:
-            dbg_msg = _("Found exact match")
+            dbg_msg = tr("Found exact match")
             debug(dbg_msg)
             return 0
         if x.action == y.action and x.logtype == y.logtype and x.comment != y.comment:
-            dbg_msg = _("Found exact match, excepting comment")
+            dbg_msg = tr("Found exact match, excepting comment")
             debug(dbg_msg)
             return -2
 
-        dbg_msg = _(
+        dbg_msg = tr(
             "Found non-action/non-logtype/comment match "
             "(%(xa)s/%(ya)s/'%(xc)s' %(xl)s/%(yl)s/'%(yc)s')"
         ) % (
@@ -501,6 +498,7 @@ class UFWRule:
         debug(dbg_msg)
         return -1
 
+    @staticmethod
     def fuzzy_dst_match(x: "UFWRule", y: "UFWRule") -> int:
         """This will match if x is more specific than y. Eg, for protocol if x
         is tcp and y is all or for address if y is a network and x is a
@@ -531,11 +529,10 @@ class UFWRule:
 
             return False
 
-        if not x or not y:
-            raise ValueError()
+        assert(x and y)
 
         # Ok if exact match
-        if x.match(y) == 0:
+        if UFWRule.match(x, y) == 0:
             return 0
 
         dbg_msg = "No fuzzy match '%s (v6=%s)' '%s (v6=%s)'" % (x, x.v6, y, y.v6)
@@ -668,17 +665,17 @@ class UFWRule:
         """Verify rule"""
         # Verify protocol not specified with application rule
         if self.protocol != "any" and (self.sapp != "" or self.dapp != ""):
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") % (
+            err_msg = tr("Improper rule syntax ('%s' specified with app rule)") % (
                 self.protocol
             )
             raise UFWError(err_msg)
 
         if self.protocol in ufw.util.ipv4_only_protocols and rule_iptype == "v6":
             # Can't use protocol these protocols with v6 addresses
-            err_msg = _("Invalid IPv6 address with protocol '%s'") % (self.protocol)
+            err_msg = tr("Invalid IPv6 address with protocol '%s'") % (self.protocol)
             raise UFWError(err_msg)
 
         if self.protocol in ufw.util.portless_protocols:
             if self.dport != "any" or self.sport != "any":
-                err_msg = _("Invalid port with protocol '%s'") % (self.protocol)
+                err_msg = tr("Invalid port with protocol '%s'") % (self.protocol)
                 raise UFWError(err_msg)
