@@ -1,5 +1,6 @@
 #
-# Copyright 2009-2018 Canonical Ltd.
+# Copyright 2009-2024 Canonical Ltd.
+# Copyright 2025 Jamie Strandboge
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,

@@ -1,7 +1,8 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2016 Canonical Ltd.
+# Copyright 2008-2024 Canonical Ltd.
+# Copyright 2025 Jamie Strandboge
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -290,7 +291,7 @@ setup (name='ufw',
       description='front-end for Linux firewalling',
       long_description='front-end for Linux firewalling',
       author='Jamie Strandboge',
-      author_email='jamie@canonical.com',
+      author_email='jamie@strandboge.com',
       url='https://launchpad.net/ufw',
       license='GPL-3',
       cmdclass={'install': Install},

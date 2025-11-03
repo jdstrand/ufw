@@ -45,6 +45,3 @@ host.
 
 Contributions should follow PEP-8 and have an accompanying test case added to
 tests/.
-
-
-Copyright 2011 Canonical Ltd.
