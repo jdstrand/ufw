@@ -28,12 +28,13 @@ import shutil
 import time
 
 from io import StringIO
+from typing import Optional
 
 
 class BackendIptablesTestCase(unittest.TestCase):
     ui: ufw.frontend.UFWFrontend
     backend: ufw.backend_iptables.UFWBackendIptables
-    msg_output: StringIO | None
+    msg_output: Optional[StringIO]
     saved_msg_output: object
     prevpath: str
 
