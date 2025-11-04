@@ -1,12 +1,17 @@
-black==25.9.0
-click==8.3.0
-coverage==7.11.0
+black==25.9.0; python_version >= "3.10"
+black==24.8.0; python_version < "3.10"
+click==8.3.0; python_version >= "3.10"
+click==8.1.7; python_version < "3.10"
+coverage==7.11.0; python_version >= "3.10"
+coverage==7.6.1; python_version < "3.10"
 mypy_extensions==1.1.0
 nodeenv==1.9.1
 packaging==25.0
 pathspec==0.12.1
-platformdirs==4.5.0
+platformdirs==4.5.0; python_version >= "3.10"
+platformdirs==4.3.6; python_version < "3.10"
 pyright==1.1.407
 pytokens==0.2.0
-setuptools==80.9.0
-typing_extensions==4.15.0
+setuptools==75.3.2
+typing_extensions==4.15.0; python_version >= "3.10"
+typing_extensions==4.13.2; python_version < "3.10"
