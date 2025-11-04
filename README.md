@@ -20,8 +20,8 @@ perhaps 'Unbearable Firewall'. Have fun!
 
 ## Requirements
 
-* `python` 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+)[1]
-* `iptables` 1.4[2]
+* `python` 3.8+
+* `iptables` 1.8+
 * `gettext`
 * `/proc`' filesystem support
 * Linux kernel configured with the following modules (not exhaustive):
@@ -31,14 +31,9 @@ perhaps 'Unbearable Firewall'. Have fun!
   * limit
   * multiport
   * recent
-  * conntrack[3]
+  * conntrack[1]
 
-1. python2.5 and python3 < 3.4 are no longer supported
-2. Systems with `iptables` below 1.4 will not have IPv6 application rule support.
-   `ufw` will give a warning when users try to use this functionality, but `ufw`
-   will otherwise work fine. `ufw` is known to work with `iptables` 1.3.8 in this
-   degraded mode.
-3. As of 0.34, the 'conntrack' modules is used instead of 'state'
+1. As of 0.34, the 'conntrack' modules is used instead of 'state'
 
 `ufw` has been widely tested on Linux 2.6.24 and higher kernels. You may also
 use the `check-requirements` script in the `tests/` directory to see if your
@@ -55,10 +50,10 @@ $ python3 ./setup.py install --home=PREFIX   # non-root
 ```
 
 The interpreter used for setup.py is the one used for `ufw`. So if your system
-python is 2.6, but you have python2.7 available, use something like:
+python is 3.10, but you have python3.13 available, use something like:
 
 ```bash
-$ python2.7 ./setup.py install --home=PREFIX
+$ python3.13 ./setup.py install --home=PREFIX
 ```
 
 Distributions which install to a build directory for packaging can install
@@ -433,7 +428,7 @@ $ ./run_tests.sh -s
 You may also specify an interpreter for the tests. Eg:
 
 ```bash
-$ ./run_tests.sh -s -i /usr/local/bin/python2.7
+$ ./run_tests.sh -s -i /usr/local/bin/python3.13
 ```
 
 Or for the root tests (these are `iptables` version dependent, will modify your
