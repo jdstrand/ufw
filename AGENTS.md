@@ -250,7 +250,7 @@ test ! -d ./.venv.ai && python3 -m venv ./.venv.ai && ./.venv.ai/bin/pip install
 **Always activate the venv before running any commands:**
 
 ```sh
-# Activate from collectors directory
+# Activate from top-level directory
 cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 ```
 
@@ -305,7 +305,7 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
   added or updated code.
 * Use pyright to verify new code
 * Be sure to run `black` when you're done making a series of code changes
-* For better performance when coding, only run `make syntax-check` once before
+* For better performance when coding, only run `black` once before
   presenting you completed work.
 * You MUST remove any trailing whitespace introduced by your work
 
