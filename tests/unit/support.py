@@ -448,9 +448,9 @@ def has_proc_net_output():
     found = False
     for p in ["tcp", "udp", "tcp", "tcp6"]:
         path = os.path.join("/proc/net", p)
-        if not os.path.exists(p):
+        if not os.path.exists(path):
             continue
-        with open(p) as f:
+        with open(path) as f:
             if len(f.readlines()) > 1:  # account for header
                 found = True
                 break
