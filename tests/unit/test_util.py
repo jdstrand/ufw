@@ -658,11 +658,8 @@ class UtilTestCase(unittest.TestCase):
         search = "test string"
         ufw.util.msg_output = StringIO()
         ufw.util.write_to_file(sys.stdout.fileno(), search)
-        out = ufw.util.msg_output.getvalue()
-        if sys.version_info[0] >= 3:
-            search = bytes(search, "ascii")
-            out = bytes(out, "ascii")
-        self.assertEqual(out, search)
+        out = bytes(ufw.util.msg_output.getvalue(), "ascii")
+        self.assertEqual(out, bytes(search, "ascii"))
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -742,11 +739,8 @@ class UtilTestCase(unittest.TestCase):
         search = "test string"
         ufw.util.msg_output = StringIO()
         ufw.util.msg(search, newline=False)
-        out = ufw.util.msg_output.getvalue()
-        if sys.version_info[0] >= 3:
-            search = bytes(search, "ascii")
-            out = bytes(out, "ascii")
-        self.assertEqual(out, search)
+        out = bytes(ufw.util.msg_output.getvalue(), "ascii")
+        self.assertEqual(out, bytes(search, "ascii"))
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
