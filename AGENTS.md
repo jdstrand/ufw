@@ -128,6 +128,188 @@ practical, framework-level expertise of a Django/Flask/FastAPI developer.
 
 * Avoid `__import__()` or `importlib` with dynamic or user-controlled values.
 
+## Coding style
+
+* Code MUST conform to `black` coding style
+* Source file (outside `tests/` directory) MUST only use ASCII (no emojis or
+  UTF-8 symbols). Test files in the `tests/` directory may use emojis and UTF-8
+  as part of its tests as needed
+* All python source files (outside `tests/` directory) MUST use typing for
+  function definition arguments and return values. Typing must be compatible
+  with python 3.8.
+
+### Testing Best Practices
+
+#### Mock Usage Guidelines
+
+When writing tests, minimize mock usage to make tests more realistic and
+maintainable:
+
+**PREFER real interaction over mocking when possible:**
+* Simulate actual user input instead of mocking input functions
+* Use temporary files and directories instead of mocking file operations
+* Create real test data structures instead of mocking data sources
+* Use actual configuration setups with helper methods
+
+**MOCK only external dependencies and I/O operations:**
+* `subprocess.run`, `subprocess.call` - for external command execution
+* `shutil.which` - for checking command availability
+* `requests` or other network libraries - for API calls
+* `builtins.open` - only when simulating file read/write errors
+* `builtins.print` - only when verifying console output
+* External module imports that would cause side effects
+
+**DO NOT mock internal functions unless absolutely necessary:**
+* Test through public interfaces rather than mocking private functions
+* Avoid mocking helper functions - let them execute naturally
+* If a function is hard to test without mocking internals, consider refactoring
+
+
+**Common patterns to follow:**
+```python
+# GOOD: Simulate user input with a helper
+def test_interactive_function(self):
+    with mock.patch("builtins.input", side_effect=["y", "test", "n"]):
+        result = interactive_function()
+
+# GOOD: Use temporary directories for file operations
+def test_file_operations(self):
+    # For isolated, single-method use:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        result = process_files(tmpdir)
+
+# BETTER: Use the established self.tmpdir pattern for consistency:
+def setUp(self):
+    self.tmpdir = None
+
+def tearDown(self):
+    if self.tmpdir is not None:
+        tests.testutil.recursive_rm(self.tmpdir)
+
+def test_file_operations(self):
+    if self.tmpdir is None:
+        self.tmpdir = tempfile.mkdtemp(prefix="sedg-test-")
+    result = process_files(self.tmpdir)
+    # Helper methods can access self.tmpdir directly
+
+# AVOID: Over-mocking internal functions
+@mock.patch("module._internal_helper")
+@mock.patch("module._another_helper")
+@mock.patch("module._validate_data")
+def test_something(self, mock1, mock2, mock3):
+    # Too many mocks make tests brittle
+
+Test helper methods:
+* Create reusable helper methods for common test scenarios
+* Use context managers for test setup and teardown
+* Build test data factories for complex objects
+* Share common test utilities across test files
+
+Test Coverage Goals
+
+* Aim for 100% test coverage where achievable
+* When adding new code, ensure all branches are tested
+* Test both success and error paths
+* Test edge cases (empty inputs, None values, malformed data)
+* If a line seems unreachable, document why or refactor the code
+
+## AI agents working with the codebase
+
+### Temporary File Handling
+
+When creating temporary files or directories:
+
+* ALWAYS create them under `/tmp/ai-agent-*` where `*` is a random suffix
+* Use `mktemp -d /tmp/ai-agent-XXXXXX` for temporary directories
+* Use `mktemp /tmp/ai-agent-XXXXXX` for temporary files
+* Clean up temporary files/directories when done
+
+### Virtual Environment Setup
+
+**IMPORTANT: You MUST use an ai-specific virtual environment for all
+development work in this repository.**
+
+All commands below should be run from the top-level directory within the git
+repository.
+
+#### Initial Setup (one-time only)
+
+```sh
+# Navigate to the top-level directory
+$ cd "$(git rev-parse --show-toplevel)"
+
+# Create the AI-specific egg-info directory
+test ! -d ./ufw.egg-info_ai && mkdir ./ufw.egg-info_ai
+
+# Create the venv and install dependencies
+test ! -d ./.venv.ai && python3 -m venv ./.venv.ai && ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings editable_mode=compat --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
+```
+
+#### Activation (required for every session)
+
+**Always activate the venv before running any commands:**
+
+```sh
+# Activate from collectors directory
+cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
+```
+
+**Note:** Activating an already-active venv is harmless and can be done repeatedly.
+
+#### Troubleshooting
+
+**If tools from this repo or `python3 -m unittest` fail:**
+1. Check if venv is activated: `echo $VIRTUAL_ENV` (should show `.venv.ai`)
+2. Re-activate: `cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate`
+3. If still failing, recreate the venv:
+
+   ```sh
+   cd "$(git rev-parse --show-toplevel)"
+   test ! -d ./ufw.egg-info_ai && mkdir ./ufw.egg-info_ai
+   rm -rf ./.venv.ai
+   python3 -m venv ./.venv.ai
+   ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings editable_mode=compat --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
+   source ./.venv.ai/bin/activate
+   ```
+
+**Common issues:**
+- If pip install times out, increase the timeout to at least 300000ms (5 minutes)
+- If you see "No module named ufw", the editable install failed - recreate the venv
+- If commands fail with import errors, dependencies may not be fully installed - recreate the venv
+
+### Test commands
+
+**PREREQUISITE: Always ensure the venv is activated before running any tests:**
+```bash
+cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
+```
+
+* `python3 -m unittest tests.unit.<filename>.<class>.<test>`: run only a single
+  test
+* `python3 ./tests/unit/runner.py test_common.py`: run individual test script
+* `./run_tests.sh -s`: run all tests
+
+### Workflow
+
+**PREREQUISITE: Always ensure the venv is activated before starting any development work:**
+```bash
+cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
+```
+
+* For better performance when coding, you MUST first run single tests; when
+  satisfied, ONLY THEN run all tests from the updated test file; when
+  satisfied, ONLY THEN run all tests; ONLY THEN run all tests under coverage
+  and run the command for the coverage report. If at any point a test fails,
+  address the problem and re-run test sequence from the beginning.
+* Consider test coverage and add more tests if coverage is not good for the
+  added or updated code.
+* Use pyright to verify new code
+* Be sure to run `black` when you're done making a series of code changes
+* For better performance when coding, only run `make syntax-check` once before
+  presenting you completed work.
+* You MUST remove any trailing whitespace introduced by your work
+
+
 ## Final Goals for the AI-Generated Code
 
 * Every snippet must embed the security controls above without requiring
