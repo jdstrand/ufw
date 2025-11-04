@@ -40,6 +40,7 @@ def skipped(cls, s):
     """Test skipped"""
     # TODO: fix newline
     # TODO: somehow flag and count this as skipped
+    _ = cls  # for pyright
     print("skipped: %s" % s)
     return False
 
@@ -59,6 +60,8 @@ def recursive_rm(dirPath, contents_only=False):
 
 def initvars(install_dir):
     import ufw.common
+
+    _ = install_dir  # for pyright
 
     global tr
     tr = init_gettext()
@@ -87,7 +90,7 @@ def run_setup():
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
-    out, err = sp.communicate()
+    _, err = sp.communicate()
 
     if sp.returncode != 0:
         print("setup.py failed: %s" % err)
@@ -128,12 +131,6 @@ def init_gettext():
     import gettext
 
     kwargs = {}
-    if sys.version_info[0] < 3:
-        # In Python 2, ensure that the _() that gets installed into built-ins
-        # always returns unicodes.  This matches the default behavior under
-        # Python 3, although that keyword argument is not present in the Python
-        # 3 API.
-        kwargs["unicode"] = True
     gettext.install("ufw", **kwargs)
 
     # Internationalization

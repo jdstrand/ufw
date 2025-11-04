@@ -16,7 +16,6 @@
 #
 
 import re
-import sys
 import unittest
 import tests.unit.support
 import ufw.parser
@@ -110,7 +109,7 @@ class ParserTestCase(unittest.TestCase):
 
     def test_ufwcommandbasic_parse_with_arg(self):
         """Test UFWCommand.parse() - basic with arg"""
-        parser = ufw.parser.UFWParser()
+        ufw.parser.UFWParser()
         c = ufw.parser.UFWCommandBasic("enable")
         tests.unit.support.check_for_exception(
             self, ValueError, c.parse, ["enable", "OpenSSH"]
@@ -119,7 +118,7 @@ class ParserTestCase(unittest.TestCase):
     def test_ufwparser_response(self):
         """Test UFWParserResponse.str()"""
         cmd = "rule allow 22"
-        pr = self.parser.parse_command(cmd.split())
+        pr = self.parser.parse_command(list(cmd.split()))
         s = str(pr)
         search = repr(
             "action='allow',iptype='both',"
@@ -130,7 +129,7 @@ class ParserTestCase(unittest.TestCase):
         self.assertFalse(pr.force)
 
         cmd = "--dry-run rule allow 22"
-        pr = self.parser.parse_command(cmd.split())
+        pr = self.parser.parse_command(list(cmd.split()))
         s = str(pr)
         search = repr(
             "action='allow',iptype='both',"
@@ -141,7 +140,7 @@ class ParserTestCase(unittest.TestCase):
         self.assertFalse(pr.force)
 
         cmd = "--force rule allow 22"
-        pr = self.parser.parse_command(cmd.split())
+        pr = self.parser.parse_command(list(cmd.split()))
         s = str(pr)
         search = repr(
             "action='allow',iptype='both',"
@@ -167,7 +166,7 @@ class ParserTestCase(unittest.TestCase):
         """Test UFWParser.register_command()"""
         parser = ufw.parser.UFWParser()
         c = ufw.parser.UFWCommandBasic("enable")
-        c.command = None
+        c.command = None  # type: ignore[assignment]
         parser.register_command(c)
         self.assertTrue("basic" in parser.commands)
         self.assertTrue("basic" in parser.commands["basic"])
@@ -222,16 +221,9 @@ class ParserTestCase(unittest.TestCase):
 
             # First, feed the res rule into parse() (we need to split the
             # string but preserve quoted substrings
-            if sys.version_info[0] < 3:
-                test_cmd = [cmd[0]] + [
-                    p.strip("'").encode("utf-8")
-                    for p in re.split("( |'.*?')", res)
-                    if p.strip()
-                ]
-            else:
-                test_cmd = [cmd[0]] + [
-                    p.strip("'") for p in re.split("( |'.*?')", res) if p.strip()
-                ]
+            test_cmd = [cmd[0]] + [
+                p.strip("'") for p in re.split("( |'.*?')", res) if p.strip()
+            ]
             try:
                 self.parser.parse_command(test_cmd + [])
             except ufw.common.UFWError:
@@ -412,10 +404,7 @@ class ParserTestCase(unittest.TestCase):
             if comment != "":
                 cmd_compare.append("comment")
                 compare_str = " ".join(cmd_compare)
-                if sys.version_info[0] < 3:
-                    compare_str += " '%s'" % comment.decode("utf-8")
-                else:
-                    compare_str += " '%s'" % comment
+                compare_str += " '%s'" % comment
                 cmd_compare.append(comment)
             else:
                 compare_str = " ".join(cmd_compare)

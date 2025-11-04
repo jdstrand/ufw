@@ -19,7 +19,6 @@
 
 import unittest
 import tests.unit.support
-import ufw.backend
 import ufw.backend_iptables
 import ufw.common
 

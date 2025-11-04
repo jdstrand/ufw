@@ -31,6 +31,12 @@ from io import StringIO
 
 
 class BackendIptablesTestCase(unittest.TestCase):
+    ui: ufw.frontend.UFWFrontend
+    backend: ufw.backend_iptables.UFWBackendIptables
+    msg_output: StringIO | None
+    saved_msg_output: object
+    prevpath: str
+
     def setUp(self):
         ufw.common.do_checks = False
 
@@ -43,7 +49,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.ui = ufw.frontend.UFWFrontend(dryrun=True)
 
         # for convenience
-        self.backend = self.ui.backend
+        self.backend = self.ui.backend  # type: ignore[assignment]
 
         self.saved_msg_output = ufw.util.msg_output
         self.msg_output = None
@@ -69,9 +75,9 @@ class BackendIptablesTestCase(unittest.TestCase):
         os.rename(f + ".new", f)
 
     def tearDown(self):
-        self.ui.backend = None  # type: ignore  # Test teardown cleanup
-        self.ui = None
-        self.backend = None
+        self.ui.backend = None  # type: ignore[assignment]
+        self.ui = None  # type: ignore[assignment]
+        self.backend = None  # type: ignore[assignment]
         os.environ["PATH"] = self.prevpath
 
         for d in [ufw.common.state_dir, ufw.common.config_dir]:
@@ -337,18 +343,18 @@ ports=80/tcp
         """Test get_loglevel()"""
         for l in ["off", "low", "medium", "high"]:
             self.backend.set_loglevel(l)
-            (level, s) = self.backend.get_loglevel()
+            (_, s) = self.backend.get_loglevel()
             self.assertTrue(l in s, "Could not find '%s' in:\n%s" % (l, s))
 
         self.backend.defaults["loglevel"] = "nonexistent"
-        (level, s) = self.backend.get_loglevel()
+        (_, s) = self.backend.get_loglevel()
         self.assertTrue("unknown" in s, "Could not find 'unknown' in:\n%s" % s)
 
     def test_set_loglevel(self):
         """Test set_loglevel()"""
         for ll in ["off", "on", "low", "medium", "high"]:
             self.backend.set_loglevel(ll)
-            (level, s) = self.backend.get_loglevel()
+            (_, s) = self.backend.get_loglevel()
             if ll == "on":
                 ll = "low"
             self.assertTrue(ll in s, "Could not find '%s' in:\n%s" % (ll, s))
@@ -419,16 +425,19 @@ ports=80/tcp
         self.backend.rules6.append(pr3.data["rule"])
 
         res = self.backend.get_rule_by_number(1)
+        assert res is not None
         self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 0)
         self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
         self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
 
         res = self.backend.get_rule_by_number(2)
+        assert res is not None
         self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 0)
         self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
         self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
 
         res = self.backend.get_rule_by_number(3)
+        assert res is not None
         self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 0)
         self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
         self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
@@ -443,6 +452,7 @@ ports=80/tcp
         res = self.backend.get_rule_by_number(6)
         self.assertEqual(res, None)
         res = self.backend.get_rule_by_number(4)
+        assert res is not None
         self.assertEqual(ufw.common.UFWRule.match(res, pr4.data["rule"]), 1)
 
     def test_get_matching(self):

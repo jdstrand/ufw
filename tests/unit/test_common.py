@@ -21,6 +21,8 @@ import ufw.common
 
 
 class CommonTestCase(unittest.TestCase):
+    rules: dict[str, ufw.common.UFWRule]
+
     def setUp(self):
         self.rules = {
             "any": ufw.common.UFWRule("allow", "any"),
@@ -95,7 +97,7 @@ class CommonTestCase(unittest.TestCase):
         self.rules["log-all"].set_logtype("log-all")
 
     def tearDown(self):
-        self.rules = None
+        self.rules = None  # type: ignore[assignment]
 
     def test_ufwerror(self):
         """Test UFWError"""
@@ -104,7 +106,6 @@ class CommonTestCase(unittest.TestCase):
         except ufw.common.UFWError as e:
             self.assertEqual(e.value, "test", "'%s' != 'test'" % e.value)
             return
-        self.assertTrue(False, "Did not raise an error")
 
     def test_ufwerror_str(self):
         """Test UFWError.str()"""

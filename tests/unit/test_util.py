@@ -710,17 +710,15 @@ class UtilTestCase(unittest.TestCase):
         """Test cmd()"""
         (rc, report) = ufw.util.cmd(["ls", "/"])
         self.assertEqual(rc, 0, "Unexpected return code: %d" % rc)
-        self.assertTrue("etc" in report, "Could not find 'etc'in:\n%s" % report)
+        self.assertTrue("etc" in str(report), "Could not find 'etc'in:\n%s" % report)
         (rc, report) = ufw.util.cmd(["./nonexistent-command"])
         self.assertEqual(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_cmd_pipe(self):
         """Test cmd_pipe()"""
-        (rc, report) = ufw.util.cmd_pipe(["ls", "/"], ["grep", "-q", "etc"])
+        (rc, _) = ufw.util.cmd_pipe(["ls", "/"], ["grep", "-q", "etc"])
         self.assertEqual(rc, 0, "Unexpected return code: %d" % rc)
-        (rc, report) = ufw.util.cmd_pipe(
-            ["./nonexistent-command"], ["grep", "-q", "etc"]
-        )
+        (rc, _) = ufw.util.cmd_pipe(["./nonexistent-command"], ["grep", "-q", "etc"])
         self.assertEqual(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_error(self):
@@ -783,7 +781,7 @@ AAA
         s = "80,a222,a32,a2,b1,443,telnet,3,ZZZ,http"
         expected = "3,80,443,a2,a32,a222,b1,http,telnet,ZZZ"
 
-        tmp = s.split(",")
+        tmp: list[str] = s.split(",")  # type: ignore[assignment]
         ufw.util.human_sort(tmp)
         res = ",".join(tmp)
         self.assertEqual(str(res), expected)
@@ -799,8 +797,6 @@ AAA
 
     def test_get_ppid_no_space(self):
         """Test get_ppid() no space"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd) S 923 9983 ...\n")
@@ -811,8 +807,6 @@ AAA
 
     def test_get_ppid_with_space(self):
         """Test get_ppid() with space"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd with space) S 923 9983 ...\n")
@@ -823,8 +817,6 @@ AAA
 
     def test_get_ppid_with_parens(self):
         """Test get_ppid() with parens"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd(paren)) S 923 9983 ...\n")
@@ -1000,39 +992,39 @@ AAA
 
     def test_get_ip_from_if(self):
         """Test get_ip_from_if()"""
-        if sys.version_info[0] >= 3:
-            return tests.unit.support.skipped(self, "TODO: python3")
+        # TODO: implement for py3
+        #        ip = ufw.util.get_ip_from_if("lo", False)
+        #        self.assertTrue(ip.startswith("127"))
+        #
+        #        tests.unit.support.check_for_exception(
+        #            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
+        #        )
+        #
+        #        # just run through the code, we may not have an IPv6 address
+        #        try:
+        #            ufw.util.get_ip_from_if("lo", True)
+        #        except IOError:
+        #            pass
 
-        ip = ufw.util.get_ip_from_if("lo", False)
-        self.assertTrue(ip.startswith("127"))
-
-        tests.unit.support.check_for_exception(
-            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
-        )
-
-        # just run through the code, we may not have an IPv6 address
-        try:
-            ufw.util.get_ip_from_if("lo", True)
-        except IOError:
-            pass
+        return tests.unit.support.skipped(self, "TODO: python3")
 
     def test_get_if_from_ip(self):
         """Test get_if_from_ip()"""
-        if sys.version_info[0] >= 3:
-            return tests.unit.support.skipped(self, "TODO: python3")
+        # TODO: implement
+        #        iface = ufw.util.get_if_from_ip("127.0.0.1")
+        #        self.assertTrue(iface.startswith("lo"))
+        #        self.assertFalse(ufw.util.get_if_from_ip("127.255.255.255"))
+        #        tests.unit.support.check_for_exception(
+        #            self, IOError, ufw.util.get_if_from_ip, "nonexistent"
+        #        )
+        #
+        #        # just run through the code, we may not have an IPv6 address
+        #        try:
+        #            ufw.util.get_if_from_ip("::1")
+        #        except IOError:
+        #            pass
 
-        iface = ufw.util.get_if_from_ip("127.0.0.1")
-        self.assertTrue(iface.startswith("lo"))
-        self.assertFalse(ufw.util.get_if_from_ip("127.255.255.255"))
-        tests.unit.support.check_for_exception(
-            self, IOError, ufw.util.get_if_from_ip, "nonexistent"
-        )
-
-        # just run through the code, we may not have an IPv6 address
-        try:
-            ufw.util.get_if_from_ip("::1")
-        except IOError:
-            pass
+        return tests.unit.support.skipped(self, "TODO: python3")
 
     def test__get_proc_inodes(self):
         """Test _get_proc_inodes()"""
@@ -1085,9 +1077,6 @@ AAA
         """Test hex_decode() output"""
         s = "666f6ff09f918d626172e5ad9762617a"
         expected = "foo👍bar字baz"
-        if sys.version_info[0] < 3:
-            expected = "foo👍bar字baz"
-
         result = ufw.util.hex_decode(s)
         self.assertEqual(expected, result)
 
@@ -1095,8 +1084,6 @@ AAA
         # should result in the last (odd) hex digit being dropped and a decoded
         # string of one less character
         expected = "foo👍bar字ba"
-        if sys.version_info[0] < 3:
-            expected = "foo👍bar字ba"
         result = ufw.util.hex_decode(s[:-1])
         self.assertEqual(expected, result)
 
@@ -1105,8 +1092,6 @@ AAA
         # the first hex digit was removed, the byte sequence is shifted by one
         # which causes the whole string to be 'backslashreplace'd.
         expected = "f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
-        if sys.version_info[0] < 3:
-            expected = "f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
         result = ufw.util.hex_decode(s[1:])
         self.assertEqual(expected, result)
 

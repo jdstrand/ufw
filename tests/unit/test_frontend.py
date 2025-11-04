@@ -27,6 +27,10 @@ import ufw.util
 
 
 class FrontendTestCase(unittest.TestCase):
+    ui: ufw.frontend.UFWFrontend
+    msg_output: StringIO | None
+    saved_msg_output: object
+
     def setUp(self):
         ufw.common.do_checks = False
         iptables_dir = ""
@@ -60,7 +64,7 @@ class FrontendTestCase(unittest.TestCase):
             self.msg_output.close()
             self.msg_output = None
 
-        self.ui = None
+        self.ui = None  # type: ignore[assignment]
 
     def test_parse_command(self):
         """Test parse_command()"""
@@ -249,6 +253,7 @@ class FrontendTestCase(unittest.TestCase):
 
                 self.assertTrue(res != "", "Output is empty for '%s'" % c)
                 cmd = c.split()[0]
+                assert self.msg_output is not None
                 out = self.msg_output.getvalue()
                 if cmd in ["allow", "deny", "limit", "reject", "delete", "insert"]:
                     for search in ["*filter", "COMMIT"]:
