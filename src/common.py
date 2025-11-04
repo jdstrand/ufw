@@ -434,7 +434,7 @@ class UFWRule:
          -1  match all but action, log-type and/or comment
          -2  match all but comment
         """
-        assert(x and y)
+        assert x and y
 
         dbg_msg = "No match '%s' '%s'" % (x, y)
         if x.dport != y.dport:
@@ -529,7 +529,7 @@ class UFWRule:
 
             return False
 
-        assert(x and y)
+        assert x and y
 
         # Ok if exact match
         if UFWRule.match(x, y) == 0:

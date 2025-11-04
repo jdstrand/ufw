@@ -735,9 +735,7 @@ class UFWBackend(metaclass=abc.ABCMeta):
 
     # API overrides
     @abc.abstractmethod
-    def set_default_policy(
-        self, policy: str, direction: str
-    ) -> str:
+    def set_default_policy(self, policy: str, direction: str) -> str:
         """Set default policy for specified direction"""
         raise NotImplementedError  # pragma: nocover
 
@@ -767,9 +765,7 @@ class UFWBackend(metaclass=abc.ABCMeta):
         raise NotImplementedError  # pragma: nocover
 
     @abc.abstractmethod
-    def get_app_rules_from_system(
-        self, template: UFWRule, v6: bool
-    ) -> List[UFWRule]:
+    def get_app_rules_from_system(self, template: UFWRule, v6: bool) -> List[UFWRule]:
         """Get a list if rules based on template"""
         raise NotImplementedError  # pragma: nocover
 

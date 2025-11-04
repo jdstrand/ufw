@@ -1,4 +1,5 @@
 """backend_iptables.py: iptables backend for ufw"""
+
 #
 # Copyright 2008-2024 Canonical Ltd.
 # Copyright 2025 Jamie Strandboge
@@ -927,7 +928,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
 
         # Rate limiting is runtime supported
-        if (chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]) or (
+        if (
+            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
+        ) or (
             chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
         ):
             ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
@@ -1025,7 +1028,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, "### END LOGGING ###\n")
 
         # Rate limiting is runtime supported
-        if (chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]) or (
+        if (
+            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
+        ) or (
             chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
         ):
             ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
@@ -1074,11 +1079,19 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if not self.use_ipv6():
                 err_msg = tr("Adding IPv6 rule failed: IPv6 not enabled")
                 raise UFWError(err_msg)
-            if rule.action == "limit" and self.caps is not None and not self.caps["limit"]["6"]:
+            if (
+                rule.action == "limit"
+                and self.caps is not None
+                and not self.caps["limit"]["6"]
+            ):
                 # Rate limiting is runtime supported
                 return tr("Skipping unsupported IPv6 '%s' rule") % (rule.action)
         else:
-            if rule.action == "limit" and self.caps is not None and not self.caps["limit"]["4"]:
+            if (
+                rule.action == "limit"
+                and self.caps is not None
+                and not self.caps["limit"]["4"]
+            ):
                 # Rate limiting is runtime supported
                 return tr("Skipping unsupported IPv4 '%s' rule") % (rule.action)
 
@@ -1388,8 +1401,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Rate limiting is runtime supported
         # Always delete these and re-add them so that we don't have extras
         for chain in ["ufw-user-limit", "ufw6-user-limit"]:
-            if (self.caps is not None and self.caps["limit"]["4"] and chain == "ufw-user-limit") or (
-                self.caps is not None and self.caps["limit"]["6"] and chain == "ufw6-user-limit"
+            if (
+                self.caps is not None
+                and self.caps["limit"]["4"]
+                and chain == "ufw-user-limit"
+            ) or (
+                self.caps is not None
+                and self.caps["limit"]["6"]
+                and chain == "ufw6-user-limit"
             ):
                 self._chain_cmd(
                     chain,

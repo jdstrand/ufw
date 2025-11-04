@@ -1,4 +1,5 @@
 """frontend.py: frontend interface for ufw"""
+
 #
 # Copyright 2008-2024 Canonical Ltd.
 # Copyright 2025 Jamie Strandboge
@@ -606,7 +607,10 @@ class UFWFrontend:
                     except Exception:
                         # Don't fail, so we can try to backout more
                         undo_error = True
-                        warn_msg = tr("Could not back out rule '%s'") % backout_rule.format_rule()
+                        warn_msg = (
+                            tr("Could not back out rule '%s'")
+                            % backout_rule.format_rule()
+                        )
                         warn(warn_msg)
 
             err_msg += tr("\nError applying application rules.")
