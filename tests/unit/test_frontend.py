@@ -19,6 +19,7 @@ import unittest
 import os
 
 from io import StringIO
+from typing import Optional
 
 import tests.unit.support
 import ufw.common
@@ -28,7 +29,7 @@ import ufw.util
 
 class FrontendTestCase(unittest.TestCase):
     ui: ufw.frontend.UFWFrontend
-    msg_output: StringIO | None
+    msg_output: Optional[StringIO]
     saved_msg_output: object
 
     def setUp(self):

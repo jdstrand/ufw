@@ -18,10 +18,11 @@
 import unittest
 import tests.unit.support
 import ufw.common
+from typing import Dict
 
 
 class CommonTestCase(unittest.TestCase):
-    rules: dict[str, ufw.common.UFWRule]
+    rules: Dict[str, ufw.common.UFWRule]
 
     def setUp(self):
         self.rules = {
