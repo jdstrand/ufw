@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-config-file
+[tool.pyright]
+include = ["src", "tests/unit"]
+exclude = ["**/__pycache__"]
+venvPath = "./"
+venv = ".venv"

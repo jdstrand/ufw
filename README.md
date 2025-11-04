@@ -487,3 +487,13 @@ Eg:
 ```bash
 $ python3 -m unittest tests.unit.test_backend_iptables.BackendIptablesTestCase.test_get_status
 ```
+
+## venv
+
+Can setup a venv for dev tools with:
+
+```bash
+$ python3 -m venv .venv
+$ . ./.venv/bin/activate
+$ pip install -r ./requirements.txt .
+```

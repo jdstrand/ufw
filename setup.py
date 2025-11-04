@@ -26,8 +26,8 @@
 #
 
 from __future__ import print_function
-from distutils.command.install import install as _install
-from distutils.core import setup
+from setuptools.command.install import install as _install
+from setuptools import setup
 import errno
 import os
 import re
@@ -48,7 +48,7 @@ def cmd(command):
     return [sp.returncode,out]
 
 class Install(_install, object):
-    '''Override distutils to install the files where we want them.'''
+    '''Override setuptools to install the files where we want them.'''
     def run(self):
         if self.home != None and self.root != None:
             print("Don't specify --home and --root at same time")
@@ -235,10 +235,6 @@ class Install(_install, object):
                       user_rules, user6_rules ]:
             self.copy_file(f, rulesdir)
 
-if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    print("ERROR: Need at least python 2.6", file=sys.stderr)
-    sys.exit(1)
 
 if os.path.exists('staging'):
     shutil.rmtree('staging')

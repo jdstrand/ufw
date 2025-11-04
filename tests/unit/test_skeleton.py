@@ -28,19 +28,18 @@ class SkeletonTestCase(unittest.TestCase):
         pass
 
     def test_example(self):
-        '''Test example dummy test'''
+        """Test example dummy test"""
         import ufw.common
+
         try:
             raise ufw.common.UFWError("test")
         except ufw.common.UFWError:
             pass
 
 
-def test_main(): # used by runner.py
-    tests.unit.support.run_unittest(
-            SkeletonTestCase
-    )
+def test_main():  # used by runner.py
+    tests.unit.support.run_unittest(SkeletonTestCase)
 
 
-if __name__ == "__main__": # used when standalone
+if __name__ == "__main__":  # used when standalone
     unittest.main()

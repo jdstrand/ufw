@@ -16,6 +16,8 @@ snap
 parts/
 stage/
 prime/
+ufw.egg-info
 ufw_source.tar.bz2
 *.pyc
 *.swp
+.venv*

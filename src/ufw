@@ -24,17 +24,12 @@ import sys
 import warnings
 
 import ufw.frontend
-from ufw.common import UFWError
+from ufw.common import UFWError, programName, state_dir, trans_dir
 from ufw.util import error, warn, msg, _findpath, create_lock, release_lock
 
 import gettext
 kwargs = {}
-if sys.version_info[0] < 3:
-    # In Python 2, ensure that the _() that gets installed into built-ins
-    # always returns unicodes.  This matches the default behavior under Python
-    # 3, although that keyword argument is not present in the Python 3 API.
-    kwargs['unicode'] = True
-gettext.install(ufw.common.programName, **kwargs)
+gettext.install(programName, **kwargs)
 
 version = "#VERSION#"
 
@@ -57,27 +52,21 @@ for i in sys.argv:
         args.append(i)
 
 # Internationalization
-gettext.bindtextdomain(ufw.common.programName, \
-                       os.path.join(_findpath(ufw.common.trans_dir, rootdir),
+gettext.bindtextdomain(programName, \
+                       os.path.join(_findpath(trans_dir, rootdir),
                                     'messages'))
-gettext.textdomain(ufw.common.programName)
-try:
-    # BAW: I'm not sure why both this and the .install() above is here, but
-    # let's roll with it for now.  This is the Python 2 version, which ensures
-    # we get unicodes.
-    _ = gettext.ugettext
-except AttributeError:
-    # Python 3 always returns unicodes.
-    _ = gettext.gettext
-
-if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    msg(ufw.common.programName + _(": Need at least python 2.6)\n"), \
-        sys.stderr)
-    sys.exit(1)
+gettext.textdomain(programName)
+tr = gettext.gettext
 
 
 def clean_warning(message, category, filename, lineno, file=None, line=""):
+    # these are for pyright
+    _ = category  # unused
+    _ = filename  # unused
+    _ = lineno  # unused
+    _ = file  # unused
+    _ = line  # unused
+
     warn(message)
 
 
@@ -104,14 +93,17 @@ if __name__ == "__main__":
     except Exception:
         raise
 
+    assert(pr is not None)
+
     if pr.action == "help" or pr.action == "--help" or pr.action == "-h":
         msg(ufw.frontend.get_command_help())
         sys.exit(0)
     elif pr.action == "version" or pr.action == "--version":
-        msg(ufw.common.programName + " " + version)
+        msg(programName + " " + version)
         msg("Copyright 2008-2023 Canonical Ltd.")
         sys.exit(0)
 
+    ui = None
     try:
         ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir,
                                       datadir=datadir)
@@ -120,12 +112,14 @@ if __name__ == "__main__":
     except Exception:
         raise
 
+    assert(ui is not None)
+
     if datadir is None:
         lockfile = '/run/ufw.lock'
         if os.getuid() != 0 or 'TESTSTATE' in os.environ:
-            lockfile = os.path.join(ufw.common.state_dir, 'ufw.lock')
+            lockfile = os.path.join(state_dir, 'ufw.lock')
     else:
-        lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir),
+        lockfile = os.path.join(_findpath(state_dir, datadir),
                                 'ufw.lock')
 
     lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
@@ -137,7 +131,7 @@ if __name__ == "__main__":
             bailout = False
             if pr.action == "enable" and not pr.force and \
                not ui.continue_under_ssh():
-                res = _("Aborted")
+                res = tr("Aborted")
                 bailout = True
 
             if not bailout:
