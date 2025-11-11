@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools==80.9.0"]
+requires = ["setuptools==75.3.2"]
 build-backend = "setuptools.build_meta"
 
 # https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-config-file

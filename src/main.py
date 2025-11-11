@@ -33,31 +33,6 @@ gettext.install(programName, **kwargs)
 
 version = "#VERSION#"
 
-# relocate root and data directories if specified
-args = []
-rootdir = None
-datadir = None
-for i in sys.argv:
-    if i.startswith('--rootdir='):
-        if len(i.split('=')) == 2:
-            rootdir = i.split('=')[1]
-        else:
-            error('--rootdir is empty')
-    elif i.startswith('--datadir='):
-        if len(i.split('=')) == 2:
-            datadir = i.split('=')[1]
-        else:
-            error('--datadir is empty')
-    else:
-        args.append(i)
-
-# Internationalization
-gettext.bindtextdomain(programName, \
-                       os.path.join(_findpath(trans_dir, rootdir),
-                                    'messages'))
-gettext.textdomain(programName)
-tr = gettext.gettext
-
 
 def clean_warning(message, category, filename, lineno, file=None, line=""):
     # these are for pyright
@@ -70,7 +45,32 @@ def clean_warning(message, category, filename, lineno, file=None, line=""):
     warn(message)
 
 
-if __name__ == "__main__":
+def main_ufw():
+    # relocate root and data directories if specified
+    args = []
+    rootdir = None
+    datadir = None
+    for i in sys.argv:
+        if i.startswith('--rootdir='):
+            if len(i.split('=')) == 2:
+                rootdir = i.split('=')[1]
+            else:
+                error('--rootdir is empty')
+        elif i.startswith('--datadir='):
+            if len(i.split('=')) == 2:
+                datadir = i.split('=')[1]
+            else:
+                error('--datadir is empty')
+        else:
+            args.append(i)
+
+    # Internationalization
+    gettext.bindtextdomain(programName, \
+                           os.path.join(_findpath(trans_dir, rootdir),
+                                        'messages'))
+    gettext.textdomain(programName)
+    tr = gettext.gettext
+
     warnings.showwarning = clean_warning
     app_action = False
     pr = None
@@ -152,3 +152,7 @@ if __name__ == "__main__":
         release_lock(lock)
 
     sys.exit(0)
+
+
+if __name__ == "__main__":
+    main_ufw()
