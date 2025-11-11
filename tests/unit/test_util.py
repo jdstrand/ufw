@@ -1050,13 +1050,17 @@ AAA
 
                 # Check for TCP entries (ports 9999=270F and 80=0050)
                 self.assertTrue("tcp" in result, "Expected tcp protocol in result")
-                self.assertTrue("9999" in result["tcp"] or "80" in result["tcp"],
-                               "Expected port 9999 or 80 in tcp results")
+                self.assertTrue(
+                    "9999" in result["tcp"] or "80" in result["tcp"],
+                    "Expected port 9999 or 80 in tcp results",
+                )
 
                 # Check for UDP entries (ports 9998=270E and 53=0035)
                 self.assertTrue("udp" in result, "Expected udp protocol in result")
-                self.assertTrue("9998" in result["udp"] or "53" in result["udp"],
-                               "Expected port 9998 or 53 in udp results")
+                self.assertTrue(
+                    "9998" in result["udp"] or "53" in result["udp"],
+                    "Expected port 9998 or 53 in udp results",
+                )
 
                 # Test IPv6 (tcp6 + udp6)
                 result6 = ufw.util.parse_netstat_output(True)
@@ -1065,20 +1069,28 @@ AAA
                 self.assertTrue(len(result6) > 0, "Expected non-empty result for IPv6")
 
                 # Check for TCP6 entries (ports 9997=270D and 80=0050)
-                self.assertTrue("tcp6" in result6 or "tcp" in result6,
-                               "Expected tcp6 or tcp protocol in IPv6 result")
+                self.assertTrue(
+                    "tcp6" in result6 or "tcp" in result6,
+                    "Expected tcp6 or tcp protocol in IPv6 result",
+                )
                 # Get the tcp6 dict (could be keyed as "tcp6" or "tcp")
                 tcp6_dict = result6.get("tcp6", result6.get("tcp", {}))
-                self.assertTrue("9997" in tcp6_dict or "80" in tcp6_dict,
-                               "Expected port 9997 or 80 in tcp6 results")
+                self.assertTrue(
+                    "9997" in tcp6_dict or "80" in tcp6_dict,
+                    "Expected port 9997 or 80 in tcp6 results",
+                )
 
                 # Check for UDP6 entries (ports 9996=270C and 53=0035)
-                self.assertTrue("udp6" in result6 or "udp" in result6,
-                               "Expected udp6 or udp protocol in IPv6 result")
+                self.assertTrue(
+                    "udp6" in result6 or "udp" in result6,
+                    "Expected udp6 or udp protocol in IPv6 result",
+                )
                 # Get the udp6 dict (could be keyed as "udp6" or "udp")
                 udp6_dict = result6.get("udp6", result6.get("udp", {}))
-                self.assertTrue("9996" in udp6_dict or "53" in udp6_dict,
-                               "Expected port 9996 or 53 in udp6 results")
+                self.assertTrue(
+                    "9996" in udp6_dict or "53" in udp6_dict,
+                    "Expected port 9996 or 53 in udp6 results",
+                )
 
     def test_get_ip_from_if(self):
         """Test get_ip_from_if()"""

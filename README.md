@@ -40,33 +40,57 @@ use the `check-requirements` script in the `tests/` directory to see if your
 system has all the required `iptables`/netfilter functionality.
 
 
+## Build System
+
+`ufw` uses a Makefile for building and installing. For development workflows,
+`ufw` also includes a minimal `setup.py` that allows editable installations via
+`pip install -r requirements.txt -e .` (see Development Environment below).
+
+### Makefile Targets
+
+- `make build` - Build `ufw` in the staging directory
+- `make install` - Build and install `ufw` (requires build)
+- `make clean` - Remove build artifacts
+
+### Makefile Variables
+
+- `PYTHON` - Python interpreter to use (default: `python3`)
+- `DESTDIR` - Root directory for installation (for packaging)
+- `PREFIX` - Installation prefix (default: `/usr`)
+- `SYSCONFDIR` - System configuration directory (default: `/etc`)
+- `LIBDIR` - Library directory (default: `/lib`)
+- `DATADIR` - Data directory (default: `$(PREFIX)/share`)
+
 ## Install
 
 Users can install with:
 
 ```bash
-$ sudo python3 ./setup.py install            # root
-$ python3 ./setup.py install --home=PREFIX   # non-root
+$ sudo make install                             # system-wide installation
+$ make install DESTDIR=/path/to/staging         # for packaging (deb, rpm, etc)
+$ make install DESTDIR= PREFIX=/custom/path ... # custom location
 ```
 
-The interpreter used for setup.py is the one used for `ufw`. So if your system
-python is 3.10, but you have python3.13 available, use something like:
+To specify a different Python interpreter:
 
 ```bash
-$ python3.13 ./setup.py install --home=PREFIX
+$ make install PYTHON=python3.13
 ```
 
-Distributions which install to a build directory for packaging can install
-with:
+For packaging (e.g., Debian, RPM), use `DESTDIR` to install to a staging directory:
 
 ```bash
-$ python3 ./setup.py install --root=PREFIX
+$ make install DESTDIR=/tmp/ufw-staging
 ```
 
-Eg:
+For custom installation paths, override the path variables:
 
 ```bash
-$ python3 ./setup.py install --root=/tmp/ufw
+$ make install \
+    DESTDIR= \
+    PREFIX=/opt/ufw/usr \
+    SYSCONFDIR=/opt/ufw/etc \
+    LIBDIR=/opt/ufw/lib
 ```
 
 When installing `ufw` from source, you will also need to integrate it into your
@@ -391,47 +415,19 @@ number.
 
 ## Testing
 
-```bash
-$ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
-$ UFW_SKIP_CHECKS=1 python3 ./setup.py install --home=/tmp/ufw
-```
-
-(`ufw` does a number of checks since it is normally run as root. When testing,
-this is usually not the case, so you can use `UFW_SKIP_CHECKS=1` with
-`setup.py` to disable these checks.)
-
-Now do:
-
-```bash
-$ /tmp/ufw/usr/sbin/ufw help
-```
-
-Here is a command to do it all at once:
-
-```bash
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && UFW_SKIP_CHECKS=1 python3 ./setup.py install --home=/tmp/ufw
-```
-
-Then test with:
-
-```bash
-$ PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ...
-$ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ..."
-```
-
-Can also just run from the source directory:
+To run the test suite:
 
 ```bash
 $ ./run_tests.sh -s
 ```
 
-You may also specify an interpreter for the tests. Eg:
+You may also specify an interpreter for the tests:
 
 ```bash
 $ ./run_tests.sh -s -i /usr/local/bin/python3.13
 ```
 
-Or for the root tests (these are `iptables` version dependent, will modify your
+For the root tests (these are `iptables` version dependent, will modify your
 existing firewall and insert kernel modules, so they require root privileges
 and aren't run by default):
 
@@ -443,52 +439,61 @@ Finally, `ufw`'s behavior may differ based on available kernel features. The
 `root_kern` tests assume all kernel features supported by `check-requirements`
 are enabled. They behave just like the root tests.
 
+### Manual Testing
+
+To test `ufw` in a custom location:
+
+```bash
+$ UFW_SKIP_CHECKS=1 make install DESTDIR= PREFIX=/tmp/ufw/usr SYSCONFDIR=/tmp/ufw/etc LIBDIR=/tmp/ufw/lib
+```
+
+(`ufw` does a number of checks since it is normally run as root. When testing,
+this is usually not the case, so you can use `UFW_SKIP_CHECKS=1` to disable
+these checks.)
+
+Then test with:
+
+```bash
+$ PYTHONPATH=/tmp/ufw/usr/lib/python3/dist-packages /tmp/ufw/usr/sbin/ufw help
+$ sudo sh -c "PYTHONPATH=/tmp/ufw/usr/lib/python3/dist-packages /tmp/ufw/usr/sbin/ufw ..."
+```
+
 
 ## Unit Tests
 
-`ufw` unit tests are in `tests/unit` and can be called like so:
+`ufw` unit tests are in `tests/unit` and are run as part of `./run_tests.sh`.
 
-```bash
-$ make unittest
-```
-
-This is equivalent to something like:
-
-```bash
-$ python3 ./tests/unit/runner.py
-```
-
-Alternatively, can install `python-coverage` and do:
-
-```bash
-$ make coverage         # like 'unittest', but with -m coverage
-$ make coverage-report
-```
-
-To run an individual test script, use:
-
-```bash
-$ python3 ./tests/unit/runner.py test_<individual test script>.py
-```
-
-Or to run an individual test, use:
+To run individual unit tests directly:
 
 ```bash
 $ python3 -m unittest tests.unit.<filename>.<class>.<test>
 ```
 
-Eg:
+For example:
 
 ```bash
 $ python3 -m unittest tests.unit.test_backend_iptables.BackendIptablesTestCase.test_get_status
 ```
 
-## venv
+## Development Environment
 
-Can setup a venv for dev tools with:
+For development, you can set up a virtual environment with editable install:
 
 ```bash
 $ python3 -m venv .venv
-$ . ./.venv/bin/activate
-$ pip install -r ./requirements.txt .
+$ source .venv/bin/activate
+$ pip install -r ./requirements.txt -e .
+```
+
+This creates an editable installation where changes to the source code are
+immediately reflected without reinstalling. The test suite (`./run_tests.sh`)
+automatically uses the venv Python if `VIRTUAL_ENV` is set.
+
+Within this environment, you can run various linters and coverage. Eg:
+
+```bash
+$ python3 -m coverage run ./tests/unit/runner.py
+...
+
+$ python3 -m coverage report --show-missing --omit="tests/*"
 ```

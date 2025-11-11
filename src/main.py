@@ -28,6 +28,7 @@ from ufw.common import UFWError, programName, state_dir, trans_dir
 from ufw.util import error, warn, msg, _findpath, create_lock, release_lock
 
 import gettext
+
 kwargs = {}
 gettext.install(programName, **kwargs)
 
@@ -51,23 +52,23 @@ def main_ufw():
     rootdir = None
     datadir = None
     for i in sys.argv:
-        if i.startswith('--rootdir='):
-            if len(i.split('=')) == 2:
-                rootdir = i.split('=')[1]
+        if i.startswith("--rootdir="):
+            if len(i.split("=")) == 2:
+                rootdir = i.split("=")[1]
             else:
-                error('--rootdir is empty')
-        elif i.startswith('--datadir='):
-            if len(i.split('=')) == 2:
-                datadir = i.split('=')[1]
+                error("--rootdir is empty")
+        elif i.startswith("--datadir="):
+            if len(i.split("=")) == 2:
+                datadir = i.split("=")[1]
             else:
-                error('--datadir is empty')
+                error("--datadir is empty")
         else:
             args.append(i)
 
     # Internationalization
-    gettext.bindtextdomain(programName, \
-                           os.path.join(_findpath(trans_dir, rootdir),
-                                        'messages'))
+    gettext.bindtextdomain(
+        programName, os.path.join(_findpath(trans_dir, rootdir), "messages")
+    )
     gettext.textdomain(programName)
     tr = gettext.gettext
 
@@ -93,7 +94,7 @@ def main_ufw():
     except Exception:
         raise
 
-    assert(pr is not None)
+    assert pr is not None
 
     if pr.action == "help" or pr.action == "--help" or pr.action == "-h":
         msg(ufw.frontend.get_command_help())
@@ -105,39 +106,37 @@ def main_ufw():
 
     ui = None
     try:
-        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir,
-                                      datadir=datadir)
+        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir, datadir=datadir)
     except UFWError as e:
         error(e.value)
     except Exception:
         raise
 
-    assert(ui is not None)
+    assert ui is not None
 
     if datadir is None:
-        lockfile = '/run/ufw.lock'
-        if os.getuid() != 0 or 'TESTSTATE' in os.environ:
-            lockfile = os.path.join(state_dir, 'ufw.lock')
+        lockfile = "/run/ufw.lock"
+        if os.getuid() != 0 or "TESTSTATE" in os.environ:
+            lockfile = os.path.join(state_dir, "ufw.lock")
     else:
-        lockfile = os.path.join(_findpath(state_dir, datadir),
-                                'ufw.lock')
+        lockfile = os.path.join(_findpath(state_dir, datadir), "ufw.lock")
 
     lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
     res = ""
     try:
-        if app_action and 'type' in pr.data and pr.data['type'] == 'app':
-            res = ui.do_application_action(pr.action, pr.data['name'])
+        if app_action and "type" in pr.data and pr.data["type"] == "app":
+            res = ui.do_application_action(pr.action, pr.data["name"])
         else:
             bailout = False
-            if pr.action == "enable" and not pr.force and \
-               not ui.continue_under_ssh():
+            if pr.action == "enable" and not pr.force and not ui.continue_under_ssh():
                 res = tr("Aborted")
                 bailout = True
 
             if not bailout:
-                if 'rule' in pr.data:
-                    res = ui.do_action(pr.action, pr.data['rule'], \
-                                       pr.data['iptype'], pr.force)
+                if "rule" in pr.data:
+                    res = ui.do_action(
+                        pr.action, pr.data["rule"], pr.data["iptype"], pr.force
+                    )
                 else:
                     res = ui.do_action(pr.action, "", "", pr.force)
 
