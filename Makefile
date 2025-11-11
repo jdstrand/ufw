@@ -214,7 +214,8 @@ man-check:
 check: man-check test unittest
 
 syntax-check: clean
-	@echo "TODO"
+	./tests/run-flake8
+	./tests/run-pylint
 
 style-check: clean
 	./tests/run-black
@@ -222,7 +223,7 @@ style-check: clean
 style-fix: clean
 	black ./src/*.py ./tests/*/*.py
 
-tarball: syntax-check clean translations
+tarball: style-check syntax-check clean translations
 	@echo "Creating tarball for version $(VERSION)..."
 	mkdir -p $(TARBALLS)
 	cp -a . $(TARSRC)
