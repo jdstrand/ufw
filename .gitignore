@@ -6,6 +6,7 @@ tests/testarea
 locales/mo/*.mo
 debian/ufw
 build-stamp
+.claude*
 .coverage
 ufw/
 src/__pycache__
