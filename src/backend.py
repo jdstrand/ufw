@@ -334,7 +334,7 @@ class UFWBackend(metaclass=abc.ABCMeta):
 
             orig.close()
 
-        # do some default policy sanity checking
+        # do some quick default policy checking
         policies = ["accept", "drop", "reject"]
         for c in ["input", "output", "forward"]:
             if "default_%s_policy" % (c) not in self.defaults:
