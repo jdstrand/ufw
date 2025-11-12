@@ -223,7 +223,18 @@ style-check: clean
 style-fix: clean
 	black ./src/*.py ./tests/*/*.py
 
-tarball: style-check syntax-check clean translations
+# require language-checker to be installed in CI but not one local system
+inclusivity-check: clean
+	@echo "\n# Check for non-inclusive language"; \
+	if test -n "$(CI)" ; then \
+		language-checker --exit-1-on-failure . ; \
+	elif which language-checker >/dev/null ; then \
+		language-checker --exit-1-on-failure . ; \
+	else \
+		echo "Could not find language-checker!" ; \
+	fi \
+
+tarball: style-check inclusivity-check syntax-check clean translations
 	@echo "Creating tarball for version $(VERSION)..."
 	mkdir -p $(TARBALLS)
 	cp -a . $(TARSRC)
