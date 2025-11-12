@@ -309,6 +309,38 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 * `make style-check` - check code formatting with black
 * `make style-fix` - auto-format code with black
 
+**Debugging test failures:**
+
+When a functional test fails, the error message will show:
+```
+FAILED tests/<class>/<testname> -- result found in tests/testarea/tmp/result
+For more information, see:
+diff -Naur tests/<class>/<testname>/result tests/testarea/tmp/result
+```
+
+To debug:
+1. Run the diff command shown to see what changed
+2. Check `tests/testarea/tmp/result` for actual output
+3. Check `tests/<class>/<testname>/result` for expected output
+4. Examine `tests/<class>/<testname>/runtest.sh` to understand what the test does
+5. Functional tests install to `tests/testarea/` with this structure:
+   - `tests/testarea/usr/sbin/ufw` - installed ufw command
+   - `tests/testarea/usr/lib/python3/dist-packages/ufw/` - installed Python package
+   - `tests/testarea/etc/ufw/` - configuration files
+   - `tests/testarea/tmp/result` - test output
+
+**Running individual functional tests:**
+```bash
+# Run a specific functional test category
+./run_tests.sh -s good/reports
+
+# Run with -s to stop on first failure
+./run_tests.sh -s
+
+# Run without -s to see all failures
+./run_tests.sh
+```
+
 ### Workflow
 
 **PREREQUISITE: Always ensure the venv is activated before starting any development work:**
