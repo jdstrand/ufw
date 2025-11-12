@@ -80,12 +80,18 @@ if [ "$1" = "-i" ]; then
     shift
 fi
 if [ -z "$interpreter" ]; then
-    for exe in python3 python2 python ; do
-        if which $exe >/dev/null 2>&1; then
-            interpreter="$exe"
-            break
+    # Check if we're in a venv and use that python3
+    if [ -n "$VIRTUAL_ENV" ] && [ -x "$VIRTUAL_ENV/bin/python3" ]; then
+        interpreter="$VIRTUAL_ENV/bin/python3"
+    else
+        # Fall back to system python3
+        if which python3 >/dev/null 2>&1; then
+            interpreter="python3"
+        else
+            echo "ERROR: could not find python3. Aborting." >&2
+            exit 1
         fi
-    done
+    fi
 fi
 # export the interpreter so the tests can use it too
 export interpreter="$interpreter"
@@ -220,14 +226,15 @@ do
         # like building things as root, but some people do...
         export UFW_SKIP_CHECKS="1"
 
-        setup_output=`$interpreter ./setup.py install --home="$install_dir" 2>&1`
+        setup_output=`make install DESTDIR= PREFIX="$install_dir/usr" SYSCONFDIR="$install_dir/etc" LIBDIR="$install_dir/lib" 2>&1`
         if [ "$?" != "0" ]; then
             echo "$setup_output"
             exit 1
         fi
 
         # make the installed user rules files available to tests
-        find "$TESTPATH" -name "user*.rules" -exec cp {} {}.orig \;
+        cp "$TESTPATH/etc/ufw/user.rules" "$TESTPATH/etc/ufw/user.rules.orig"
+        cp "$TESTPATH/etc/ufw/user6.rules" "$TESTPATH/etc/ufw/user6.rules.orig"
 
         cp -rL $testdir/$class/$thistest/orig/* "$TESTPATH/etc" || exit 1
         cp -f $testdir/$class/$thistest/runtest.sh "$TESTPATH" || exit 1
@@ -239,7 +246,7 @@ do
         echo "- result: "
         numtests=$(($numtests + 1))
         # now run the test
-        PYTHONPATH="$PYTHONPATH:$install_dir/lib/python" "$TESTPATH/runtest.sh"
+        PYTHONPATH="$PYTHONPATH:$install_dir/usr/lib/python3/dist-packages" "$TESTPATH/runtest.sh"
         if [ "$?" != "0" ];then
             echo "    ** FAIL **"
             errors=$(($errors + 1))

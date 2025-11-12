@@ -90,7 +90,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:  # kill this test, but still do others
             print("")
             break
-        except TestFailed as e:
+        except TestFailed:
             failed.append(test)
         except Exception:
             raise

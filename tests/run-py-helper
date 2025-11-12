@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+exe=
+args=
+case "$1" in
+    flake8)
+        exe="$1"
+        ;;
+    black)
+        exe="$1"
+        # for now, only check
+        args="--check --diff --quiet"
+        ;;
+    pylint3|pylint)
+        exe="$1"
+        # for now, only errors
+        args="-E --disable=no-member"
+        ;;
+    *)
+        echo "run-helper black|flake8|pylint3|pylint"
+        exit 1
+        ;;
+esac
+
+echo "= $exe ="
+for i in ./src/*py ./tests/*/*py ; do
+    echo "Checking $i"
+    #shellcheck disable=2086
+    PYTHONPATH=./ "$exe" $args "$i"
+done

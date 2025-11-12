@@ -398,7 +398,10 @@ def human_sort(lst: List[str]) -> None:
     sorts to:
     ['3', '80', '443', 'a2', 'a32', 'a222', 'b1', 'http', 'telnet', 'ZZZ']
     """
-    norm = lambda t: int(t) if t.isdigit() else t.lower()
+
+    def norm(t):
+        return int(t) if t.isdigit() else t.lower()
+
     lst.sort(key=lambda k: [norm(c) for c in re.split("([0-9]+)", k)])
 
 

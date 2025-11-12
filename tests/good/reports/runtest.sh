@@ -133,11 +133,11 @@ fi
 
 echo "show listening" >> $TESTTMP/result
 echo "(update util.py to use our cached output)" >> $TESTTMP/result
-cp -f $TESTPATH/lib/python/ufw/util.py $TESTPATH/lib/python/ufw/util.py.bak
-sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n\\1return normalize_address(addr, v6)[0]\n\\1\\2#" $TESTPATH/lib/python/ufw/util.py
+cp -f $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py.bak
+sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
+sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
+sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
+sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n\\1return normalize_address(addr, v6)[0]\n\\1\\2#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
 
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 
@@ -240,7 +240,7 @@ for i in "" "in on eth0" ; do
 done
 
 echo "show listening (live) with rules" >> $TESTTMP/result
-cp -f $TESTPATH/lib/python/ufw/util.py.bak $TESTPATH/lib/python/ufw/util.py
+cp -f $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py.bak $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
 do_cmd "0" null allow 13/tcp
 do_cmd "0" null allow 123/udp
 do_cmd "0" null show listening

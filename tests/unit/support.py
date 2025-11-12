@@ -84,17 +84,40 @@ def run_setup():
         recursive_rm(topdir)
     os.mkdir(topdir)
 
+    # Use make install with test-specific paths
+    # For testing, we need absolute paths baked into the installed files
+    abs_install_dir = os.path.abspath(install_dir)
+
+    env = os.environ.copy()
+    env["UFW_SKIP_CHECKS"] = "1"
+
     sp = subprocess.Popen(
-        [sys.executable, "./setup.py", "install", "--home=%s" % install_dir],
+        [
+            "make",
+            "install",
+            "DESTDIR=",
+            "PREFIX=%s/usr" % abs_install_dir,
+            "SYSCONFDIR=%s/etc" % abs_install_dir,
+            "LIBDIR=%s/lib" % abs_install_dir,
+        ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         universal_newlines=True,
+        env=env,
     )
     _, err = sp.communicate()
 
     if sp.returncode != 0:
-        print("setup.py failed: %s" % err)
+        print("make install failed: %s" % err)
         sys.exit(1)
+
+    # Add the installed Python modules to sys.path
+    # With DEB_PYTHON_INSTALL_LAYOUT=deb, modules are in usr/lib/python3/dist-packages
+    python_path = os.path.join(
+        abs_install_dir, "usr", "lib", "python3", "dist-packages"
+    )
+    if os.path.exists(python_path):
+        sys.path.insert(0, python_path)
 
     return install_dir
 
@@ -446,7 +469,7 @@ def get_sample_rule_commands_extended(v6=False):
 def has_proc_net_output():
     """Determine if /proc/net/tcp|udp[6] have useful information"""
     found = False
-    for p in ["tcp", "udp", "tcp", "tcp6"]:
+    for p in ["tcp", "udp", "tcp6", "udp6"]:
         path = os.path.join("/proc/net", p)
         if not os.path.exists(path):
             continue

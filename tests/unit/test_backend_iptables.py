@@ -342,10 +342,10 @@ ports=80/tcp
 
     def test_get_loglevel(self):
         """Test get_loglevel()"""
-        for l in ["off", "low", "medium", "high"]:
-            self.backend.set_loglevel(l)
+        for level in ["off", "low", "medium", "high"]:
+            self.backend.set_loglevel(level)
             (_, s) = self.backend.get_loglevel()
-            self.assertTrue(l in s, "Could not find '%s' in:\n%s" % (l, s))
+            self.assertTrue(level in s, "Could not find '%s' in:\n%s" % (level, s))
 
         self.backend.defaults["loglevel"] = "nonexistent"
         (_, s) = self.backend.get_loglevel()

@@ -976,13 +976,121 @@ AAA
 
     def test_parse_netstat_output(self):
         """Test parse_netstat_output()"""
-        min_out = 1
-        if not tests.unit.support.has_proc_net_output():
-            min_out = 0
+        # parse_netstat_output only returns LISTEN sockets, which may not
+        # exist in all test environments. Just verify it doesn't crash
+        # and returns a valid dict (empty is valid).
         s = ufw.util.parse_netstat_output(False)
-        self.assertTrue(len(s) >= min_out)
+        self.assertTrue(isinstance(s, dict))
         s = ufw.util.parse_netstat_output(True)
-        self.assertTrue(len(s) >= min_out)
+        self.assertTrue(isinstance(s, dict))
+
+    def test_parse_netstat_output_mocked(self):
+        """Test parse_netstat_output() with mocked /proc/net data"""
+        import unittest.mock as mock
+        import tempfile
+        import os
+
+        # Real /proc/net data captured from live listeners
+        # TCP: port 9999 (270F hex) LISTEN (0A), port 80 (0050 hex) LISTEN (0A),
+        #      port 8080 (1F90 hex) TIME_WAIT (06) - should be filtered out
+        tcp_data = """  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+   0: 00000000:270F 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 42166299 1 0000000000000000 100 0 0 10 0
+   1: 0100007F:0050 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 12345 1 0000000000000000 100 0 0 10 0
+   2: 0100007F:1F90 00000000:0000 06 00000000:00000000 03:00001063 00000000     0        0 67890 3 0000000000000000
+"""
+
+        # UDP: port 9998 (270E hex), port 53 (0035 hex) - all states included
+        udp_data = """  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+ 6033: 0100007F:270E 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 42166317 2 0000000000000000 0
+ 6034: 00000000:0035 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 23456 2 0000000000000000 0
+"""
+
+        # TCP6: port 9997 (270D hex) LISTEN (0A), port 80 (0050 hex) LISTEN (0A)
+        tcp6_data = """  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+   0: 00000000000000000000000001000000:270D 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 42162559 1 0000000000000000 100 0 0 10 0
+   1: 00000000000000000000000000000000:0050 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 34567 1 0000000000000000 100 0 0 10 0
+"""
+
+        # UDP6: port 9996 (270C hex), port 53 (0035 hex)
+        udp6_data = """  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+ 6031: 00000000000000000000000001000000:270C 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 42161567 2 0000000000000000 0
+ 6032: 00000000000000000000000000000000:0035 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 45678 2 0000000000000000 0
+"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create mock /proc/net files
+            proc_net = os.path.join(tmpdir, "net")
+            os.makedirs(proc_net)
+
+            with open(os.path.join(proc_net, "tcp"), "w") as f:
+                f.write(tcp_data)
+            with open(os.path.join(proc_net, "udp"), "w") as f:
+                f.write(udp_data)
+            with open(os.path.join(proc_net, "tcp6"), "w") as f:
+                f.write(tcp6_data)
+            with open(os.path.join(proc_net, "udp6"), "w") as f:
+                f.write(udp6_data)
+
+            # Patch open() to redirect /proc/net/* to our tmpdir
+            original_open = open
+
+            def mock_open(filename, *args, **kwargs):
+                if isinstance(filename, str) and filename.startswith("/proc/net/"):
+                    protocol = os.path.basename(filename)
+                    mock_file = os.path.join(proc_net, protocol)
+                    return original_open(mock_file, *args, **kwargs)
+                return original_open(filename, *args, **kwargs)
+
+            with mock.patch("builtins.open", side_effect=mock_open):
+                # Test IPv4 (tcp + udp)
+                result = ufw.util.parse_netstat_output(False)
+
+                # Should have entries for tcp and udp protocols
+                self.assertTrue(len(result) > 0, "Expected non-empty result for IPv4")
+
+                # Check for TCP entries (ports 9999=270F and 80=0050)
+                self.assertTrue("tcp" in result, "Expected tcp protocol in result")
+                self.assertTrue(
+                    "9999" in result["tcp"] or "80" in result["tcp"],
+                    "Expected port 9999 or 80 in tcp results",
+                )
+
+                # Check for UDP entries (ports 9998=270E and 53=0035)
+                self.assertTrue("udp" in result, "Expected udp protocol in result")
+                self.assertTrue(
+                    "9998" in result["udp"] or "53" in result["udp"],
+                    "Expected port 9998 or 53 in udp results",
+                )
+
+                # Test IPv6 (tcp6 + udp6)
+                result6 = ufw.util.parse_netstat_output(True)
+
+                # Should have entries for tcp6 and udp6 protocols
+                self.assertTrue(len(result6) > 0, "Expected non-empty result for IPv6")
+
+                # Check for TCP6 entries (ports 9997=270D and 80=0050)
+                self.assertTrue(
+                    "tcp6" in result6 or "tcp" in result6,
+                    "Expected tcp6 or tcp protocol in IPv6 result",
+                )
+                # Get the tcp6 dict (could be keyed as "tcp6" or "tcp")
+                tcp6_dict = result6.get("tcp6", result6.get("tcp", {}))
+                self.assertTrue(
+                    "9997" in tcp6_dict or "80" in tcp6_dict,
+                    "Expected port 9997 or 80 in tcp6 results",
+                )
+
+                # Check for UDP6 entries (ports 9996=270C and 53=0035)
+                self.assertTrue(
+                    "udp6" in result6 or "udp" in result6,
+                    "Expected udp6 or udp protocol in IPv6 result",
+                )
+                # Get the udp6 dict (could be keyed as "udp6" or "udp")
+                udp6_dict = result6.get("udp6", result6.get("udp", {}))
+                self.assertTrue(
+                    "9996" in udp6_dict or "53" in udp6_dict,
+                    "Expected port 9996 or 53 in udp6 results",
+                )
 
     def test_get_ip_from_if(self):
         """Test get_ip_from_if()"""

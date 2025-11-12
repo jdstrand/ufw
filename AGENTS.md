@@ -229,6 +229,12 @@ When creating temporary files or directories:
 **IMPORTANT: You MUST use an ai-specific virtual environment for all
 development work in this repository.**
 
+This repository uses `.venv.ai` for AI agent work to isolate the egg-info
+directory (`./ufw.egg-info_ai/`) from the standard user setup (`.venv` with
+default egg-info location). This prevents conflicts when both humans and AI
+agents are working on the codebase. See README.md for general development
+environment setup.
+
 All commands below should be run from the top-level directory within the git
 repository.
 
@@ -242,7 +248,7 @@ $ cd "$(git rev-parse --show-toplevel)"
 test ! -d ./ufw.egg-info_ai && mkdir ./ufw.egg-info_ai
 
 # Create the venv and install dependencies
-test ! -d ./.venv.ai && python3 -m venv ./.venv.ai && ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings editable_mode=compat --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
+test ! -d ./.venv.ai && python3 -m venv ./.venv.ai && ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
 ```
 
 #### Activation (required for every session)
@@ -250,11 +256,15 @@ test ! -d ./.venv.ai && python3 -m venv ./.venv.ai && ./.venv.ai/bin/pip install
 **Always activate the venv before running any commands:**
 
 ```sh
-# Activate from collectors directory
+# Activate the venv
 cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 ```
 
 **Note:** Activating an already-active venv is harmless and can be done repeatedly.
+
+**Automatic detection:** The test suite (`./run_tests.sh`) automatically uses the
+venv Python interpreter when `VIRTUAL_ENV` is set, so you don't need to specify
+the interpreter explicitly.
 
 #### Troubleshooting
 
@@ -268,7 +278,7 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
    test ! -d ./ufw.egg-info_ai && mkdir ./ufw.egg-info_ai
    rm -rf ./.venv.ai
    python3 -m venv ./.venv.ai
-   ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings editable_mode=compat --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
+   ./.venv.ai/bin/pip install -r ./requirements.txt -e . --config-settings "--global-option=egg_info" --config-settings "--global-option=--egg-base=./ufw.egg-info_ai"
    source ./.venv.ai/bin/activate
    ```
 
@@ -284,10 +294,52 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 ```
 
-* `python3 -m unittest tests.unit.<filename>.<class>.<test>`: run only a single
-  test
-* `python3 ./tests/unit/runner.py test_common.py`: run individual test script
-* `./run_tests.sh -s`: run all tests
+**Individual tests:**
+* `python3 -m unittest tests.unit.<filename>.<class>.<test>` - run a single test
+* `python3 ./tests/unit/runner.py` - run all unit tests
+* `./run_tests.sh -s` - run all tests (unit + functional)
+* `./run_tests.sh -s unit` - run only unit tests
+
+**Make targets:**
+* `make test` - run all tests (unit + functional)
+* `make unittest` - run only unit tests
+* `make coverage` - run unit tests with coverage
+* `make coverage-report` - show coverage report with missing lines
+* `make syntax-check` - run flake8 and pylint
+* `make style-check` - check code formatting with black
+* `make style-fix` - auto-format code with black
+
+**Debugging test failures:**
+
+When a functional test fails, the error message will show:
+```
+FAILED tests/<class>/<testname> -- result found in tests/testarea/tmp/result
+For more information, see:
+diff -Naur tests/<class>/<testname>/result tests/testarea/tmp/result
+```
+
+To debug:
+1. Run the diff command shown to see what changed
+2. Check `tests/testarea/tmp/result` for actual output
+3. Check `tests/<class>/<testname>/result` for expected output
+4. Examine `tests/<class>/<testname>/runtest.sh` to understand what the test does
+5. Functional tests install to `tests/testarea/` with this structure:
+   - `tests/testarea/usr/sbin/ufw` - installed ufw command
+   - `tests/testarea/usr/lib/python3/dist-packages/ufw/` - installed Python package
+   - `tests/testarea/etc/ufw/` - configuration files
+   - `tests/testarea/tmp/result` - test output
+
+**Running individual functional tests:**
+```bash
+# Run a specific functional test category
+./run_tests.sh -s good/reports
+
+# Run with -s to stop on first failure
+./run_tests.sh -s
+
+# Run without -s to see all failures
+./run_tests.sh
+```
 
 ### Workflow
 
@@ -296,18 +348,37 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 ```
 
-* For better performance when coding, you MUST first run single tests; when
-  satisfied, ONLY THEN run all tests from the updated test file; when
-  satisfied, ONLY THEN run all tests; ONLY THEN run all tests under coverage
-  and run the command for the coverage report. If at any point a test fails,
-  address the problem and re-run test sequence from the beginning.
-* Consider test coverage and add more tests if coverage is not good for the
-  added or updated code.
-* Use pyright to verify new code
-* Be sure to run `black` when you're done making a series of code changes
-* For better performance when coding, only run `make syntax-check` once before
-  presenting you completed work.
-* You MUST remove any trailing whitespace introduced by your work
+**Development cycle for better performance:**
+1. Run individual test: `python3 -m unittest tests.unit.test_foo.TestClass.test_method`
+2. When satisfied, run all tests in that file: `python3 ./tests/unit/runner.py`
+3. When satisfied, run full test suite: `make test`
+4. Check coverage: `make coverage && make coverage-report`
+5. If any test fails, fix and restart from step 1
+
+**Code quality checks:**
+* Run `make style-fix` to auto-format code
+* Run `make syntax-check` once before presenting completed work
+* Use `pyright` to verify typing
+* Remove any trailing whitespace
+
+**Coverage tips:**
+```bash
+# Run coverage on unit tests
+make coverage
+
+# Show report with missing lines
+make coverage-report
+
+# For specific modules, use coverage directly:
+python3 -m coverage run ./tests/unit/runner.py
+python3 -m coverage report --show-missing --omit="tests/*"
+```
+
+**Test coverage goals:**
+* Aim for 100% coverage where achievable
+* Test both success and error paths
+* Test edge cases (empty inputs, None values, malformed data)
+* If a line seems unreachable, document why or refactor
 
 
 ## Final Goals for the AI-Generated Code
