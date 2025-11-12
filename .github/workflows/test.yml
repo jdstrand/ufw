@@ -31,5 +31,4 @@ jobs:
 
     - name: Run tests
       run: |
-        #python -m unittest discover tests/unit
-        ./run_tests.sh -s
+        make test
