@@ -48,7 +48,7 @@ else
 PYFLAKES_EXE = pyflakes
 endif
 
-.PHONY: all build install clean translations mo test unittest coverage coverage-report man-check check syntax-check tarball
+.PHONY: all build install clean translations mo test unittest functest coverage coverage-report man-check check syntax-check tarball
 
 all: build
 
@@ -192,6 +192,9 @@ test:
 
 unittest:
 	./run_tests.sh -s -i $(PYTHON) unit
+
+functest:
+	$(PYTHON) ./tests/functional/runner.py
 
 coverage:
 	$(PYTHON) -m coverage run ./tests/unit/runner.py

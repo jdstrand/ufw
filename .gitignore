@@ -12,6 +12,7 @@ ufw/
 src/__pycache__
 tests/__pycache__
 tests/unit/__pycache__
+tests/functional/__pycache__
 snap
 *.snap
 parts/

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Fake ip6tables for the functional test harness. See ./iptables.
+case "$1" in
+    -V|--version) echo "ip6tables v1.8.10 (nf_tables)" ;;
+esac
+exit 0

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Fake iptables for the functional test harness. Reports a fixed, modern
+# version (so the suite is deterministic and does not depend on the host's
+# iptables) and succeeds for everything else. The functional tests only run
+# dry-run or with the firewall disabled, so iptables is never used to apply
+# rules; only `-V` matters.
+case "$1" in
+    -V|--version) echo "iptables v1.8.10 (nf_tables)" ;;
+esac
+exit 0
