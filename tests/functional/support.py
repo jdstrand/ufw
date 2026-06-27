@@ -32,6 +32,7 @@ import subprocess
 import sys
 import traceback
 import unittest
+import warnings
 
 # ufw must be imported from src/ (not the installed copy) so coverage measures
 # the source. Ensure the ./ufw -> ./src symlink exists before importing, so that
@@ -85,6 +86,13 @@ def recursive_rm(dir_path, contents_only=False):
             recursive_rm(path)
     if contents_only is False:
         os.rmdir(dir_path)
+
+
+def _clean_warning(message, category, filename, lineno, file=None, line=""):
+    """Render warnings.warn() as ufw's 'WARN: ...' line, mirroring main_ufw's
+    warnings.showwarning hook (src/main.py)."""
+    _ = (category, filename, lineno, file, line)
+    ufw.util.warn(message)
 
 
 def _read(path):
@@ -307,6 +315,11 @@ class FunctionalTestCase(unittest.TestCase):
 
         ufw.common.do_checks = False
         ufw.util.msg_output = None
+        # Mirror main_ufw(): render warnings.warn() as ufw's "WARN: ..." line,
+        # and (because each old test ran ufw as a fresh process) emit every
+        # occurrence rather than letting Python dedup repeats across commands.
+        warnings.simplefilter("always")
+        warnings.showwarning = _clean_warning
         self._count = 0
         self._trace = []
         self._ui = None
