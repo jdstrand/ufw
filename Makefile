@@ -189,6 +189,7 @@ mo:
 
 test:
 	./run_tests.sh -s -i $(PYTHON)
+	$(MAKE) functest PYTHON=$(PYTHON)
 
 unittest:
 	./run_tests.sh -s -i $(PYTHON) unit

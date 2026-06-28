@@ -114,27 +114,32 @@ class BugsTests(FunctionalTestCase):
             "ufw.frontend.parse_command",
             side_effect=ModuleNotFoundError("No module named 'ufw.nonexistent'"),
         ):
-            self.assert_fail("help")
+            # capture=False (like the original's `do_cmd "1" null help`): only
+            # the exit code matters -- the captured output is a machine-specific
+            # traceback the original sent to /dev/null.
+            self.assert_fail("help", capture=False)
 
-        # Bug #430053: file permissions are honored (overridden only as root)
+        # Bug #430053: file permissions are honored (overridden only as root).
+        # capture=False on these too: the original used `null`, and the "<path>
+        # is not writable" error embeds the absolute sandbox path.
         expected = 0 if os.getuid() == 0 else 1
         self.set_default("IPV6", "no")
         self.chmod(self.user_rules, 0o444)
-        self.assert_rc(expected, "allow", "12345")
+        self.assert_rc(expected, "allow", "12345", capture=False)
         self.chmod(self.user_rules, 0o644)
 
         self.set_default("IPV6", "yes")
         self.chmod(self.user6_rules, 0o444)
-        self.assert_rc(expected, "allow", "12345")
+        self.assert_rc(expected, "allow", "12345", capture=False)
         self.chmod(self.user6_rules, 0o644)
         self.set_default("IPV6", "no")
 
         self.chmod(self.default_ufw, 0o444)
-        self.assert_rc(expected, "default", "deny")
+        self.assert_rc(expected, "default", "deny", capture=False)
         self.chmod(self.default_ufw, 0o644)
 
         self.chmod(self.ufw_conf, 0o444)
-        self.assert_rc(expected, "logging", "medium")
+        self.assert_rc(expected, "logging", "medium", capture=False)
         self.chmod(self.ufw_conf, 0o644)
 
         # Bug #480789: 'INVALID -j RETURN' present in logging-deny only for low/on

@@ -1,0 +1,33 @@
+## 0: help (rc=0)
+O 
+O Usage: ufw COMMAND
+O 
+O Commands:
+O  enable                          enables the firewall
+O  disable                         disables the firewall
+O  default ARG                     set default policy
+O  logging LEVEL                   set logging to LEVEL
+O  allow ARGS                      add allow rule
+O  deny ARGS                       add deny rule
+O  reject ARGS                     add reject rule
+O  limit ARGS                      add limit rule
+O  delete RULE|NUM                 delete RULE
+O  insert NUM RULE                 insert RULE at NUM
+O  prepend RULE                    prepend RULE
+O  route RULE                      add route RULE
+O  route delete RULE|NUM           delete route RULE
+O  route insert NUM RULE           insert route RULE at NUM
+O  reload                          reload firewall
+O  reset                           reset firewall
+O  status                          show firewall status
+O  status numbered                 show firewall status as numbered list of RULES
+O  status verbose                  show verbose firewall status
+O  show ARG                        show firewall report
+O  version                         display version information
+O 
+O Application profile commands:
+O  app list                        list application profiles
+O  app info PROFILE                show information on PROFILE
+O  app update PROFILE              update PROFILE
+O  app default ARG                 set default application policy
+O 

@@ -1,0 +1,310 @@
+## 0: --dry-run logging on (rc=0)
+O Logging enabled
+## 1: --dry-run logging off (rc=0)
+O Logging disabled
+## 2: --dry-run LOGGING ON (rc=0)
+O Logging enabled
+## 3: --dry-run LOGGING OFF (rc=0)
+O Logging disabled
+## 4: --dry-run enable (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 5: --dry-run disable (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup
+## 6: --dry-run ENABLE (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 7: --dry-run DISABLE (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup
+## 8: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 9: --dry-run status verbose (rc=0)
+O > Checking iptables
+O 
+## 10: --dry-run status numbered (rc=0)
+O > Checking iptables
+O 
+## 11: --dry-run enable (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 12: --dry-run disable (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup
+## 13: --dry-run help (rc=0)
+O 
+O <<command help>>
+O 
+## 14: --dry-run --help (rc=0)
+O 
+O <<command help>>
+O 
+## 15: --dry-run version (rc=0)
+O ufw (in-process)
+## 16: --dry-run --version (rc=0)
+O ufw (in-process)
+## 17: --dry-run reload (rc=0)
+O Firewall not enabled (skipping reload)
+## 18: --dry-run app list (rc=0)
+O Available applications:
+O   0verkill
+O   A aZ9 _-.+
+O   AIM
+O   Apache
+O   Apache Full
+O   Apache Secure
+O   Bind9
+O   Bonjour
+O   CIFS
+O   Custom Web App
+O   Custom Web App2
+O   DNS
+O   Deluge
+O   Dovecot IMAP
+O   Dovecot POP3
+O   Dovecot Secure IMAP
+O   Dovecot Secure POP3
+O   IMAP
+O   IMAPS
+O   IPP
+O   KTorrent
+O   Kerberos Admin
+O   Kerberos Full
+O   Kerberos KDC
+O   Kerberos Password
+O   LDAP
+O   LDAPS
+O   LPD
+O   MSN
+O   MSN SSL
+O   Mail submission
+O   Multi TCP
+O   Multi UDP
+O   NFS
+O   No Protocol
+O   OpenNTPD
+O   POP3
+O   POP3S
+O   PeopleNearby
+O   SMTP
+O   SSH
+O   Samba
+O   Socks
+O   Telnet
+O   Transmission
+O   Transparent Proxy
+O   VNC
+O   WWW
+O   WWW Cache
+O   WWW Full
+O   WWW Secure
+O   XMPP
+O   Yahoo
+O   a aZ9 _-.+
+O   qBittorrent
+O   svnserve
+## 19: --dry-run app info Apache (rc=0)
+O Profile: Apache
+O Title: Web Server
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Port:
+O   80/tcp
+## 20: --dry-run app update Apache (rc=0)
+## 21: --dry-run app update --add-new Apache (rc=0)
+## 22: --dry-run app default skip (rc=0)
+O Default application policy changed to 'skip'
+## 23: --dry-run logging on (rc=0)
+O Logging enabled
+## 24: --dry-run logging off (rc=0)
+O Logging disabled
+## 25: --dry-run logging low (rc=0)
+O Logging enabled
+## 26: --dry-run logging medium (rc=0)
+O Logging enabled
+## 27: --dry-run logging high (rc=0)
+O Logging enabled
+## 28: --dry-run logging full (rc=0)
+O Logging enabled
+## 29: --dry-run default allow (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 30: --dry-run default allow incoming (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 31: --dry-run default allow outgoing (rc=0)
+O Default outgoing policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 32: --dry-run default allow routed (rc=0)
+O Default routed policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 33: --dry-run default deny (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 34: --dry-run default deny incoming (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 35: --dry-run default deny outgoing (rc=0)
+O Default outgoing policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 36: --dry-run default deny routed (rc=0)
+O Default routed policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 37: --dry-run default reject (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 38: --dry-run default reject incoming (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 39: --dry-run default reject outgoing (rc=0)
+O Default outgoing policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 40: --dry-run default reject routed (rc=0)
+O Default routed policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 41: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 42: --dry-run status verbose (rc=0)
+O > Checking iptables
+O 
+## 43: --dry-run status numbered (rc=0)
+O > Checking iptables
+O 
+## 44: --dry-run show raw (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 45: --dry-run show builtins (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 46: --dry-run show before-rules (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 47: --dry-run show user-rules (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 48: --dry-run show after-rules (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 49: --dry-run show logging-rules (rc=0)
+O > Checking raw iptables
+O > Checking raw ip6tables
+O 
+## 50: allow 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any 80 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 80 -j ACCEPT
++ -A ufw-user-input -p udp --dport 80 -j ACCEPT
++ 
+- -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
++ -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
++ -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
++ -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
+## 51: --dry-run insert 1 allow 53 (rc=0)
+R ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT
+R ### tuple ### allow any 80 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 80 -j ACCEPT
+R -A ufw-user-input -p udp --dport 80 -j ACCEPT
+O Rules updated
+## 52: delete allow 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 80 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 80 -j ACCEPT
+- -A ufw-user-input -p udp --dport 80 -j ACCEPT
+## 53: --dry-run allow in 53 (rc=0)
+R ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT
+O Rules updated
+## 54: --dry-run allow log 53 (rc=0)
+R ### tuple ### allow_log any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-logging-input -p tcp --dport 53 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+R -A ufw-user-logging-input -p tcp --dport 53 -j RETURN
+R -A ufw-user-input -p tcp --dport 53 -j ufw-user-logging-input
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT
+R -A ufw-user-logging-input -p udp --dport 53 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+R -A ufw-user-logging-input -p udp --dport 53 -j RETURN
+R -A ufw-user-input -p udp --dport 53 -j ufw-user-logging-input
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT
+O Rules updated
+## 55: --dry-run allow in log 53 (rc=0)
+R ### tuple ### allow_log any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-logging-input -p tcp --dport 53 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+R -A ufw-user-logging-input -p tcp --dport 53 -j RETURN
+R -A ufw-user-input -p tcp --dport 53 -j ufw-user-logging-input
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT
+R -A ufw-user-logging-input -p udp --dport 53 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+R -A ufw-user-logging-input -p udp --dport 53 -j RETURN
+R -A ufw-user-input -p udp --dport 53 -j ufw-user-logging-input
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT
+O Rules updated
+## 56: deny to any port 80 from any proto tcp (rc=0)
+O Rules updated
++ 
++ ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 80 -j DROP
+## 57: --dry-run insert 1 deny to any port 53 from any proto udp (rc=0)
+R ### tuple ### deny udp 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 53 -j DROP
+R ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 80 -j DROP
+O Rules updated
+## 58: delete deny to any port 80 from any proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 80 -j DROP
+## 59: --dry-run deny out to any port 53 from any proto udp (rc=0)
+R ### tuple ### deny udp 53 0.0.0.0/0 any 0.0.0.0/0 out
+R -A ufw-user-output -p udp --dport 53 -j DROP
+O Rules updated
+## 60: --dry-run deny log-all to any port 53 from any proto udp (rc=0)
+R ### tuple ### deny_log-all udp 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-logging-input -p udp --dport 53 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+R -A ufw-user-logging-input -p udp --dport 53 -j RETURN
+R -A ufw-user-input -p udp --dport 53 -j ufw-user-logging-input
+R -A ufw-user-input -p udp --dport 53 -j DROP
+O Rules updated
+## 61: --dry-run deny out log-all to any port 53 from any proto udp (rc=0)
+R ### tuple ### deny_log-all udp 53 0.0.0.0/0 any 0.0.0.0/0 out
+R -A ufw-user-logging-output -p udp --dport 53 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+R -A ufw-user-logging-output -p udp --dport 53 -j RETURN
+R -A ufw-user-output -p udp --dport 53 -j ufw-user-logging-output
+R -A ufw-user-output -p udp --dport 53 -j DROP
+O Rules updated
+## 62: --dry-run --force enable (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 63: --dry-run -f enable (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 64: --dry-run --force ENABLE (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 65: --dry-run -f ENABLE (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 66: --dry-run disable (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup

@@ -16,12 +16,14 @@
 #
 # In-process functional test harness for ufw. Mirrors tests/unit/support.py:
 # 'make install' lays down a sandbox, ufw is imported from src/ (via the
-# ./ufw -> ./src symlink) and ufw.common globals are repointed at the sandbox.
+# git-ignored ./tmp/ufw -> src symlink) and ufw.common globals are repointed
+# at the sandbox.
 # Each command is driven in-process by replicating main_ufw()'s dispatch with a
 # freshly constructed UFWFrontend, so no per-command state leaks between calls.
 
 from __future__ import print_function
 
+import difflib
 import errno
 import glob
 import io
@@ -35,16 +37,33 @@ import unittest
 import warnings
 
 # ufw must be imported from src/ (not the installed copy) so coverage measures
-# the source. Ensure the ./ufw -> ./src symlink exists before importing, so that
-# this works whether driven via runner.py or `python -m unittest`.
-if not os.path.islink("./ufw") and not os.path.exists("./ufw"):
-    os.symlink("./src", "./ufw")
+# the source. Ensure a ./tmp/ufw -> src symlink exists (git-ignored, not the repo
+# root) and ./tmp is on sys.path before importing, so this works whether driven
+# via runner.py or `python -m unittest`.
+_repo = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_tmp = os.path.join(_repo, "tmp")
+_ufwlink = os.path.join(_tmp, "ufw")
+_linktarget = os.path.join("..", "src")
+if not os.path.isdir(_tmp):
+    os.makedirs(_tmp)
+# Relative target so the link stays valid if the checkout moves; recreate it
+# when dangling or pointing elsewhere (islink() is true for a dangling link,
+# and following a stale one would import some other tree's src/).
+if os.path.islink(_ufwlink) and os.readlink(_ufwlink) != _linktarget:
+    os.unlink(_ufwlink)
+if os.path.exists(_ufwlink) and not os.path.islink(_ufwlink):
+    # A real file/dir in the link's place would silently shadow src/.
+    raise RuntimeError("%s exists and is not a symlink; remove it" % _ufwlink)
+if not os.path.islink(_ufwlink):
+    os.symlink(_linktarget, _ufwlink)
+if _tmp not in sys.path:
+    sys.path.insert(0, _tmp)
 
 import ufw.common  # noqa: E402
 import ufw.frontend  # noqa: E402
 import ufw.util  # noqa: E402
 
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+REPO_ROOT = _repo
 DATA_DIR = os.path.join(REPO_ROOT, "tests", "functional", "data")
 
 # Self-contained fake iptables binaries: report a fixed modern version and
@@ -100,6 +119,118 @@ def _read(path):
         return f.read()
 
 
+def _rules_delta(prev, new, plus, minus):
+    """The lines added/removed in a rules file vs its previous state (no
+    context), so a transcript records each command's *effect* rather than a full
+    dump."""
+    out = []
+    for line in difflib.unified_diff(prev.splitlines(), new.splitlines(), n=0):
+        if line.startswith("+") and not line.startswith("+++"):
+            out.append(plus + line[1:])
+        elif line.startswith("-") and not line.startswith("---"):
+            out.append(minus + line[1:])
+    return out
+
+
+_help_tail = None
+
+
+def _command_help_tail():
+    """The command-help block (from its 'Usage:' line on) that ufw prints on a
+    syntax error, cached. Factored out of transcripts and pinned once by the
+    installation/check_help test."""
+    global _help_tail
+    if _help_tail is None:
+        full = ufw.frontend.get_command_help().splitlines()
+        try:
+            _help_tail = full[full.index("Usage: ufw COMMAND") :]
+        except ValueError:
+            _help_tail = []
+    return _help_tail
+
+
+def _factor_output(out, collapse_help=True):
+    """Factor a command's captured output for the transcript.
+
+    A dry-run prints the full iptables-restore input, ~90% of which is a constant
+    frame -- the ``*filter``/``COMMIT`` wrapper, the chain declarations, and the
+    ``### LOGGING ###`` / ``### RATE LIMITING ###`` blocks -- that depends only on
+    IPV6/LOGLEVEL and is verified once by test_render.BoilerplateTests. Keeping it
+    per command is what ballooned the transcripts to ~1.6 MB. Likewise every syntax
+    error reprints the whole command-help text.
+
+    So inside an iptables dump we keep only the command-specific ``### RULES ###``
+    bodies (as ``R`` lines) and drop the frame; outside the dump we keep the
+    message lines (``Rule added``, ``Rules updated``, status/error text) as ``O``
+    lines, collapsing the constant command-help dump to a single ``<<command
+    help>>`` marker. The collapse would be self-referential as a regression
+    gate (the marker is computed from the same get_command_help() that
+    produced the output), so installation/check_help passes
+    ``collapse_help=False`` to pin the full help text byte-exact in its
+    transcript; every other transcript's marker then stands on that pin. The
+    harness-only ``WARN: Checks disabled`` line (emitted because do_checks is
+    off; never printed by the real CLI) is dropped."""
+    lines = out.splitlines()
+    help_tail = _command_help_tail()
+    kept = []
+    i = 0
+    in_dump = in_rules = in_skip = False
+    while i < len(lines):
+        line = lines[i]
+        if not in_dump:
+            if line == "*filter":
+                in_dump = True
+            elif line == "WARN: Checks disabled":
+                pass
+            elif (
+                collapse_help
+                and line == "Usage: ufw COMMAND"
+                and help_tail
+                and lines[i : i + len(help_tail)] == help_tail
+            ):
+                kept.append("O <<command help>>")
+                i += len(help_tail)
+                continue
+            else:
+                kept.append("O " + line)
+            i += 1
+            continue
+        # inside an iptables dump (between *filter and COMMIT)
+        if line == "COMMIT":
+            in_dump = False
+        elif line == "### RULES ###":
+            in_rules = True
+        elif line == "### END RULES ###":
+            in_rules = False
+        elif line in ("### LOGGING ###", "### RATE LIMITING ###"):
+            in_skip = True
+        elif line in ("### END LOGGING ###", "### END RATE LIMITING ###"):
+            in_skip = False
+        elif in_rules and not in_skip and line != "":
+            kept.append("R " + line)
+        # else: chain declarations, blank lines, and the skipped LOGGING / RATE
+        # LIMITING blocks are the constant frame -- dropped.
+        i += 1
+    return kept
+
+
+def _transcript_blocks(text):
+    """Split a transcript into per-command blocks keyed by their '## N: cmd'
+    header, so a mismatch can be localized to the exact command."""
+    blocks = []
+    cur = None
+    for line in text.splitlines():
+        if re.match(r"^## \d+: ", line):
+            if cur is not None:
+                blocks.append("\n".join(cur))
+            cur = [line]
+        elif cur is not None:
+            cur.append(line)
+    if cur is not None:
+        blocks.append("\n".join(cur))
+    return blocks
+
+
 def _sed_default(path, key, value):
     """Set KEY=value in a ufw KEY=value config file (like the old sed calls)."""
     lines = []
@@ -132,7 +263,9 @@ def reports_get_ip_from_if(ifname, v6=False):
     if v6:
         proc = os.path.join(DATA_DIR, "proc_net_if_inet6")
         addr = ""
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             tmp = line.split()
             if ifname == tmp[5]:
                 addr = ":".join([tmp[0][i : i + 4] for i in range(0, len(tmp[0]), 4)])
@@ -160,7 +293,9 @@ def reports_get_if_from_ip(addr):
 
     matched = ""
     if v6:
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             tmp = line.split()
             ifname = tmp[5].strip()
             tmp_addr = ":".join([tmp[0][i : i + 4] for i in range(0, len(tmp[0]), 4)])
@@ -172,7 +307,9 @@ def reports_get_if_from_ip(addr):
                 matched = ifname
                 break
     else:
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             if ":" not in line:
                 continue
             ifname = line.split(":")[0].strip()
@@ -213,7 +350,7 @@ def initvars():
 
 
 def run_setup():
-    """'make install' into the sandbox and snapshot a pristine etc/ tree."""
+    """'make install' into the sandbox and copy a pristine etc/ tree."""
     global _pristine_etc
 
     install_dir = os.path.join(topdir, "ufw")
@@ -320,36 +457,117 @@ class FunctionalTestCase(unittest.TestCase):
         # occurrence rather than letting Python dedup repeats across commands.
         warnings.simplefilter("always")
         warnings.showwarning = _clean_warning
+        # Warm up the on-disk firewall structure (v4 and v6) so per-command rule
+        # deltas attribute only the rule each command adds -- not the one-time
+        # chain/logging scaffolding ufw writes on the first persisting command
+        # (that scaffolding is constant and pinned by test_render.BoilerplateTests).
+        self._reset_recording()
+        self._warm_up_rules_files()
+        self._reset_recording()
+
+    def _reset_recording(self):
+        """(Re)initialize the per-command recording state and re-baseline the
+        rule-file deltas to the current on-disk state."""
         self._count = 0
         self._trace = []
         self._ui = None
+        self._transcript = []
+        self._prev_ur = _read(self.user_rules)
+        self._prev_u6 = _read(self.user6_rules)
+
+    def _warm_up_rules_files(self):
+        """Initialize the user.rules/user6.rules chain structure via a throwaway
+        add+delete (both families, regardless of the test's IPV6 setting), so the
+        first recorded command's delta isn't polluted by that one-time scaffolding.
+        The IPV6 default is restored afterwards."""
+        saved_default = _read(self.default_ufw)
+        try:
+            self.enable_ipv6()
+            self.ufw("allow", "22")
+            self.ufw("delete", "allow", "22")
+        finally:
+            with open(self.default_ufw, "w") as f:
+                f.write(saved_default)
 
     def tearDown(self):
-        # Opt-in completeness oracle: assert the exact ufw command sequence this
-        # test issued matches the old shell test's golden "N: <args>" headers, so
-        # we have parity in *which* commands are tested (and their order).
         if os.environ.get("UFW_TEST_VERIFY_PARITY") and self.class_name:
-            sub = self._testMethodName
-            if sub.startswith("test_"):
-                sub = sub[len("test_") :]
-            golden = os.path.join(REPO_ROOT, "tests", self.class_name, sub, "result")
-            if not os.path.exists(golden):
-                self.fail("no old golden to verify parity: %s" % golden)
-            # Compare the ufw argument sequences, not the leading "N:" counter:
-            # some old goldens have stale/inconsistent counters (they were
-            # regenerated piecemeal), but the command args + order are the real
-            # parity signal.
-            expected = [
-                re.sub(r"^\d+: ", "", line.rstrip("\n"))
-                for line in _read(golden).splitlines()
-                if re.match(r"^\d+: ", line)
-            ]
-            got = [re.sub(r"^\d+: ", "", line) for line in self._trace]
-            self.assertEqual(
-                expected,
-                got,
-                "command-sequence parity mismatch for %s/%s" % (self.class_name, sub),
+            self._check_parity()
+        self._check_transcript()
+
+    def _subname(self):
+        sub = self._testMethodName
+        return sub[len("test_") :] if sub.startswith("test_") else sub
+
+    def _check_parity(self):
+        # Completeness oracle: assert the exact ufw command sequence this test
+        # issued matches the old shell test's golden "N: <args>" headers.
+        sub = self._subname()
+        golden = os.path.join(REPO_ROOT, "tests", self.class_name, sub, "result")
+        if not os.path.exists(golden):
+            self.fail("no old golden to verify parity: %s" % golden)
+        # Compare the ufw argument sequences, not the leading "N:" counter: some
+        # old goldens have stale/inconsistent counters (regenerated piecemeal),
+        # but the command args + order are the real parity signal.
+        expected = [
+            re.sub(r"^\d+: ", "", line.rstrip("\n"))
+            for line in _read(golden).splitlines()
+            if re.match(r"^\d+: ", line)
+        ]
+        got = [re.sub(r"^\d+: ", "", line) for line in self._trace]
+        self.assertEqual(
+            expected,
+            got,
+            "command-sequence parity mismatch for %s/%s" % (self.class_name, sub),
+        )
+
+    def _check_transcript(self):
+        """Compare (or, with UFW_TEST_UPDATE, regenerate) the per-command
+        output+state transcript. Comprehensive regression gate; failures are
+        localized to the offending command."""
+        if not self.class_name:
+            return
+        sub = self._subname()
+        # No file extension; each subtest's transcript lives at
+        # data/transcripts/<class>/<sub>.
+        path = os.path.join(DATA_DIR, "transcripts", self.class_name, sub)
+        text = "\n".join(self._transcript) + "\n"
+        if os.environ.get("UFW_TEST_UPDATE"):
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w") as f:
+                f.write(text)
+            return
+        if not os.path.exists(path):
+            # A class_name-bearing functional test is a golden-replay test: its
+            # transcript is mandatory. Missing one is a hard error (regenerate with
+            # UFW_TEST_UPDATE), not a silent skip.
+            self.fail(
+                "no transcript for %s/%s at %s\n"
+                "  run with UFW_TEST_UPDATE=1 to create it."
+                % (self.class_name, sub, path)
             )
+        expected = _read(path)
+        if expected == text:
+            return
+        exp, act = _transcript_blocks(expected), _transcript_blocks(text)
+        msgs = []
+        for i in range(max(len(exp), len(act))):
+            e = exp[i] if i < len(exp) else ""
+            a = act[i] if i < len(act) else ""
+            if e == a:
+                continue
+            header = (a or e).splitlines()[0]
+            d = "\n".join(
+                difflib.unified_diff(
+                    e.splitlines(), a.splitlines(), "expected", "actual", lineterm=""
+                )
+            )
+            msgs.append("%s\n%s" % (header, d))
+            if len(msgs) >= 8:
+                break
+        self.fail(
+            "transcript mismatch for %s/%s (%d differing command(s)):\n\n%s"
+            % (self.class_name, sub, len(msgs), "\n\n".join(msgs))
+        )
 
     # -- sandbox paths -----------------------------------------------------
 
@@ -379,7 +597,7 @@ class FunctionalTestCase(unittest.TestCase):
 
     # -- invocation --------------------------------------------------------
 
-    def ufw(self, *args, http_or_www=False):
+    def ufw(self, *args, http_or_www=False, capture=True, collapse_help=True):
         """Run one ufw command in-process and return a Result(rc, out).
 
         Combined stdout+stderr are captured into one buffer. A fresh
@@ -390,6 +608,7 @@ class FunctionalTestCase(unittest.TestCase):
         # Record the command for the completeness oracle using the ORIGINAL args
         # (captured before any http-or-www rewrite, as "<count>: <args>").
         self._trace.append("%d: %s" % (self._count, " ".join(args)))
+        cmd = " ".join(args)
         self._count += 1
 
         if http_or_www:
@@ -419,7 +638,28 @@ class FunctionalTestCase(unittest.TestCase):
         finally:
             ufw.util.msg_output = old_msg_output
             sys.stderr = old_stderr
-        return Result(rc, buf.getvalue())
+
+        out = buf.getvalue()
+        self._record_command(cmd, rc, out, capture, collapse_help)
+        return Result(rc, out)
+
+    def _record_command(self, cmd, rc, out, capture=True, collapse_help=True):
+        """Append one per-command transcript block: the command, its output, and
+        the delta it made to user.rules/user6.rules.
+
+        ``capture=False`` records the command + rc + on-disk delta but drops the
+        captured output, for commands whose output is environment-specific (a
+        Python traceback, absolute paths) and where only the exit code matters."""
+        new_ur = _read(self.user_rules)
+        new_u6 = _read(self.user6_rules)
+        lines = ["## %d: %s (rc=%d)" % (len(self._transcript), cmd, rc)]
+        if capture:
+            lines += _factor_output(out, collapse_help)
+        lines += _rules_delta(self._prev_ur, new_ur, "+ ", "- ")
+        lines += _rules_delta(self._prev_u6, new_u6, "+6 ", "-6 ")
+        self._transcript.append("\n".join(lines))
+        self._prev_ur = new_ur
+        self._prev_u6 = new_u6
 
     def _dispatch(self, argv):
         """Replicate main_ufw()'s dispatch (src/main.py) for one command."""
@@ -538,6 +778,78 @@ class FunctionalTestCase(unittest.TestCase):
     def tuple_count(self, path):
         """Number of user rules in a rules file (one '### tuple ###' each)."""
         return _read(path).count("### tuple ###")
+
+    # -- rendering (depth layer) ------------------------------------------
+    #
+    # Every dry-run renders the full iptables-restore input, ~90% of which is
+    # constant chain scaffolding (the ufw[6]-user-limit / -limit-accept chains,
+    # logging blocks) that repeats identically on every command. That boilerplate
+    # is verified once by the dedicated *boilerplate* tests; the command-specific
+    # rendering -- the only interesting part -- is exactly the -A/-I lines that
+    # target the per-rule user chains below. assert_render() factors the
+    # boilerplate out and compares just that, so each rendering test reads as the
+    # handful of lines the command is *supposed* to produce.
+
+    USER_CHAINS = (
+        "ufw-user-input",
+        "ufw-user-output",
+        "ufw-user-forward",
+        "ufw6-user-input",
+        "ufw6-user-output",
+        "ufw6-user-forward",
+    )
+
+    def rendered_rules(self, *args):
+        """The command-specific rendered iptables lines for ``ufw --dry-run
+        <args>``: the -A/-I lines targeting the ufw[6]-user-* rule chains, with
+        the constant scaffolding factored out. Order is significant."""
+        out = self.ufw("--dry-run", *args).out
+        lines = []
+        for line in out.splitlines():
+            m = re.match(r"-[AI] (\S+)", line)
+            if m and m.group(1) in self.USER_CHAINS:
+                lines.append(line)
+        return lines
+
+    def assert_render(self, args, expected):
+        """Assert the boilerplate-factored render of ``ufw --dry-run <args>``
+        equals ``expected`` (a list of iptables lines, order-significant).
+
+        This is the hand-curated *oracle*: a human asserts, from intent, exactly
+        what a command should render -- the independent check that keeps the
+        generated transcript honest (it cannot bless a wrong value the oracle
+        pins). ``args`` may be a string ('allow 22') or a list."""
+        argv = args.split() if isinstance(args, str) else list(args)
+        got = self.rendered_rules(*argv)
+        self.assertEqual(
+            expected,
+            got,
+            "render mismatch for 'ufw %s':\n  expected:\n%s\n  got:\n%s"
+            % (
+                " ".join(argv),
+                "\n".join("    " + line for line in expected),
+                "\n".join("    " + line for line in got),
+            ),
+        )
+
+    def scaffolding(self, *args):
+        """The constant chain scaffolding (everything assert_render factors out)
+        for ``ufw --dry-run <args>``: the -A/-I lines that do NOT target a
+        per-rule user chain. Verified once by the boilerplate tests."""
+        out = self.ufw("--dry-run", *args).out
+        lines = []
+        for line in out.splitlines():
+            m = re.match(r"-[AI] (\S+)", line)
+            if m and m.group(1) not in self.USER_CHAINS:
+                lines.append(line)
+        return lines
+
+    def chain_decls(self, *args):
+        """The ``:chain - [0:0]`` declarations a dry-run emits. Part of the
+        constant frame the transcript factors out, so it is pinned once by the
+        boilerplate tests (a renamed/added/removed chain is a real change)."""
+        out = self.ufw("--dry-run", *args).out
+        return [line for line in out.splitlines() if line.startswith(":")]
 
     def _maybe_www(self, args):
         """Rewrite a trailing 'http' argument to 'www' when /etc/services lists

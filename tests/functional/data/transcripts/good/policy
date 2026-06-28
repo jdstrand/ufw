@@ -1,0 +1,117 @@
+## 0: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 1: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 2: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 3: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 4: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 5: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 6: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 7: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 8: --dry-run status (rc=0)
+O > Checking iptables
+O 
+## 9: --dry-run default allow (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 10: --dry-run default deny (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 11: --dry-run default reject (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 12: --dry-run default ALLOW (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 13: --dry-run default DENY (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 14: --dry-run default REJECT (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 15: --dry-run default allow incoming (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 16: --dry-run default deny incoming (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 17: --dry-run default reject incoming (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 18: --dry-run default ALLOW incoming (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 19: --dry-run default DENY incoming (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 20: --dry-run default REJECT incoming (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 21: --dry-run default allow outgoing (rc=0)
+O Default outgoing policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 22: --dry-run default deny outgoing (rc=0)
+O Default outgoing policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 23: --dry-run default reject outgoing (rc=0)
+O Default outgoing policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 24: --dry-run default ALLOW outgoing (rc=0)
+O Default outgoing policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 25: --dry-run default DENY outgoing (rc=0)
+O Default outgoing policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 26: --dry-run default REJECT outgoing (rc=0)
+O Default outgoing policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 27: --dry-run default allow input (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 28: --dry-run default deny input (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 29: --dry-run default reject input (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 30: --dry-run default ALLOW input (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 31: --dry-run default DENY input (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 32: --dry-run default REJECT input (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 33: --dry-run default allow output (rc=0)
+O Default outgoing policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 34: --dry-run default deny output (rc=0)
+O Default outgoing policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 35: --dry-run default reject output (rc=0)
+O Default outgoing policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 36: --dry-run default ALLOW output (rc=0)
+O Default outgoing policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 37: --dry-run default DENY output (rc=0)
+O Default outgoing policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 38: --dry-run default REJECT output (rc=0)
+O Default outgoing policy changed to 'reject'
+O (be sure to update your rules accordingly)

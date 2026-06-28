@@ -1,0 +1,918 @@
+## 0: app info foo (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'foo'
+## 1: app info Custom Web App (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'Custom'
+## 2: app info bad-description1 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-description1'
+## 3: app info bad-description2 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-description2'
+## 4: app info bad-title1 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-title1'
+## 5: app info bad-title2 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-title2'
+## 6: app info bad-ports1 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports1'
+## 7: app info bad-ports2 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports2'
+## 8: app info bad-ports3 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports3'
+## 9: app info bad-ports4 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports4'
+## 10: app info bad-ports5 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports5'
+## 11: app info bad-ports6 (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'bad-ports6'
+## 12: app info ssh (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find profile 'ssh'
+## 13: app update --add-new all (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Cannot specify 'all' with '--add-new'
+## 14: allow NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 15: allow Apache/tcp (rc=1)
+O ERROR: Bad port
+## 16: deny NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 17: deny Apache/tcp (rc=1)
+O ERROR: Bad port
+## 18: limit NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 19: limit Apache/tcp (rc=1)
+O ERROR: Bad port
+## 20: --dry-run allow to 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 21: --dry-run allow to 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 22: --dry-run allow to 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 23: --dry-run allow to 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 24: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 25: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 26: --dry-run allow to any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 27: --dry-run allow to any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 28: --dry-run allow to any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 29: --dry-run allow to any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 30: --dry-run allow to any app Samba from any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 31: --dry-run allow to any app Samba from any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 32: --dry-run allow from 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 33: --dry-run allow from 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 34: --dry-run allow from 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 35: --dry-run allow from 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 36: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 37: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 38: --dry-run allow from any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 39: --dry-run allow from any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 40: --dry-run allow from any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 41: --dry-run allow from any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 42: --dry-run allow from any app Samba to any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 43: --dry-run allow from any app Samba to any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 44: --dry-run deny to 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 45: --dry-run deny to 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 46: --dry-run deny to 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 47: --dry-run deny to 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 48: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 49: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 50: --dry-run deny to any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 51: --dry-run deny to any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 52: --dry-run deny to any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 53: --dry-run deny to any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 54: --dry-run deny to any app Samba from any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 55: --dry-run deny to any app Samba from any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 56: --dry-run deny from 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 57: --dry-run deny from 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 58: --dry-run deny from 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 59: --dry-run deny from 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 60: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 61: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 62: --dry-run deny from any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 63: --dry-run deny from any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 64: --dry-run deny from any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 65: --dry-run deny from any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 66: --dry-run deny from any app Samba to any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 67: --dry-run deny from any app Samba to any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 68: --dry-run limit to 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 69: --dry-run limit to 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 70: --dry-run limit to 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 71: --dry-run limit to 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 72: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 73: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 74: --dry-run limit to any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 75: --dry-run limit to any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 76: --dry-run limit to any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 77: --dry-run limit to any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 78: --dry-run limit to any app Samba from any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 79: --dry-run limit to any app Samba from any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 80: --dry-run limit from 192.168.0.0/16 app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 81: --dry-run limit from 192.168.0.0/16 app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 82: --dry-run limit from 192.168.0.0/16 app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 83: --dry-run limit from 192.168.0.0/16 app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 84: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 85: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 86: --dry-run limit from any app NONEXISTENT (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'NONEXISTENT'
+## 87: --dry-run limit from any app Apache proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 88: --dry-run limit from any app Apache proto udp (rc=1)
+O ERROR: Improper rule syntax
+## 89: --dry-run limit from any app No Protocol Multi (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Could not find a profile matching 'No Protocol Multi'
+## 90: --dry-run limit from any app Samba to any port http (rc=1)
+O ERROR: Improper rule syntax ('tcp' specified with app rule)
+## 91: --dry-run limit from any app Samba to any port 13 proto tcp (rc=1)
+O ERROR: Improper rule syntax
+## 92: --dry-run allow runtest (rc=1)
+O WARN: "Profile 'bad-description1' has empty required field 'description'"
+O WARN: "Profile 'bad-description2' missing required field 'description'"
+O WARN: Skipping 'bad-name&': invalid name
+O WARN: Skipping ';bad-name': invalid name
+O WARN: Skipping '22': invalid name
+O WARN: Skipping 'foo;cat /etc/passwd': invalid name
+O WARN: Skipping 'ssh': also in /etc/services
+O WARN: Skipping 'bad_name2': couldn't process
+O WARN: "Invalid ports in profile 'No Protocol Multi'"
+O WARN: "Profile 'bad-ports1' missing required field 'ports'"
+O WARN: "Invalid ports in profile 'bad-ports2'"
+O WARN: "Invalid ports in profile 'bad-ports3'"
+O WARN: "Invalid ports in profile 'bad-ports4'"
+O WARN: "Profile 'bad-ports5' has empty required field 'ports'"
+O WARN: "Profile 'bad-title1' missing required field 'title'"
+O WARN: "Profile 'bad-title2' has empty required field 'title'"
+O ERROR: Found multiple matches for 'runtest'. Please use exact profile name
+## 93: --dry-run allow in on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 94: --dry-run allow on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 95: --dry-run allow in ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 96: --dry-run allow in ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 97: --dry-run allow in eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 98: --dry-run deny in on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 99: --dry-run deny on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 100: --dry-run deny in ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 101: --dry-run deny in ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 102: --dry-run deny in eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 103: --dry-run limit in on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 104: --dry-run limit on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 105: --dry-run limit in ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 106: --dry-run limit in ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 107: --dry-run limit in eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 108: --dry-run allow out on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 109: --dry-run allow on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 110: --dry-run allow out ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 111: --dry-run allow out ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 112: --dry-run allow out eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 113: --dry-run deny out on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 114: --dry-run deny on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 115: --dry-run deny out ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 116: --dry-run deny out ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 117: --dry-run deny out eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 118: --dry-run limit out on eth0:1 to any app Bind9 (rc=1)
+O ERROR: Bad interface name: can't use interface aliases
+## 119: --dry-run limit on eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'on'
+## 120: --dry-run limit out ina on eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
+## 121: --dry-run limit out ona eth0 to any app Bind9 (rc=1)
+O ERROR: Invalid token 'ona'
+## 122: --dry-run limit out eth0 to any app Bind9 (rc=1)
+O ERROR: Wrong number of arguments
