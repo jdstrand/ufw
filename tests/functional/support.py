@@ -429,6 +429,9 @@ class FunctionalTestCase(unittest.TestCase):
     """
 
     class_name = None
+    # On-disk generation checks (RuleCommands.assert_rule_count etc.) run here;
+    # the e2e driver sets this False since it applies for real (state differs).
+    verify_on_disk = True
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -990,6 +993,11 @@ class E2ETestCase(unittest.TestCase):
     uses whatever iptables/iptables-restore is on PATH. ``--dry-run`` is stripped
     from each command so it applies, and the kernel is returned to a clean state
     with ``ufw-init flush-all`` around every test. Run only via tests/e2e/runner.py."""
+
+    # Generation-state checks (RuleCommands.assert_rule_count etc.) are no-ops
+    # here: e2e applies for real, so persisted state differs; exit codes are
+    # the apply-acceptance check and the functest transcript covers generation.
+    verify_on_disk = False
 
     # -- sandbox paths (mirror SubprocessTestCase) -------------------------
     @property
