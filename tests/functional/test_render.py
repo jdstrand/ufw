@@ -377,6 +377,37 @@ class CombinationTests(FunctionalTestCase):
             ],
         )
 
+    # -- portless protocols (gre / igmp / vrrp / ipv6) --------------------
+    # ufw supports these (util.py portless_protocols) but the original tests
+    # only ever exercised ah/esp. They render like esp/ah: a bare -p <proto>.
+
+    def test_proto_gre(self):
+        self.assert_render(
+            "allow to 10.0.0.1 proto gre",
+            ["-A ufw-user-input -p gre -d 10.0.0.1 -j ACCEPT"],
+        )
+
+    def test_proto_igmp(self):
+        self.assert_render(
+            "allow to 10.0.0.1 proto igmp",
+            ["-A ufw-user-input -p igmp -d 10.0.0.1 -j ACCEPT"],
+        )
+
+    def test_proto_vrrp(self):
+        self.assert_render(
+            "allow to 10.0.0.1 proto vrrp",
+            ["-A ufw-user-input -p vrrp -d 10.0.0.1 -j ACCEPT"],
+        )
+
+    def test_proto_ipv6(self):
+        # proto ipv6 (6in4 tunnels) is portless and, counterintuitively,
+        # v4-only (util.py ipv4_only_protocols): it is protocol 41 carried
+        # over IPv4.
+        self.assert_render(
+            "allow to 10.0.0.1 proto ipv6",
+            ["-A ufw-user-input -p ipv6 -d 10.0.0.1 -j ACCEPT"],
+        )
+
 
 class RenderV6Tests(FunctionalTestCase):
     """The v4/v6 differential: with IPV6=yes the same command also renders the
@@ -441,6 +472,13 @@ class RenderV6Tests(FunctionalTestCase):
                 "-m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit",
                 "-A ufw-user-input -p tcp --dport 22 -j ufw-user-limit-accept",
             ],
+        )
+
+    def test_proto_gre_v6(self):
+        # A v6 destination with a portless proto renders on the ufw6 chain.
+        self.assert_render(
+            "allow to 2001:db8::1 proto gre",
+            ["-A ufw6-user-input -p gre -d 2001:db8::1 -j ACCEPT"],
         )
 
 
