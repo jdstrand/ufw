@@ -90,6 +90,58 @@ class InitChurnE2E(E2ETestCase):
             self.assert_init_ok("flush-all")  # tear down for the next start
 
 
+class ForceReloadE2E(E2ETestCase):
+    """`ufw-init force-reload` must re-apply the firewall in place: same kernel
+    state as the enable that preceded it (rc 0, no drift) with v4+v6 up, and --
+    the historical LP: #251355 condition from root/bugs -- it must also succeed
+    with IPV6=no, preserving the v6 lockdown state."""
+
+    def test_force_reload_is_stable(self):
+        self.enable_ipv6()
+        self.assert_ok("allow", "23/tcp")
+        self.assert_ok("--force", "enable")
+        before4 = self.iptables_rules()
+        before6 = self.iptables_rules(v6=True)
+
+        self.assert_init_ok("force-reload")
+
+        self.assert_ufw_chains_present()  # firewall still up after the reload
+        self.assertEqual(self.iptables_rules(), before4, "v4 drift after force-reload")
+        self.assertEqual(
+            self.iptables_rules(v6=True), before6, "v6 drift after force-reload"
+        )
+
+    def test_force_reload_ipv6_disabled(self):
+        """LP: #251355: with IPV6=no (the sandbox default), force-reload must
+        succeed -- the historical bug tripped exactly on the disabled-v6
+        reload path -- and reproduce ufw's deliberate v6 lockdown. With v6
+        disabled but available in the kernel, start sets ip6tables to default
+        DROP with accept-on-loopback and creates no ufw6 chains (the old
+        root/bugs golden pinned exactly that ip6tables state)."""
+        self.assert_ok("allow", "23/tcp")
+        self.assert_ok("--force", "enable")
+
+        after_enable6 = self.iptables_rules(v6=True)
+        self.assertIn(":INPUT DROP", after_enable6)
+        self.assertIn("-A INPUT -i lo -j ACCEPT", after_enable6)
+        self.assertFalse(
+            [ln for ln in after_enable6 if "ufw6" in ln],
+            "IPV6=no: enable created ufw6 chains",
+        )
+
+        self.assert_init_ok("force-reload")
+
+        # v4 chains applied (v6=False asserts nothing about ufw6; the
+        # lockdown-equality check below is what proves no ufw6 chains
+        # appeared, since after_enable6 was shown ufw6-free above)
+        self.assert_ufw_chains_present(v6=False)
+        self.assertEqual(
+            self.iptables_rules(v6=True),
+            after_enable6,
+            "IPV6=no: force-reload changed the v6 lockdown (LP: #251355)",
+        )
+
+
 class ResetE2E(E2ETestCase):
     """`ufw reset` must back up every on-disk rule file, tear the firewall out
     of the kernel, and clear the user rules. Distilled from root/live "Reset
@@ -122,4 +174,6 @@ class ResetE2E(E2ETestCase):
 
 
 def test_main():
-    tests.functional.support.run_e2e(InitEquivalenceE2E, InitChurnE2E, ResetE2E)
+    tests.functional.support.run_e2e(
+        InitEquivalenceE2E, InitChurnE2E, ForceReloadE2E, ResetE2E
+    )

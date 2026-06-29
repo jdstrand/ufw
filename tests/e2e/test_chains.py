@@ -38,15 +38,16 @@ class ChainMatrixE2E(E2ETestCase):
         "track",
     )
 
-    # Secondary chains that must be referenced (the live path) ...
+    # Secondary chains that must be referenced (the live path), both families ...
     REFERENCED = (
         "logging-deny",
-        "not-local",
         "user-forward",
         "user-input",
         "user-output",
         "skip-to-policy-input",
     )
+    # ... plus not-local, which only exists for v4 (no ufw6-not-local).
+    REFERENCED_V4_ONLY = ("not-local",)
     # ... and those that exist but are not jumped to in the default config.
     ZERO_REF = (
         "logging-allow",
@@ -59,38 +60,50 @@ class ChainMatrixE2E(E2ETestCase):
         "skip-to-policy-forward",
     )
 
+    # The chain skeleton is symmetric across v4 (ufw-*) and v6 (ufw6-*).
+    FAMILIES = (("ufw", False), ("ufw6", True))
+
     def test_chain_skeleton_every_loglevel(self):
+        self.enable_ipv6()  # build the v6 skeleton too
         for level in self.LOGLEVELS:
             self.assert_ok("logging", level)
             self.assert_ok("disable")
             self._flush_all()  # clean slate, then build the skeleton fresh
             self.assert_ok("--force", "enable")
+            for prefix, v6 in self.FAMILIES:
+                self._assert_skeleton(level, prefix, v6)
 
-            # Toplevel: each builtin references all six of its ufw sub-chains.
-            for builtin in self.BUILTINS:
-                jumps = self.builtin_jumps(builtin)
-                for c in self.PER_BUILTIN:
-                    name = "ufw-%s-%s" % (c, builtin.lower())
-                    self.assertIn(
-                        name,
-                        jumps,
-                        "loglevel %s: %s not referenced from %s (got %r)"
-                        % (level, name, builtin, jumps),
-                    )
+    def _assert_skeleton(self, level, prefix, v6):
+        fam = "v6" if v6 else "v4"
+        # Toplevel: each builtin references all six of its sub-chains.
+        for builtin in self.BUILTINS:
+            jumps = self.builtin_jumps(builtin, v6=v6)
+            for c in self.PER_BUILTIN:
+                name = "%s-%s-%s" % (prefix, c, builtin.lower())
+                self.assertIn(
+                    name,
+                    jumps,
+                    "loglevel %s %s: %s not referenced from %s (got %r)"
+                    % (level, fam, name, builtin, jumps),
+                )
 
-            # Secondary: live chains have references, dormant ones have none.
-            for c in self.REFERENCED:
-                n = self.chain_references("ufw-%s" % c)
-                self.assertTrue(
-                    n, "loglevel %s: ufw-%s has %r references, want >0" % (level, c, n)
-                )
-            for c in self.ZERO_REF:
-                n = self.chain_references("ufw-%s" % c)
-                self.assertEqual(
-                    n,
-                    0,
-                    "loglevel %s: ufw-%s has %r references, want 0" % (level, c, n),
-                )
+        # Secondary: live chains have references, dormant ones have none.
+        referenced = self.REFERENCED + (() if v6 else self.REFERENCED_V4_ONLY)
+        for c in referenced:
+            n = self.chain_references("%s-%s" % (prefix, c), v6=v6)
+            self.assertTrue(
+                n,
+                "loglevel %s %s: %s-%s has %r references, want >0"
+                % (level, fam, prefix, c, n),
+            )
+        for c in self.ZERO_REF:
+            n = self.chain_references("%s-%s" % (prefix, c), v6=v6)
+            self.assertEqual(
+                n,
+                0,
+                "loglevel %s %s: %s-%s has %r references, want 0"
+                % (level, fam, prefix, c, n),
+            )
 
 
 class ManageBuiltinsE2E(E2ETestCase):
