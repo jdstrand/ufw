@@ -1,7 +1,10 @@
 #!/bin/sh
-
-if [ "$1" = "-V" ]; then
-    ip6tables -V
-fi
-
+# Fake ip6tables for the unit test harness. Reports a fixed, modern version so
+# the suite is deterministic and does not require a real ip6tables on the host
+# (e.g. CI containers); succeeds (no-op) for everything else. The unit tests
+# only run dry-run, so ip6tables is never used to apply rules -- only `-V`
+# matters.
+case "$1" in
+    -V|--version) echo "ip6tables v1.8.10 (nf_tables)" ;;
+esac
 exit 0

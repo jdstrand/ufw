@@ -46,7 +46,12 @@ class FrontendTestCase(unittest.TestCase):
             if os.path.exists(os.path.join(d, "iptables")):
                 iptables_dir = d
                 break
-        self.assertTrue(iptables_dir != "")
+        # Fall back to the harness's fake iptables (set by initvars()) when the
+        # host has no real iptables, so these dry-run tests don't require one
+        # (the fallback guarantees a non-empty dir, so there is nothing left
+        # to assert here).
+        if iptables_dir == "":
+            iptables_dir = ufw.common.iptables_dir
         ufw.common.iptables_dir = iptables_dir
 
         # This needs to be before we set ufw.util.msg_output since

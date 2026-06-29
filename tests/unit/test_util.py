@@ -957,7 +957,13 @@ AAA
         tests.unit.support.check_for_exception(
             self, OSError, ufw.util.get_iptables_version, "iptables-nonexistent"
         )
-        v = ufw.util.get_iptables_version()
+        try:
+            v = ufw.util.get_iptables_version()
+        except OSError:
+            # No real iptables on the host; use the harness's fake.
+            v = ufw.util.get_iptables_version(
+                os.path.join(ufw.common.iptables_dir, "iptables")
+            )
         self.assertTrue(re.match(r"^[0-9]", v))
 
     def test_get_netfilter_capabilities(self):
