@@ -851,6 +851,39 @@ class FunctionalTestCase(unittest.TestCase):
         out = self.ufw("--dry-run", *args).out
         return [line for line in out.splitlines() if line.startswith(":")]
 
+    def logging_block(self, *args):
+        """The rendered ``### LOGGING ###`` section's -A/-I lines for a dry-run --
+        the chain-setup LOG rules, which are parameterized by LOGLEVEL (and
+        emitted for each enabled family). Pinned per level by the logging tests."""
+        out = self.ufw("--dry-run", *args).out
+        lines = []
+        grab = False
+        for line in out.splitlines():
+            if line == "### LOGGING ###":
+                grab = True
+            elif line == "### END LOGGING ###":
+                grab = False
+            elif grab and line.startswith(("-A ", "-I ")):
+                lines.append(line)
+        return lines
+
+    def rule_block(self, *args):
+        """Every -A/-I line in the ``### RULES ###`` section of a dry-run, on any
+        chain -- unlike rendered_rules(), which keeps only the user
+        input/output/forward chains. Needed to pin per-rule logging, whose
+        log / log-all difference lives in the ufw[6]-user-logging-* chain."""
+        out = self.ufw("--dry-run", *args).out
+        lines = []
+        grab = False
+        for line in out.splitlines():
+            if line == "### RULES ###":
+                grab = True
+            elif line == "### END RULES ###":
+                grab = False
+            elif grab and line.startswith(("-A ", "-I ")):
+                lines.append(line)
+        return lines
+
     def _maybe_www(self, args):
         """Rewrite a trailing 'http' argument to 'www' when /etc/services lists
         'http' as 80/udp, so the expected output matches on such systems."""

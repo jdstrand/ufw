@@ -444,10 +444,160 @@ class RenderV6Tests(FunctionalTestCase):
         )
 
 
+class LoggingTests(FunctionalTestCase):
+    """Pin the rendered logging output.
+
+    The old good/logging test only ever checked the ``LOGLEVEL=`` string in
+    ufw.conf -- it never verified the LOG *rules* that string produces, and they
+    differ materially: off disables logging; low logs blocked packets; medium
+    adds output logging and AUDIT of new connections; high drops the rate
+    limits from block/allow logging and audits all packets (rate-limited);
+    full drops the audit rate limit too. A regression swapping those
+    is security-relevant and previously went uncaught. This pins each level's
+    block for v4 and v6, plus the per-rule log / log-all distinction."""
+
+    class_name = None
+
+    # The ### LOGGING ### block ufw renders at each LOGLEVEL (v4 chains).
+    LOG_BLOCKS = {
+        "off": [
+            "-I ufw-user-logging-input -j RETURN",
+            "-I ufw-user-logging-output -j RETURN",
+            "-I ufw-user-logging-forward -j RETURN",
+        ],
+        "low": [
+            '-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            "-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN "
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " '
+            "-m limit --limit 3/min --limit-burst 10",
+        ],
+        "medium": [
+            '-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            "-A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG "
+            '--log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min '
+            "--limit-burst 10",
+            '-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10",
+            '-I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10",
+            '-I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10",
+        ],
+        "high": [
+            '-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "',
+            '-A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "',
+            '-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "',
+            "-A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG "
+            '--log-prefix "[UFW AUDIT INVALID] "',
+            '-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "',
+            '-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "',
+            '-I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m limit --limit 3/min --limit-burst 10",
+            '-I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " '
+            "-m limit --limit 3/min --limit-burst 10",
+        ],
+        "full": [
+            '-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "',
+            '-A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "',
+            '-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "',
+            "-A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG "
+            '--log-prefix "[UFW AUDIT INVALID] "',
+            '-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "',
+            '-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "',
+            '-I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "',
+            '-I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "',
+            '-I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "',
+        ],
+    }
+
+    def test_logging_block_per_level(self):
+        self.maxDiff = None
+        for level, expected in self.LOG_BLOCKS.items():
+            with self.subTest(level=level):
+                self.assert_ok("logging", level)
+                self.assertEqual(
+                    expected,
+                    self.logging_block("allow", "22"),
+                    "v4 LOGGING block wrong at LOGLEVEL=%s" % level,
+                )
+
+    def test_v6_logging_block_per_level(self):
+        # The v6 block is the v4 block on the ufw6- chains; asserting that parity
+        # pins the v6 rendering at every level without duplicating the data.
+        self.maxDiff = None
+        self.enable_ipv6()
+        for level, expected in self.LOG_BLOCKS.items():
+            with self.subTest(level=level):
+                self.assert_ok("logging", level)
+                v6 = [x for x in self.logging_block("allow", "22") if "ufw6-" in x]
+                derived = [x.replace("ufw-", "ufw6-") for x in expected]
+                self.assertEqual(
+                    derived, v6, "v6 LOGGING block wrong at LOGLEVEL=%s" % level
+                )
+
+    def test_log_logs_new_connections(self):
+        # 'log' logs only NEW connections: the ufw-user-logging-input rule carries
+        # -m conntrack --ctstate NEW.
+        self.assertEqual(
+            [
+                "-A ufw-user-logging-input -p tcp --dport 22 -m conntrack "
+                "--ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG "
+                '--log-prefix "[UFW ALLOW] "',
+                "-A ufw-user-logging-input -p tcp --dport 22 -j RETURN",
+                "-A ufw-user-input -p tcp --dport 22 -j ufw-user-logging-input",
+                "-A ufw-user-input -p tcp --dport 22 -j ACCEPT",
+                "-A ufw-user-logging-input -p udp --dport 22 -m conntrack "
+                "--ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG "
+                '--log-prefix "[UFW ALLOW] "',
+                "-A ufw-user-logging-input -p udp --dport 22 -j RETURN",
+                "-A ufw-user-input -p udp --dport 22 -j ufw-user-logging-input",
+                "-A ufw-user-input -p udp --dport 22 -j ACCEPT",
+            ],
+            self.rule_block("allow", "log", "22"),
+        )
+
+    def test_log_all_logs_every_packet(self):
+        # 'log-all' logs every packet: identical to 'log' but WITHOUT the
+        # -m conntrack --ctstate NEW match.
+        self.assertEqual(
+            [
+                "-A ufw-user-logging-input -p tcp --dport 22 -m limit "
+                '--limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "',
+                "-A ufw-user-logging-input -p tcp --dport 22 -j RETURN",
+                "-A ufw-user-input -p tcp --dport 22 -j ufw-user-logging-input",
+                "-A ufw-user-input -p tcp --dport 22 -j ACCEPT",
+                "-A ufw-user-logging-input -p udp --dport 22 -m limit "
+                '--limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "',
+                "-A ufw-user-logging-input -p udp --dport 22 -j RETURN",
+                "-A ufw-user-input -p udp --dport 22 -j ufw-user-logging-input",
+                "-A ufw-user-input -p udp --dport 22 -j ACCEPT",
+            ],
+            self.rule_block("allow", "log-all", "22"),
+        )
+
+
 def test_main():
     tests.functional.support.run_unittest(
         BoilerplateTests,
         RenderTests,
         CombinationTests,
         RenderV6Tests,
+        LoggingTests,
     )
