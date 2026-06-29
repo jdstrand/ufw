@@ -23,8 +23,12 @@ import os
 import sys
 import warnings
 
+import ufw.common
 import ufw.frontend
-from ufw.common import UFWError, programName, state_dir, trans_dir
+
+# state_dir/trans_dir are deliberately NOT imported here: they're read as
+# ufw.common.* at call time so a runtime repoint (the test sandbox) is honored.
+from ufw.common import UFWError, programName
 from ufw.util import error, warn, msg, _findpath, create_lock, release_lock
 
 import gettext
@@ -46,12 +50,17 @@ def clean_warning(message, category, filename, lineno, file=None, line=""):
     warn(message)
 
 
-def main_ufw():
+def main_ufw(argv=None):
+    # argv defaults to sys.argv; the functional tests pass their own command
+    # line to drive this entry point in-process without mutating sys.argv.
+    if argv is None:
+        argv = sys.argv
+
     # relocate root and data directories if specified
     args = []
     rootdir = None
     datadir = None
-    for i in sys.argv:
+    for i in argv:
         if i.startswith("--rootdir="):
             if len(i.split("=")) == 2:
                 rootdir = i.split("=")[1]
@@ -67,7 +76,8 @@ def main_ufw():
 
     # Internationalization
     gettext.bindtextdomain(
-        programName, os.path.join(_findpath(trans_dir, rootdir), "messages")
+        programName,
+        os.path.join(_findpath(ufw.common.trans_dir, rootdir), "messages"),
     )
     gettext.textdomain(programName)
     tr = gettext.gettext
@@ -117,9 +127,9 @@ def main_ufw():
     if datadir is None:
         lockfile = "/run/ufw.lock"
         if os.getuid() != 0 or "TESTSTATE" in os.environ:
-            lockfile = os.path.join(state_dir, "ufw.lock")
+            lockfile = os.path.join(ufw.common.state_dir, "ufw.lock")
     else:
-        lockfile = os.path.join(_findpath(state_dir, datadir), "ufw.lock")
+        lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir), "ufw.lock")
 
     lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
     res = ""
