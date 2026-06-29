@@ -1159,6 +1159,34 @@ class E2ETestCase(unittest.TestCase):
         m = re.search(r"\((\d+) references\)", p.stdout)
         return int(m.group(1)) if m else None
 
+    def kernel_policy(self, builtin, v6=False):
+        """The builtin chain's default policy (ACCEPT/DROP) from the ``-P``
+        line of ``iptables -S <builtin>``. Returns None if not found."""
+        cmd = "ip6tables" if v6 else "iptables"
+        p = subprocess.run(
+            [cmd, "-S", builtin],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        for ln in p.stdout.splitlines():
+            parts = ln.split()
+            if len(parts) >= 3 and parts[0] == "-P" and parts[1] == builtin:
+                return parts[2]
+        return None
+
+    def raw_iptables(self, *args, v6=False):
+        """Run a raw iptables/ip6tables command (to inspect or seed the builtin
+        chains directly, e.g. to test MANAGE_BUILTINS). Returns Result(rc, out)."""
+        cmd = "ip6tables" if v6 else "iptables"
+        p = subprocess.run(
+            [cmd] + [str(a) for a in args],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        return Result(p.returncode, p.stdout)
+
     def ufw(self, *args):
         """Run one ufw command as a subprocess against the real iptables backend.
 

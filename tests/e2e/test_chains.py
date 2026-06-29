@@ -93,5 +93,65 @@ class ChainMatrixE2E(E2ETestCase):
                 )
 
 
+class ManageBuiltinsE2E(E2ETestCase):
+    """MANAGE_BUILTINS controls whether `ufw enable` flushes the builtin chains.
+    With it on, a pre-existing manual rule is wiped; with it off, ufw leaves it
+    alone. Distilled from root/live "Checking flush builtins"."""
+
+    COMMENT = "ufw_test_builtins"
+    MANUAL_RULE = ("-I", "INPUT", "-j", "ACCEPT", "-m", "comment", "--comment", COMMENT)
+
+    def test_manage_builtins_flush(self):
+        for manage, should_survive in (("yes", False), ("no", True)):
+            self.assert_ok("disable")
+            self.set_default("MANAGE_BUILTINS", manage)
+            self.raw_iptables(*self.MANUAL_RULE)
+
+            self.assert_ok("--force", "enable")
+            survived = self.COMMENT in self.raw_iptables("-S", "INPUT").out
+            self.assertEqual(
+                survived,
+                should_survive,
+                "MANAGE_BUILTINS=%s: manual rule %s (survived=%s, want %s)"
+                % (manage, self.COMMENT, survived, should_survive),
+            )
+
+            # Clean up the manual rule if ufw left it in place (-D may no-op).
+            self.raw_iptables(
+                "-D",
+                "INPUT",
+                "-j",
+                "ACCEPT",
+                "-m",
+                "comment",
+                "--comment",
+                self.COMMENT,
+            )
+
+
+class DefaultPolicyE2E(E2ETestCase):
+    """`ufw default allow|deny` must flip the builtin INPUT chain's policy in the
+    real kernel (OUTPUT stays ACCEPT, FORWARD stays DROP). Distilled from
+    root/valid and root/valid6 (v4 + v6)."""
+
+    def test_default_sets_kernel_policy(self):
+        self.enable_ipv6()  # exercise both iptables and ip6tables policies
+        self.assert_ok("--force", "enable")
+
+        self.assert_ok("default", "allow")
+        for v6 in (False, True):
+            self.assertEqual(self.kernel_policy("INPUT", v6=v6), "ACCEPT")
+            self.assertEqual(self.kernel_policy("OUTPUT", v6=v6), "ACCEPT")
+            self.assertEqual(self.kernel_policy("FORWARD", v6=v6), "DROP")
+
+        self.assert_ok("default", "deny")
+        for v6 in (False, True):
+            self.assertEqual(self.kernel_policy("INPUT", v6=v6), "DROP")
+            self.assertEqual(self.kernel_policy("OUTPUT", v6=v6), "ACCEPT")
+            self.assertEqual(self.kernel_policy("FORWARD", v6=v6), "DROP")
+
+
 def test_main():
-    tests.functional.support.run_e2e(ChainMatrixE2E)
+    tests.functional.support.run_e2e(
+        ChainMatrixE2E, ManageBuiltinsE2E, DefaultPolicyE2E
+    )
