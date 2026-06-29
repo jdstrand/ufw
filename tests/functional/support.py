@@ -344,8 +344,12 @@ def initvars():
     ufw.common.do_checks = False
 
 
-def run_setup():
-    """'make install' into the sandbox and copy a pristine etc/ tree."""
+def run_setup(iptables_dir=FAKE_BIN):
+    """'make install' into the sandbox and copy a pristine etc/ tree.
+
+    ``iptables_dir`` is baked into the installed binary (IPTABLES_DIR=); it
+    defaults to the deterministic fakes. The e2e suite passes the real iptables
+    dir (real_iptables_dir()) so commands actually apply via the real backend."""
     global _pristine_etc
 
     install_dir = os.path.join(topdir, "ufw")
@@ -365,7 +369,7 @@ def run_setup():
             "PREFIX=%s/usr" % abs_install_dir,
             "SYSCONFDIR=%s/etc" % abs_install_dir,
             "LIBDIR=%s/lib" % abs_install_dir,
-            "IPTABLES_DIR=%s" % FAKE_BIN,
+            "IPTABLES_DIR=%s" % iptables_dir,
         ],
         cwd=REPO_ROOT,
         stdout=subprocess.PIPE,
@@ -949,3 +953,205 @@ class SubprocessTestCase(unittest.TestCase):
 
     def enable_ipv6(self):
         self.set_default("IPV6", "yes")
+
+
+# -- e2e (real iptables backend) harness ----------------------------------
+
+
+def require_e2e_env():
+    """Guard for the e2e suite: it modifies the real firewall, so demand an
+    explicit opt-in (UFW_E2E=1) and root. Run only in a disposable VM."""
+    if os.environ.get("UFW_E2E") != "1":
+        sys.stderr.write(
+            "ERROR: e2e tests require UFW_E2E=1 (they modify the real firewall; "
+            "run in a disposable VM)\n"
+        )
+        sys.exit(1)
+    if os.getuid() != 0:
+        sys.stderr.write("ERROR: e2e tests must run as root\n")
+        sys.exit(1)
+
+
+def real_iptables_dir():
+    """Locate the real iptables-restore directory (for the e2e suite)."""
+    p = shutil.which("iptables-restore")
+    if not p:
+        raise Error("e2e: no real iptables-restore found on PATH")
+    return os.path.dirname(p)
+
+
+class E2ETestCase(unittest.TestCase):
+    """Base for end-to-end tests: drive the installed ufw binary as a subprocess
+    against the REAL iptables backend (root, in a disposable VM).
+
+    Unlike FunctionalTestCase (in-process, fake iptables) this actually applies
+    rules to the kernel, so it verifies that iptables/ip6tables-restore accept
+    what ufw generates. It is agnostic to iptables-legacy vs iptables-nft -- it
+    uses whatever iptables/iptables-restore is on PATH. ``--dry-run`` is stripped
+    from each command so it applies, and the kernel is returned to a clean state
+    with ``ufw-init flush-all`` around every test. Run only via tests/e2e/runner.py."""
+
+    # -- sandbox paths (mirror SubprocessTestCase) -------------------------
+    @property
+    def sandbox(self):
+        return os.path.abspath(os.path.join(topdir, "ufw"))
+
+    @property
+    def ufw_bin(self):
+        return os.path.join(self.sandbox, "usr", "sbin", "ufw")
+
+    @property
+    def etc(self):
+        return os.path.join(self.sandbox, "etc")
+
+    @property
+    def appsd(self):
+        return os.path.join(self.etc, "ufw", "applications.d")
+
+    @property
+    def default_ufw(self):
+        return os.path.join(self.etc, "default", "ufw")
+
+    @property
+    def ufw_conf(self):
+        return os.path.join(self.etc, "ufw", "ufw.conf")
+
+    @property
+    def user_rules(self):
+        return os.path.join(self.etc, "ufw", "user.rules")
+
+    @property
+    def user6_rules(self):
+        return os.path.join(self.etc, "ufw", "user6.rules")
+
+    # -- lifecycle ---------------------------------------------------------
+    def setUp(self):
+        # Deliberate guard, not just runner.py's: a stray root invocation via
+        # `sudo python -m unittest tests.e2e...` must refuse before anything
+        # touches the real firewall.
+        require_e2e_env()
+
+        # Fresh on-disk config for each test.
+        if os.path.exists(self.etc):
+            recursive_rm(self.etc)
+        shutil.copytree(_pristine_etc, self.etc)
+        for f in glob.glob(os.path.join(DATA_DIR, "defaults", "profiles", "*")):
+            if os.path.isfile(f):
+                shutil.copy(f, self.appsd)
+        self.set_default("IPV6", "no")
+        # Start from a clean kernel (drop any leftover ufw chains).
+        self._flush_all()
+
+    def tearDown(self):
+        # Return the kernel to a clean state regardless of test outcome.
+        self._flush_all()
+
+    # -- helpers -----------------------------------------------------------
+    def _env(self):
+        env = os.environ.copy()
+        env["LANG"] = "C"
+        env["TESTSTATE"] = os.path.join(self.sandbox, "lib", "ufw")
+        pp = os.path.join(self.sandbox, "usr", "lib", "python3", "dist-packages")
+        if env.get("PYTHONPATH"):
+            pp += os.pathsep + env["PYTHONPATH"]
+        env["PYTHONPATH"] = pp
+        return env
+
+    def _flush_all(self):
+        """Remove all ufw chains/hooks from the real kernel (ufw-init flush-all;
+        plain disable leaves the chain skeleton behind), then assert it worked --
+        no ufw chains may remain. Used to start and end every test clean."""
+        init = os.path.join(self.sandbox, "lib", "ufw", "ufw-init")
+        subprocess.run(
+            [init, "flush-all"],
+            cwd=REPO_ROOT,
+            env=self._env(),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        self.assert_no_ufw_chains()
+
+    def _ufw_chain_lines(self, cmd):
+        p = subprocess.run(
+            [cmd, "-S"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        return [ln for ln in p.stdout.splitlines() if "ufw" in ln]
+
+    def ufw(self, *args):
+        """Run one ufw command as a subprocess against the real iptables backend.
+
+        ``--dry-run`` is stripped so the command actually applies (the whole
+        point of e2e). Returns Result(rc, combined out)."""
+        argv = [str(a) for a in args if str(a) != "--dry-run"]
+        p = subprocess.run(
+            [sys.executable, self.ufw_bin] + argv,
+            cwd=REPO_ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            env=self._env(),
+        )
+        return Result(p.returncode, p.stdout)
+
+    # -- assertions --------------------------------------------------------
+    def assert_ok(self, *args):
+        r = self.ufw(*args)
+        self.assertEqual(
+            r.rc, 0, "expected rc 0 for %r, got %d:\n%s" % (list(args), r.rc, r.out)
+        )
+        return r.out
+
+    def assert_fail(self, *args):
+        r = self.ufw(*args)
+        self.assertEqual(
+            r.rc, 1, "expected rc 1 for %r, got %d:\n%s" % (list(args), r.rc, r.out)
+        )
+        return r.out
+
+    def assert_no_ufw_chains(self):
+        """Assert the real kernel has no ufw chains (clean slate)."""
+        for cmd, fam in (("iptables", "v4"), ("ip6tables", "v6")):
+            lines = self._ufw_chain_lines(cmd)
+            self.assertEqual(
+                lines,
+                [],
+                "expected no ufw %s chains, found:\n%s" % (fam, "\n".join(lines)),
+            )
+
+    def assert_ufw_chains_present(self, v6=True):
+        """Assert ufw's chains were applied to the real kernel: v4 always, v6
+        only when IPv6 is enabled (ufw skips ip6tables when IPV6=no)."""
+        families = [("iptables", "v4")]
+        if v6:
+            families.append(("ip6tables", "v6"))
+        for cmd, fam in families:
+            self.assertTrue(
+                self._ufw_chain_lines(cmd),
+                "expected ufw %s chains, found none" % fam,
+            )
+
+    def read(self, path):
+        return _read(path)
+
+    def set_default(self, key, value, conf=False):
+        _sed_default(self.ufw_conf if conf else self.default_ufw, key, value)
+
+    def enable_ipv6(self):
+        self.set_default("IPV6", "yes")
+
+
+def run_e2e(*classes):
+    """Install with the REAL iptables backend and run the given e2e TestCase
+    classes. Refuses to run without UFW_E2E=1 + root (it modifies the firewall)."""
+    require_e2e_env()
+    run_setup(iptables_dir=real_iptables_dir())
+
+    suite = unittest.TestSuite()
+    for cls in classes:
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(cls))
+    result = unittest.TextTestRunner(sys.stdout, verbosity=2).run(suite)
+    if not result.wasSuccessful():
+        raise TestFailed("e2e tests failed")

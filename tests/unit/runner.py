@@ -58,6 +58,12 @@ def runtest(test):
 
 
 if __name__ == "__main__":
+    # The unit suite is non-root by design. Refuse to run as root so it is never
+    # confused with the e2e suite (the only one that touches the real firewall).
+    if os.getuid() == 0:
+        sys.stderr.write("ERROR: tests/unit must not run as root\n")
+        sys.exit(1)
+
     # Resolve the repo root from runner.py's location.
     d = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     testdir = os.path.dirname(os.path.dirname(d))

@@ -14,11 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# find_tests(), runtest() and main() inspired by tests/unit/runner.py
+# Runner for the end-to-end suite. UNLIKE the functional suite, these drive the
+# installed ufw binary against the REAL iptables backend, so they modify the
+# firewall and MUST run as root in a disposable VM. Gated on UFW_E2E=1.
 
 
 from __future__ import print_function
 import os
+import shutil
 import sys
 
 
@@ -41,31 +44,34 @@ def find_tests(testdir=None, testscripts=[]):
 
 def runtest(test):
     """Run test"""
-    pkg = __import__("tests.functional." + test, globals(), locals(), [])
-    functional_pkg = getattr(pkg, "functional")
-    mod = getattr(functional_pkg, test)
+    pkg = __import__("tests.e2e." + test, globals(), locals(), [])
+    e2e_pkg = getattr(pkg, "e2e")
+    mod = getattr(e2e_pkg, test)
     print(test)
     mod.test_main()
 
 
 if __name__ == "__main__":
-    # The functional suite is non-root by design (it fakes iptables and has
-    # uid-sensitive cases, e.g. bugs/misc's chmod 0o444 permission checks that
-    # root bypasses). Refuse to run as root; real-firewall coverage is tests/e2e.
-    if os.getuid() == 0:
-        sys.stderr.write("ERROR: tests/functional must not run as root\n")
+    # Guard: e2e modifies the real firewall. Fail fast (before any setup) unless
+    # explicitly opted in via UFW_E2E=1 and running as root (in a disposable VM).
+    if os.environ.get("UFW_E2E") != "1":
+        sys.stderr.write(
+            "ERROR: e2e tests require UFW_E2E=1 (they modify the real firewall; "
+            "run in a disposable VM)\n"
+        )
+        sys.exit(1)
+    if os.getuid() != 0:
+        sys.stderr.write("ERROR: e2e tests must run as root\n")
         sys.exit(1)
 
     # Resolve the repo root from runner.py's location.
     d = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     testdir = os.path.dirname(os.path.dirname(d))
 
-    # Create the ufw -> src symlink under ./tmp (git-ignored) so 'import ufw.*'
-    # resolves to src/ without cluttering the repo root, and put ./tmp on
-    # sys.path. Relative target, so the link stays valid if the checkout
-    # moves; recreate it when dangling or pointing elsewhere (islink() is
-    # true for a dangling link, and following a stale one would import some
-    # other tree's src/).
+    # ufw -> src symlink under ./tmp (git-ignored) so support.py's 'import ufw.*'
+    # resolves, and put ./tmp on sys.path. (Mirrors the functional runner:
+    # relative target so the link stays valid if the checkout moves; recreate
+    # it when dangling or pointing elsewhere.)
     tmpdir = os.path.join(testdir, "tmp")
     ufwlink = os.path.join(tmpdir, "ufw")
     linktarget = os.path.join("..", "src")
@@ -81,8 +87,8 @@ if __name__ == "__main__":
         os.symlink(linktarget, ufwlink)
     sys.path.insert(0, tmpdir)
 
-    # Replace runner.py's directory in sys.path with the repo root so our
-    # modules namespace properly as tests.functional.*
+    # Replace runner.py's directory in sys.path with the repo root so modules
+    # namespace properly as tests.e2e.* / tests.functional.*
     i = len(sys.path)
     while i >= 0:
         i -= 1
@@ -91,7 +97,7 @@ if __name__ == "__main__":
 
     tests = find_tests(testscripts=sys.argv)
 
-    # Import here so we are guaranteed to get ours from the repo root
+    # Import here so we are guaranteed to get ours from the repo root.
     from tests.functional.support import TestFailed
 
     passed = []
@@ -111,10 +117,7 @@ if __name__ == "__main__":
 
             # cleanup imported test modules between runs
             for m in list(sys.modules.keys()):
-                if (
-                    m.startswith("tests.functional.")
-                    and m != "tests.functional.support"
-                ):
+                if m.startswith("tests.e2e.") and m != "tests.e2e.runner":
                     try:
                         del sys.modules[m]
                     except KeyError:
@@ -124,10 +127,24 @@ if __name__ == "__main__":
         # exception (a stale leftover link shadows the next run's recreate).
         if os.path.islink(ufwlink):
             os.unlink(ufwlink)
+        # This runner runs as root: remove the sandbox, make install's
+        # staging dir, and the ./tmp symlink parent, which would otherwise be
+        # left root-owned and EACCES a later non-root functest/unittest on
+        # the same checkout. The build/ and tmp/ parents are removed only
+        # when empty (i.e. this run created them).
+        shutil.rmtree(
+            os.path.join(testdir, "tests", "functional", "tmp"), ignore_errors=True
+        )
+        shutil.rmtree(os.path.join(testdir, "build", "stage"), ignore_errors=True)
+        for d in (os.path.join(testdir, "build"), tmpdir):
+            try:
+                os.rmdir(d)
+            except OSError:
+                pass
 
     print("")
     print("------------------------")
-    print("Functional tests summary")
+    print("End-to-end tests summary")
     print("------------------------")
     print(
         "Total=%d (Passed=%d, Failed=%d)"

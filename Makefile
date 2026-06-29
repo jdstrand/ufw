@@ -48,7 +48,7 @@ else
 PYFLAKES_EXE = pyflakes
 endif
 
-.PHONY: all build install clean translations mo test unittest functest coverage coverage-report man-check check syntax-check tarball
+.PHONY: all build install clean translations mo test unittest functest e2e coverage coverage-report man-check check syntax-check tarball
 
 all: build
 
@@ -196,6 +196,14 @@ unittest:
 
 functest:
 	$(PYTHON) ./tests/functional/runner.py
+
+# End-to-end tests: drive the installed ufw against the REAL iptables backend.
+# These modify the firewall, so they are NOT part of 'make test' -- run them
+# only in a disposable VM with UFW_E2E=1, as root.
+e2e:
+	@if [ "$$UFW_E2E" != "1" ]; then echo "ERROR: e2e requires UFW_E2E=1 (modifies the real firewall; run in a disposable VM)" >&2; exit 1; fi
+	@if [ "`id -u`" != "0" ]; then echo "ERROR: e2e must run as root" >&2; exit 1; fi
+	$(PYTHON) ./tests/e2e/runner.py
 
 coverage:
 	$(PYTHON) -m coverage run ./tests/unit/runner.py
