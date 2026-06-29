@@ -30,8 +30,14 @@ class SubprocessSmokeTests(SubprocessTestCase):
         self.assertIn("Usage: ufw COMMAND", out)
 
     def test_version(self):
-        out = self.assert_ok("version")
-        self.assertIn("ufw", out)
+        # The installed binary substitutes #VERSION# (Makefile), so -- unlike the
+        # in-process suite, where it is only a placeholder -- this asserts a real
+        # version string. This is the sole home for version-output coverage.
+        for arg in ("version", "--version"):
+            out = self.assert_ok(arg)
+            self.assertRegex(out, r"^ufw \d")
+            self.assertNotIn("#VERSION#", out)
+            self.assertIn("Copyright", out)
 
     def test_dry_run_status(self):
         self.assert_ok("--dry-run", "status")

@@ -42,9 +42,11 @@ O
 O <<command help>>
 O 
 ## 15: --dry-run version (rc=0)
-O ufw (in-process)
+O ufw #VERSION#
+O Copyright 2008-2023 Canonical Ltd.
 ## 16: --dry-run --version (rc=0)
-O ufw (in-process)
+O ufw #VERSION#
+O Copyright 2008-2023 Canonical Ltd.
 ## 17: --dry-run reload (rc=0)
 O Firewall not enabled (skipping reload)
 ## 18: --dry-run app list (rc=0)

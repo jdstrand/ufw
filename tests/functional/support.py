@@ -18,8 +18,9 @@
 # 'make install' lays down a sandbox, ufw is imported from src/ (via the
 # git-ignored ./tmp/ufw -> src symlink) and ufw.common globals are repointed
 # at the sandbox.
-# Each command is driven in-process by replicating main_ufw()'s dispatch with a
-# freshly constructed UFWFrontend, so no per-command state leaks between calls.
+# Each command is driven in-process through the real CLI entry point,
+# main_ufw(argv), which constructs a fresh UFWFrontend per call, so no
+# per-command state leaks between calls.
 
 from __future__ import print_function
 
@@ -61,6 +62,7 @@ if _tmp not in sys.path:
 
 import ufw.common  # noqa: E402
 import ufw.frontend  # noqa: E402
+import ufw.main  # noqa: E402
 import ufw.util  # noqa: E402
 
 REPO_ROOT = _repo
@@ -105,13 +107,6 @@ def recursive_rm(dir_path, contents_only=False):
             recursive_rm(path)
     if contents_only is False:
         os.rmdir(dir_path)
-
-
-def _clean_warning(message, category, filename, lineno, file=None, line=""):
-    """Render warnings.warn() as ufw's 'WARN: ...' line, mirroring main_ufw's
-    warnings.showwarning hook (src/main.py)."""
-    _ = (category, filename, lineno, file, line)
-    ufw.util.warn(message)
 
 
 def _read(path):
@@ -430,7 +425,6 @@ class FunctionalTestCase(unittest.TestCase):
     """
 
     class_name = None
-    backend_name = os.environ.get("UFW_BACKEND", "iptables")
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -448,16 +442,27 @@ class FunctionalTestCase(unittest.TestCase):
         self.set_default("IPV6", "no")
 
     def setUp(self):
+        # Refuse root: runner.py already does, but `python -m unittest` skips
+        # the runner, and in-process main_ufw() as root would take the REAL
+        # /run/ufw.lock -- main_ufw() only picks the sandbox lockfile when
+        # non-root or when TESTSTATE is in the environment (the subprocess
+        # path exports it; the in-process path does not). The uid-sensitive
+        # cases (the chmod 0o444 permission errors in bugs/misc) also need
+        # non-root.
+        if os.getuid() == 0:
+            raise Error("tests/functional must not run as root")
+
         # Restore the pristine sandbox config so each test starts clean.
         self._restore_pristine_config()
 
         ufw.common.do_checks = False
         ufw.util.msg_output = None
-        # Mirror main_ufw(): render warnings.warn() as ufw's "WARN: ..." line,
-        # and (because each old test ran ufw as a fresh process) emit every
-        # occurrence rather than letting Python dedup repeats across commands.
+        # main_ufw() installs its warnings.showwarning hook (render warnings.warn()
+        # as ufw's "WARN: ..." line). The real ufw runs each command as its own
+        # process, so a repeated warning is emitted every time; force "always" so
+        # Python's per-location cache doesn't dedup those repeats across our single
+        # in-process run.
         warnings.simplefilter("always")
-        warnings.showwarning = _clean_warning
         # Warm up the on-disk firewall structure (v4 and v6) so per-command rule
         # deltas attribute only the rule each command adds -- not the one-time
         # chain/logging scaffolding ufw writes on the first persisting command
@@ -471,7 +476,6 @@ class FunctionalTestCase(unittest.TestCase):
         rule-file deltas to the current on-disk state."""
         self._count = 0
         self._trace = []
-        self._ui = None
         self._transcript = []
         self._prev_ur = _read(self.user_rules)
         self._prev_u6 = _read(self.user6_rules)
@@ -619,20 +623,18 @@ class FunctionalTestCase(unittest.TestCase):
         # its default 'output' arg still equals sys.stdout, so we must NOT
         # replace sys.stdout). error()/warn() write to sys.stderr, which we
         # point at the same buffer so both streams interleave in call order.
+        # Drive the real CLI entry point in-process: main_ufw(argv) takes our args
+        # and exits via sys.exit(), so read the rc off the SystemExit.
         buf = io.StringIO()
-        self._ui = None
         old_msg_output = ufw.util.msg_output
         old_stderr = sys.stderr
         ufw.util.msg_output = buf
         sys.stderr = buf
         rc = 0
         try:
-            rc = self._dispatch(["ufw"] + args)
+            ufw.main.main_ufw(["ufw"] + args)
         except SystemExit as e:
             rc = _norm_exit_code(e.code)
-        except ufw.common.UFWError as e:
-            ufw.util.error(e.value, do_exit=False)
-            rc = 1
         except Exception:
             traceback.print_exc(file=buf)
             rc = 1
@@ -661,49 +663,6 @@ class FunctionalTestCase(unittest.TestCase):
         self._transcript.append("\n".join(lines))
         self._prev_ur = new_ur
         self._prev_u6 = new_u6
-
-    def _dispatch(self, argv):
-        """Replicate main_ufw()'s dispatch (src/main.py) for one command."""
-        app_action = False
-        idx = 1
-        if len(argv) > 1 and argv[1].lower() == "--dry-run":
-            idx = 2
-        if len(argv) > idx and argv[idx].lower() == "app":
-            app_action = True
-
-        try:
-            pr = ufw.frontend.parse_command(list(argv))
-        except ValueError:
-            ufw.util.msg(ufw.frontend.get_command_help())
-            return 1
-
-        if pr.action in ("help", "--help", "-h"):
-            ufw.util.msg(ufw.frontend.get_command_help())
-            return 0
-        if pr.action in ("version", "--version"):
-            # Imported from src/, so the real #VERSION# is not substituted; the
-            # in-process suite never asserts the version string.
-            ufw.util.msg("%s (in-process)" % ufw.common.programName)
-            return 0
-
-        self._ui = ufw.frontend.UFWFrontend(pr.dryrun, backend_type=self.backend_name)
-
-        if app_action and "type" in pr.data and pr.data["type"] == "app":
-            res = self._ui.do_application_action(pr.action, pr.data["name"])
-        elif (
-            pr.action == "enable" and not pr.force and not self._ui.continue_under_ssh()
-        ):
-            res = "Aborted"
-        elif "rule" in pr.data:
-            res = self._ui.do_action(
-                pr.action, pr.data["rule"], pr.data["iptype"], pr.force
-            )
-        else:
-            res = self._ui.do_action(pr.action, "", "", pr.force)
-
-        if res != "":
-            ufw.util.msg(res)
-        return 0
 
     # -- assertion helpers -------------------------------------------------
 

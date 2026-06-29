@@ -357,7 +357,11 @@ class GoodTests(FunctionalTestCase):
         self.assert_ok("--dry-run", "status", "verbose")
         self.assert_ok("--dry-run", "status", "numbered")
 
-        # parser: basic
+        # parser: basic. version/--version are replayed here for routing/parity
+        # like every other command; from src/ the #VERSION# token is unsubstituted,
+        # so the transcript pins it literally. The real substituted version string
+        # is asserted against the installed artifact by
+        # SubprocessTestCase.test_version.
         for i in (
             "enable",
             "disable",
