@@ -434,21 +434,22 @@ class FunctionalTestCase(unittest.TestCase):
 
     # -- lifecycle ---------------------------------------------------------
 
-    def setUp(self):
-        # Restore the pristine sandbox config so each test starts clean.
+    def _restore_pristine_config(self):
+        """Reset the sandbox config to the pristine post-install state and stage
+        the shared application profiles, so each test starts from a fresh
+        install. IPv6 is left disabled; tests enable it when needed."""
         etc = ufw.common.config_dir
         if os.path.exists(etc):
             recursive_rm(etc)
         shutil.copytree(_pristine_etc, etc)
-
-        # Stage the shared application profiles into applications.d, mirroring
-        # the old testlib.sh (cp tests/defaults/profiles/* .../applications.d).
         for f in glob.glob(os.path.join(DATA_DIR, "defaults", "profiles", "*")):
             if os.path.isfile(f):
                 shutil.copy(f, self.appsd)
-
-        # Tests assume IPv6 is disabled unless they enable it (run_tests.sh).
         self.set_default("IPV6", "no")
+
+    def setUp(self):
+        # Restore the pristine sandbox config so each test starts clean.
+        self._restore_pristine_config()
 
         ufw.common.do_checks = False
         ufw.util.msg_output = None
