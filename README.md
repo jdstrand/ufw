@@ -415,15 +415,22 @@ number.
 
 ## Testing
 
-To run the test suite:
+The quickest way to run the test suite is:
+
+```bash
+$ make test
+```
+
+This runs the in-process functional suite (`make functest`, in
+`tests/functional/`) and the unit suite. The functional tests drive `ufw`
+in-process against a fake `iptables` backend, so they are fast and MUST NOT be
+run as root (the runner refuses to).
+
+The older shell-driven harness is also available and lets you specify an
+interpreter for the tests:
 
 ```bash
 $ ./run_tests.sh -s
-```
-
-You may also specify an interpreter for the tests:
-
-```bash
 $ ./run_tests.sh -s -i /usr/local/bin/python3.13
 ```
 
@@ -438,6 +445,22 @@ $ sudo ./run_tests.sh -s root
 Finally, `ufw`'s behavior may differ based on available kernel features. The
 `root_kern` tests assume all kernel features supported by `check-requirements`
 are enabled. They behave just like the root tests.
+
+### End-to-End Tests
+
+The `tests/e2e` suite drives the installed `ufw` binary as a subprocess against
+the REAL `iptables` backend (it is agnostic to `iptables-legacy` vs
+`iptables-nft`, using whichever is on `PATH`). Unlike the functional suite it
+applies rules to the kernel, so it verifies that `iptables`/`ip6tables-restore`
+accept what `ufw` generates and that the boot path (`ufw-init`), chain skeleton,
+reset, and default policy behave correctly against a live firewall.
+
+Because it modifies the running firewall, it is NOT part of `make test` and is
+gated behind `UFW_E2E=1` and root. Run it only in a disposable VM:
+
+```bash
+$ sudo UFW_E2E=1 make e2e
+```
 
 ### Manual Testing
 
