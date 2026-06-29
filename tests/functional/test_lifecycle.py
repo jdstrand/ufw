@@ -128,6 +128,32 @@ class LifecycleTests(FunctionalTestCase):
         self.assertEqual(0, self.tuple_count(self.user_rules))
         self.assertEqual(0, self.tuple_count(self.user6_rules))
 
+    def test_delete_by_number(self):
+        """Deleting by rule number removes the right rule (tests/root/live).
+
+        Adds ports 1..4 (so rule N == port N), then deletes by number from the
+        highest down so the lower indices stay stable, checking each port's rule
+        is present beforehand and gone afterward."""
+        ur = self.user_rules
+        for i in (1, 2, 3, 4):
+            self.assert_ok("allow", str(i))
+        self.assertEqual(4, self.tuple_count(ur))
+
+        for i in (4, 3, 2, 1):
+            self.assertIn("### tuple ### allow any %d " % i, self.read(ur))
+            self.assert_ok("--force", "delete", str(i))
+            self.assertNotIn("### tuple ### allow any %d " % i, self.read(ur))
+        self.assertEqual(0, self.tuple_count(ur))
+
+    def test_show_rule_reports(self):
+        """The file-based 'show' reports run (rc 0) without a live firewall
+        (tests/root/live "Show" checked rc only, via 'null'). The iptables-
+        querying reports (raw, builtins) need the real backend and are covered
+        by the e2e suite."""
+        self.assert_ok("allow", "22/tcp")
+        for sub in ("before-rules", "user-rules", "after-rules", "logging-rules"):
+            self.assert_ok("show", sub)
+
 
 def test_main():
     tests.functional.support.run_unittest(LifecycleTests)
