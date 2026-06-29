@@ -17,9 +17,6 @@
 
 source "$TESTPATH/../testlib.sh"
 
-# This isn't available everywhere, so we will test it later
-sed -i "s/self.caps\['route limit'\]\['6'\] = True/self.caps['route limit']['6'] = False/" $TESTPATH/lib/python/ufw/backend.py
-
 for ipv6 in yes no
 do
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result

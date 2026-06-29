@@ -17,9 +17,6 @@
 
 source "$TESTPATH/../testlib.sh"
 
-# This isn't available everywhere, so we will test it later
-sed -i "s/self.caps\['limit'\]\['6'\] = True/self.caps['limit']['6'] = False/" $TESTPATH/lib/python/ufw/backend.py
-
 
 echo "TESTING APPLICATION RULES" >> $TESTTMP/result
 for update in no yes

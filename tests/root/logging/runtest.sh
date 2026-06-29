@@ -18,9 +18,6 @@
 source "$TESTPATH/../testlib.sh"
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
-# This isn't available everywhere, so we will test it later
-sed -i "s/self.caps\['limit'\]\['6'\] = True/self.caps['limit']['6'] = False/" $TESTPATH/lib/python/ufw/backend.py
-
 do_cmd "0" nostats disable
 do_cmd "0" nostats enable
 
