@@ -1065,18 +1065,26 @@ class E2ETestCase(unittest.TestCase):
         env["PYTHONPATH"] = pp
         return env
 
+    def ufw_init(self, *args):
+        """Run the installed ufw-init script (start/stop/flush-all/force-reload/
+        reset) as a subprocess -- the boot/runtime path, distinct from the ufw
+        CLI. Returns Result(rc, combined out)."""
+        init = os.path.join(self.sandbox, "lib", "ufw", "ufw-init")
+        p = subprocess.run(
+            [init] + [str(a) for a in args],
+            cwd=REPO_ROOT,
+            env=self._env(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        return Result(p.returncode, p.stdout)
+
     def _flush_all(self):
         """Remove all ufw chains/hooks from the real kernel (ufw-init flush-all;
         plain disable leaves the chain skeleton behind), then assert it worked --
         no ufw chains may remain. Used to start and end every test clean."""
-        init = os.path.join(self.sandbox, "lib", "ufw", "ufw-init")
-        subprocess.run(
-            [init, "flush-all"],
-            cwd=REPO_ROOT,
-            env=self._env(),
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+        self.ufw_init("flush-all")
         self.assert_no_ufw_chains()
 
     def _ufw_chain_lines(self, cmd):
@@ -1087,6 +1095,35 @@ class E2ETestCase(unittest.TestCase):
             universal_newlines=True,
         )
         return [ln for ln in p.stdout.splitlines() if "ufw" in ln]
+
+    def iptables_rules(self, v6=False):
+        """The applied policy and rule lines from iptables-save -- the ':CHAIN
+        POLICY' headers with their churning packet counters stripped, plus
+        every '-A' rule line -- for comparing real kernel state across the CLI
+        vs the init script, or before vs after a reapply. Policies matter:
+        enable sets the DEFAULT_*_POLICY ones and disable/stop reset them, so
+        an equivalence or idempotency check that skipped them would miss a
+        path that loses the INPUT DROP. In a disposable VM these lines are
+        entirely ufw's."""
+        cmd = "ip6tables-save" if v6 else "iptables-save"
+        p = subprocess.run(
+            [cmd],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        if p.returncode != 0:
+            # Fail loudly: a silently-empty snapshot would make the
+            # before/after equality assertions pass vacuously ([] == []).
+            raise Error("%s failed (rc=%d):\n%s" % (cmd, p.returncode, p.stdout))
+        lines = []
+        for ln in p.stdout.splitlines():
+            if ln.startswith(":"):
+                # ':INPUT DROP [12:3456]' -> ':INPUT DROP'
+                lines.append(" ".join(ln.split()[:2]))
+            elif ln.startswith("-"):
+                lines.append(ln)
+        return lines
 
     def ufw(self, *args):
         """Run one ufw command as a subprocess against the real iptables backend.
@@ -1116,6 +1153,16 @@ class E2ETestCase(unittest.TestCase):
         r = self.ufw(*args)
         self.assertEqual(
             r.rc, 1, "expected rc 1 for %r, got %d:\n%s" % (list(args), r.rc, r.out)
+        )
+        return r.out
+
+    def assert_init_ok(self, *args):
+        """Run an ufw-init subcommand and assert it succeeded (rc 0)."""
+        r = self.ufw_init(*args)
+        self.assertEqual(
+            r.rc,
+            0,
+            "expected rc 0 for ufw-init %r, got %d:\n%s" % (list(args), r.rc, r.out),
         )
         return r.out
 
