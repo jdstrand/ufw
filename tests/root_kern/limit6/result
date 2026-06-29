@@ -33,9 +33,9 @@ To                         Action      From
 22/tcp                     LIMIT       Anywhere
 Anywhere                   LIMIT       24/udp
 23 on eth1                 LIMIT       Anywhere
-22/tcp                     LIMIT       Anywhere (v6)
-Anywhere (v6)              LIMIT       24/udp
-23 on eth1                 LIMIT       Anywhere (v6)
+22/tcp (v6)                LIMIT       Anywhere (v6)
+Anywhere (v6)              LIMIT       24/udp (v6)
+23 (v6) on eth1            LIMIT       Anywhere (v6)
 
 
 
@@ -120,9 +120,9 @@ Status: active
 [ 1] 22/tcp                     LIMIT IN    Anywhere
 [ 2] Anywhere                   LIMIT IN    24/udp
 [ 3] 23 on eth1                 LIMIT IN    Anywhere
-[ 4] 22/tcp                     LIMIT IN    Anywhere (v6)
-[ 5] Anywhere (v6)              LIMIT IN    24/udp
-[ 6] 23 on eth1                 LIMIT IN    Anywhere (v6)
+[ 4] 22/tcp (v6)                LIMIT IN    Anywhere (v6)
+[ 5] Anywhere (v6)              LIMIT IN    24/udp (v6)
+[ 6] 23 (v6) on eth1            LIMIT IN    Anywhere (v6)
 
 
 

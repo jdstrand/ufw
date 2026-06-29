@@ -17,6 +17,13 @@
 
 source "$TESTPATH/../testlib.sh"
 
+# The testsuite runs ufw with UFW_SKIP_CHECKS, so backend.initcaps() skips live
+# netfilter detection and leaves the default self.caps["limit"]["6"] = False.
+# This suite exercises the IPv6 'limit' path, so force the cap on in the installed
+# copy (the kernel must still actually support ip6tables 'recent' to apply the
+# rules -- which is what the root_kern suite verifies).
+sed -i 's/self.caps\["limit"\]\["6"\] = False/self.caps["limit"]["6"] = True/' "$TESTPATH/usr/lib/python3/dist-packages/ufw/backend.py"
+
 for ipv6 in yes
 do
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
