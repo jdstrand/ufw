@@ -1125,6 +1125,40 @@ class E2ETestCase(unittest.TestCase):
                 lines.append(ln)
         return lines
 
+    def builtin_jumps(self, builtin, v6=False):
+        """The chains a builtin (INPUT/OUTPUT/FORWARD) jumps or gotos to, from
+        ``iptables -S <builtin>`` -- i.e. ufw's per-builtin sub-chains."""
+        cmd = "ip6tables" if v6 else "iptables"
+        p = subprocess.run(
+            [cmd, "-S", builtin],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        targets = []
+        for ln in p.stdout.splitlines():
+            parts = ln.split()
+            for flag in ("-j", "-g"):
+                if flag in parts:
+                    i = parts.index(flag)
+                    if i + 1 < len(parts):
+                        targets.append(parts[i + 1])
+        return targets
+
+    def chain_references(self, chain, v6=False):
+        """Reference count for a chain (how many rules jump to it), parsed from
+        the ``Chain <name> (N references)`` header of ``iptables -L``. Returns
+        None if the chain does not exist."""
+        cmd = "ip6tables" if v6 else "iptables"
+        p = subprocess.run(
+            [cmd, "-L", chain, "-n"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        m = re.search(r"\((\d+) references\)", p.stdout)
+        return int(m.group(1)) if m else None
+
     def ufw(self, *args):
         """Run one ufw command as a subprocess against the real iptables backend.
 
