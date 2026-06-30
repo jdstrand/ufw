@@ -98,7 +98,21 @@ if __name__ == "__main__":
     tests = find_tests(testscripts=sys.argv)
 
     # Import here so we are guaranteed to get ours from the repo root.
-    from tests.functional.support import TestFailed
+    from tests.functional.support import (
+        TestFailed,
+        restore_builtin_policies,
+        restore_v6_filter,
+        snapshot_builtin_policies,
+        snapshot_v6_filter,
+    )
+
+    # The tests' enable/disable cycles leave the builtin policies at ACCEPT
+    # (ufw stop's semantics), and any test that enables with IPV6=no lets
+    # ufw REPLACE the whole v6 filter table with its lockdown (destroying
+    # pre-existing v6 rules). Record the host's policies and its entire v6
+    # filter table before touching anything; put both back at the end.
+    policies = snapshot_builtin_policies()
+    v6_filter = snapshot_v6_filter()
 
     passed = []
     failed = []
@@ -123,6 +137,8 @@ if __name__ == "__main__":
                     except KeyError:
                         pass
     finally:
+        restore_v6_filter(v6_filter)
+        restore_builtin_policies(policies)
         # Cleanup our symlink, also when a test module dies on an unexpected
         # exception (a stale leftover link shadows the next run's recreate).
         if os.path.islink(ufwlink):

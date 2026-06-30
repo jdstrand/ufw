@@ -23,14 +23,14 @@ from tests.functional.support import E2ETestCase
 
 class SmokeE2E(E2ETestCase):
     def test_apply_lifecycle(self):
-        # setUp flush-all'd to a clean kernel and asserted no ufw chains remain.
+        # setUp removed any ufw chains and asserted none remain.
         self.enable_ipv6()  # exercise both iptables- and ip6tables-restore
         # enable + a basic rule must apply for real (restore accepts it).
         self.assert_ok("--force", "enable")
         self.assert_ok("allow", "22/tcp")
         self.assert_ufw_chains_present()
         self.assertIn("22/tcp", self.ufw("status").out)
-        # tearDown runs flush-all; the next test's setUp re-asserts a clean kernel.
+        # tearDown removes ufw's chains; the next test's setUp re-asserts clean.
 
     def test_dry_run_is_stripped(self):
         # The e2e driver strips --dry-run, so a "--dry-run" rule still applies.

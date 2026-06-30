@@ -985,6 +985,83 @@ def real_iptables_dir():
     return os.path.dirname(p)
 
 
+def _jump_target(tokens):
+    """The -j/-g target of a tokenized ``iptables -S`` rule line, or None.
+
+    Matching on the jump target (rather than any token containing "ufw") keeps
+    the teardown sweep from touching a host rule that merely mentions ufw in,
+    say, a comment or an interface name."""
+    for i, t in enumerate(tokens[:-1]):
+        if t in ("-j", "-g"):
+            return tokens[i + 1]
+    return None
+
+
+def snapshot_v6_filter():
+    """The host's entire ip6tables filter table (ip6tables-save), captured
+    before an e2e run. Restoring policies is not enough for v6: with IPV6=no
+    (the sandbox default) ufw's start deliberately REPLACES the v6 filter
+    table (ip6tables-restore without --noflush) with a default-DROP +
+    accept-on-loopback lockdown, destroying any pre-existing v6 rules and
+    chains. Returns None when the host has no working ip6tables-save."""
+    p = subprocess.run(
+        ["ip6tables-save", "-t", "filter"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        universal_newlines=True,
+    )
+    if p.returncode != 0:
+        return None
+    return p.stdout
+
+
+def restore_v6_filter(snap):
+    """Reapply a snapshot_v6_filter() capture (a full-table replace, undoing
+    the IPV6=no lockdown's own full-table replace)."""
+    if snap is None:
+        return
+    subprocess.run(
+        ["ip6tables-restore"],
+        input=snap,
+        stderr=subprocess.DEVNULL,
+        universal_newlines=True,
+    )
+
+
+def snapshot_builtin_policies():
+    """The kernel's builtin-chain policies, as (cmd, table, chain, policy)
+    tuples, captured before an e2e run touches anything.
+
+    ufw owns the builtin policies while it runs (start applies the
+    DEFAULT_*_POLICY settings, stop resets to ACCEPT -- both regardless of
+    MANAGE_BUILTINS), so after a run they end at ACCEPT no matter what the
+    host had. The runner snapshots them up front and puts back whatever was
+    there (e.g. Docker's FORWARD DROP) once the run ends. A table/family the
+    host doesn't have is skipped."""
+    snap = []
+    for cmd in ("iptables", "ip6tables"):
+        for table in ("filter", "nat", "mangle"):
+            p = subprocess.run(
+                [cmd, "-t", table, "-S"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True,
+            )
+            if p.returncode != 0:
+                continue
+            for ln in p.stdout.splitlines():
+                t = ln.split()
+                if len(t) == 3 and t[0] == "-P":
+                    snap.append((cmd, table, t[1], t[2]))
+    return snap
+
+
+def restore_builtin_policies(snap):
+    """Reapply a snapshot_builtin_policies() capture."""
+    for cmd, table, chain, policy in snap:
+        subprocess.run([cmd, "-t", table, "-P", chain, policy])
+
+
 class E2ETestCase(unittest.TestCase):
     """Base for end-to-end tests: drive the installed ufw binary as a subprocess
     against the REAL iptables backend (root, in a disposable VM).
@@ -993,8 +1070,8 @@ class E2ETestCase(unittest.TestCase):
     rules to the kernel, so it verifies that iptables/ip6tables-restore accept
     what ufw generates. It is agnostic to iptables-legacy vs iptables-nft -- it
     uses whatever iptables/iptables-restore is on PATH. ``--dry-run`` is stripped
-    from each command so it applies, and the kernel is returned to a clean state
-    with ``ufw-init flush-all`` around every test. Run only via tests/e2e/runner.py."""
+    from each command so it applies, and ufw's chains are removed (without
+    touching other rules) around every test. Run only via tests/e2e/runner.py."""
 
     # Generation-state checks (RuleCommands.assert_rule_count etc.) are no-ops
     # here: e2e applies for real, so persisted state differs; exit codes are
@@ -1050,11 +1127,11 @@ class E2ETestCase(unittest.TestCase):
                 shutil.copy(f, self.appsd)
         self.set_default("IPV6", "no")
         # Start from a clean kernel (drop any leftover ufw chains).
-        self._flush_all()
+        self._remove_ufw_chains()
 
     def tearDown(self):
-        # Return the kernel to a clean state regardless of test outcome.
-        self._flush_all()
+        # Remove ufw's chains regardless of test outcome (leaving other rules).
+        self._remove_ufw_chains()
 
     # -- helpers -----------------------------------------------------------
     def _env(self):
@@ -1082,21 +1159,75 @@ class E2ETestCase(unittest.TestCase):
         )
         return Result(p.returncode, p.stdout)
 
-    def _flush_all(self):
-        """Remove all ufw chains/hooks from the real kernel (ufw-init flush-all;
-        plain disable leaves the chain skeleton behind), then assert it worked --
-        no ufw chains may remain. Used to start and end every test clean."""
-        self.ufw_init("flush-all")
+    def _remove_ufw_chains(self):
+        """Remove ufw's chains and builtin hooks from the real kernel WITHOUT
+        touching any other rules, then assert none remain. Used to start and end
+        every test clean.
+
+        Unlike ``ufw-init flush-all`` (which flushes the whole firewall --
+        filter/nat/mangle -- and would clobber e.g. Docker's rules), this is the
+        inverse of how ufw applies (iptables-restore --noflush): detach the
+        builtin -> ufw jumps, then flush and delete every ufw/ufw6 chain. A
+        builtin's policy is reset to ACCEPT (what ``ufw disable`` itself does)
+        only when a ufw jump was actually detached from it -- a builtin ufw
+        never touched keeps its pre-existing policy (e.g. Docker's FORWARD
+        DROP), and the runner restores the host's original policies once the
+        whole run ends (snapshot_builtin_policies). CAVEAT: this sweep cannot
+        protect the v6 filter table -- with IPV6=no ufw's own start REPLACES
+        it wholesale (the deliberate default-DROP lockdown), so v4 rules
+        survive every test but pre-existing v6 filter rules do not; the
+        runner puts the whole v6 filter table back at the end of the run
+        (snapshot_v6_filter). DURING a run the suite owns the firewall."""
+        for v6 in (False, True):
+            # Detach: drop each builtin rule that jumps to a ufw chain. If any
+            # was attached, the builtin's policy is ufw's -- reset it the way
+            # `ufw disable` does (INPUT/OUTPUT/FORWARD -> ACCEPT).
+            for builtin in ("INPUT", "OUTPUT", "FORWARD"):
+                detached = False
+                for ln in self.raw_iptables("-S", builtin, v6=v6).out.splitlines():
+                    p = ln.split()
+                    if (
+                        len(p) >= 2
+                        and p[0] == "-A"
+                        and (_jump_target(p) or "").startswith("ufw")
+                    ):
+                        self.raw_iptables("-D", *p[1:], v6=v6)
+                        detached = True
+                if detached:
+                    self.raw_iptables("-P", builtin, "ACCEPT", v6=v6)
+            # Flush every ufw chain (drops the inter-chain jumps), then delete.
+            chains = [
+                ln.split()[1]
+                for ln in self.raw_iptables("-S", v6=v6).out.splitlines()
+                if ln.startswith("-N ") and ln.split()[1].startswith("ufw")
+            ]
+            for c in chains:
+                self.raw_iptables("-F", c, v6=v6)
+            for c in chains:
+                self.raw_iptables("-X", c, v6=v6)
         self.assert_no_ufw_chains()
 
     def _ufw_chain_lines(self, cmd):
+        """The ``-S`` lines that belong to ufw: its chain declarations, the
+        rules inside its chains, and any rule jumping to one of its chains.
+        Structural (chain name / jump target), so a host rule that merely
+        mentions "ufw" in a comment or interface name doesn't count."""
         p = subprocess.run(
             [cmd, "-S"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             universal_newlines=True,
         )
-        return [ln for ln in p.stdout.splitlines() if "ufw" in ln]
+        if p.returncode != 0:
+            self.fail("%s -S failed (rc=%d):\n%s" % (cmd, p.returncode, p.stdout))
+        lines = []
+        for ln in p.stdout.splitlines():
+            t = ln.split()
+            if len(t) >= 2 and t[0] in ("-N", "-A") and t[1].startswith("ufw"):
+                lines.append(ln)
+            elif (_jump_target(t) or "").startswith("ufw"):
+                lines.append(ln)
+        return lines
 
     def iptables_rules(self, v6=False):
         """The applied policy and rule lines from iptables-save -- the ':CHAIN

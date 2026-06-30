@@ -68,7 +68,7 @@ class ChainMatrixE2E(E2ETestCase):
         for level in self.LOGLEVELS:
             self.assert_ok("logging", level)
             self.assert_ok("disable")
-            self._flush_all()  # clean slate, then build the skeleton fresh
+            self._remove_ufw_chains()  # clean slate, then build the skeleton fresh
             self.assert_ok("--force", "enable")
             for prefix, v6 in self.FAMILIES:
                 self._assert_skeleton(level, prefix, v6)
@@ -120,26 +120,30 @@ class ManageBuiltinsE2E(E2ETestCase):
             self.set_default("MANAGE_BUILTINS", manage)
             self.raw_iptables(*self.MANUAL_RULE)
 
-            self.assert_ok("--force", "enable")
-            survived = self.COMMENT in self.raw_iptables("-S", "INPUT").out
-            self.assertEqual(
-                survived,
-                should_survive,
-                "MANAGE_BUILTINS=%s: manual rule %s (survived=%s, want %s)"
-                % (manage, self.COMMENT, survived, should_survive),
-            )
-
-            # Clean up the manual rule if ufw left it in place (-D may no-op).
-            self.raw_iptables(
-                "-D",
-                "INPUT",
-                "-j",
-                "ACCEPT",
-                "-m",
-                "comment",
-                "--comment",
-                self.COMMENT,
-            )
+            try:
+                self.assert_ok("--force", "enable")
+                survived = self.COMMENT in self.raw_iptables("-S", "INPUT").out
+                self.assertEqual(
+                    survived,
+                    should_survive,
+                    "MANAGE_BUILTINS=%s: manual rule %s (survived=%s, want %s)"
+                    % (manage, self.COMMENT, survived, should_survive),
+                )
+            finally:
+                # Clean up the manual rule if ufw left it in place (-D may
+                # no-op). Must happen even on assertion failure: the teardown
+                # sweep only removes rules that jump to ufw chains, and this
+                # one jumps to ACCEPT.
+                self.raw_iptables(
+                    "-D",
+                    "INPUT",
+                    "-j",
+                    "ACCEPT",
+                    "-m",
+                    "comment",
+                    "--comment",
+                    self.COMMENT,
+                )
 
 
 class DefaultPolicyE2E(E2ETestCase):
