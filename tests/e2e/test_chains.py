@@ -20,7 +20,7 @@
 # chain structure). Distilled from root/live "Verify toplevel/secondary chains".
 
 import tests.functional.support
-from tests.functional.support import E2ETestCase
+from tests.functional.support import E2ETestCase, flushes_whole_firewall
 
 
 class ChainMatrixE2E(E2ETestCase):
@@ -106,6 +106,7 @@ class ChainMatrixE2E(E2ETestCase):
             )
 
 
+@flushes_whole_firewall("MANAGE_BUILTINS=yes flushes the builtin chains")
 class ManageBuiltinsE2E(E2ETestCase):
     """MANAGE_BUILTINS controls whether `ufw enable` flushes the builtin chains.
     With it on, a pre-existing manual rule is wiped; with it off, ufw leaves it

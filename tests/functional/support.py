@@ -977,6 +977,18 @@ def require_e2e_env():
         sys.exit(1)
 
 
+def flushes_whole_firewall(reason):
+    """Decorator marking an e2e test that flushes the ENTIRE firewall -- not just
+    ufw's chains (e.g. via ufw-init flush-all or MANAGE_BUILTINS=yes) -- so it
+    clobbers any other host rules. Skipped when UFW_E2E_SKIP_FLUSH=1, which CI
+    sets so the runner's pre-existing firewall (Docker's rules etc.) survives.
+    A disposable VM leaves it unset to run the full suite."""
+    return unittest.skipIf(
+        os.environ.get("UFW_E2E_SKIP_FLUSH") == "1",
+        "UFW_E2E_SKIP_FLUSH set: " + reason,
+    )
+
+
 def real_iptables_dir():
     """Locate the real iptables-restore directory (for the e2e suite)."""
     p = shutil.which("iptables-restore")

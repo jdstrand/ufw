@@ -23,7 +23,7 @@ import glob
 import os
 
 import tests.functional.support
-from tests.functional.support import E2ETestCase
+from tests.functional.support import E2ETestCase, flushes_whole_firewall
 
 
 class InitEquivalenceE2E(E2ETestCase):
@@ -71,6 +71,7 @@ class InitEquivalenceE2E(E2ETestCase):
         )
 
 
+@flushes_whole_firewall("ufw-init flush-all in the churn loop flushes everything")
 class InitChurnE2E(E2ETestCase):
     """`ufw-init start` must succeed on every iteration of rapid serial
     start/flush-all churn -- repeated xtables-lock acquisition and teardown.
