@@ -48,7 +48,7 @@ else
 PYFLAKES_EXE = pyflakes
 endif
 
-.PHONY: all build install clean translations mo test unittest functest e2e coverage coverage-report man-check check syntax-check tarball
+.PHONY: all build install clean translations mo test unittest functest e2e coverage coverage-report man-check snap-test check syntax-check tarball
 
 all: build
 
@@ -222,6 +222,14 @@ man-check:
 		test ! -s "$$manout" || exit 1; \
 		echo "PASS"; \
 	done
+
+# Snap config-merge test: exercises snap-files/bin/srv (the snap's upgrade
+# wrapper) over a simulated revision upgrade. Self-contained (no root/iptables).
+# Standalone (not in 'check') -- wire into CI explicitly, like the e2e target.
+snap-test:
+	$(shell mkdir -p $(TMPDIR) 2>/dev/null)
+	@./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && \
+		diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
 
 check: man-check test unittest
 

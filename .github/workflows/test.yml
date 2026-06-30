@@ -58,3 +58,15 @@ jobs:
     - name: Run tests
       run: |
         make test
+
+  # Snap config-merge upgrade test (snap-files/bin/srv). Shell-only -- no
+  # Python deps and no real firewall -- so it runs as its own lightweight job.
+  snap-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955  # v4.3.0
+
+    - name: Run snap upgrade test
+      run: |
+        make snap-test
