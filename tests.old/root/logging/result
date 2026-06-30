@@ -1636,106 +1636,106 @@ Setting IPV6 to yes
 67: enable
 
 
-68: tests/testarea/lib/ufw/ufw-init flush-all
+68: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-69: tests/testarea/lib/ufw/ufw-init start
+69: tests.old/testarea/lib/ufw/ufw-init start
 
 
-70: tests/testarea/lib/ufw/ufw-init stop
+70: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-71: tests/testarea/lib/ufw/ufw-init start
+71: tests.old/testarea/lib/ufw/ufw-init start
 
 
 72: logging off
 
 
-73: tests/testarea/lib/ufw/ufw-init flush-all
+73: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-74: tests/testarea/lib/ufw/ufw-init start
+74: tests.old/testarea/lib/ufw/ufw-init start
 
 
-75: tests/testarea/lib/ufw/ufw-init stop
+75: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-76: tests/testarea/lib/ufw/ufw-init start
+76: tests.old/testarea/lib/ufw/ufw-init start
 
 
 77: logging on
 
 
-78: tests/testarea/lib/ufw/ufw-init flush-all
+78: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-79: tests/testarea/lib/ufw/ufw-init start
+79: tests.old/testarea/lib/ufw/ufw-init start
 
 
-80: tests/testarea/lib/ufw/ufw-init stop
+80: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-81: tests/testarea/lib/ufw/ufw-init start
+81: tests.old/testarea/lib/ufw/ufw-init start
 
 
 82: logging low
 
 
-83: tests/testarea/lib/ufw/ufw-init flush-all
+83: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-84: tests/testarea/lib/ufw/ufw-init start
+84: tests.old/testarea/lib/ufw/ufw-init start
 
 
-85: tests/testarea/lib/ufw/ufw-init stop
+85: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-86: tests/testarea/lib/ufw/ufw-init start
+86: tests.old/testarea/lib/ufw/ufw-init start
 
 
 87: logging medium
 
 
-88: tests/testarea/lib/ufw/ufw-init flush-all
+88: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-89: tests/testarea/lib/ufw/ufw-init start
+89: tests.old/testarea/lib/ufw/ufw-init start
 
 
-90: tests/testarea/lib/ufw/ufw-init stop
+90: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-91: tests/testarea/lib/ufw/ufw-init start
+91: tests.old/testarea/lib/ufw/ufw-init start
 
 
 92: logging high
 
 
-93: tests/testarea/lib/ufw/ufw-init flush-all
+93: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-94: tests/testarea/lib/ufw/ufw-init start
+94: tests.old/testarea/lib/ufw/ufw-init start
 
 
-95: tests/testarea/lib/ufw/ufw-init stop
+95: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-96: tests/testarea/lib/ufw/ufw-init start
+96: tests.old/testarea/lib/ufw/ufw-init start
 
 
 97: logging full
 
 
-98: tests/testarea/lib/ufw/ufw-init flush-all
+98: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-99: tests/testarea/lib/ufw/ufw-init start
+99: tests.old/testarea/lib/ufw/ufw-init start
 
 
-100: tests/testarea/lib/ufw/ufw-init stop
+100: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-101: tests/testarea/lib/ufw/ufw-init start
+101: tests.old/testarea/lib/ufw/ufw-init start
 
 
 Setting IPV6 to no
@@ -1745,106 +1745,106 @@ Setting IPV6 to no
 103: enable
 
 
-104: tests/testarea/lib/ufw/ufw-init flush-all
+104: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-105: tests/testarea/lib/ufw/ufw-init start
+105: tests.old/testarea/lib/ufw/ufw-init start
 
 
-106: tests/testarea/lib/ufw/ufw-init stop
+106: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-107: tests/testarea/lib/ufw/ufw-init start
+107: tests.old/testarea/lib/ufw/ufw-init start
 
 
 108: logging off
 
 
-109: tests/testarea/lib/ufw/ufw-init flush-all
+109: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-110: tests/testarea/lib/ufw/ufw-init start
+110: tests.old/testarea/lib/ufw/ufw-init start
 
 
-111: tests/testarea/lib/ufw/ufw-init stop
+111: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-112: tests/testarea/lib/ufw/ufw-init start
+112: tests.old/testarea/lib/ufw/ufw-init start
 
 
 113: logging on
 
 
-114: tests/testarea/lib/ufw/ufw-init flush-all
+114: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-115: tests/testarea/lib/ufw/ufw-init start
+115: tests.old/testarea/lib/ufw/ufw-init start
 
 
-116: tests/testarea/lib/ufw/ufw-init stop
+116: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-117: tests/testarea/lib/ufw/ufw-init start
+117: tests.old/testarea/lib/ufw/ufw-init start
 
 
 118: logging low
 
 
-119: tests/testarea/lib/ufw/ufw-init flush-all
+119: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-120: tests/testarea/lib/ufw/ufw-init start
+120: tests.old/testarea/lib/ufw/ufw-init start
 
 
-121: tests/testarea/lib/ufw/ufw-init stop
+121: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-122: tests/testarea/lib/ufw/ufw-init start
+122: tests.old/testarea/lib/ufw/ufw-init start
 
 
 123: logging medium
 
 
-124: tests/testarea/lib/ufw/ufw-init flush-all
+124: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-125: tests/testarea/lib/ufw/ufw-init start
+125: tests.old/testarea/lib/ufw/ufw-init start
 
 
-126: tests/testarea/lib/ufw/ufw-init stop
+126: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-127: tests/testarea/lib/ufw/ufw-init start
+127: tests.old/testarea/lib/ufw/ufw-init start
 
 
 128: logging high
 
 
-129: tests/testarea/lib/ufw/ufw-init flush-all
+129: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-130: tests/testarea/lib/ufw/ufw-init start
+130: tests.old/testarea/lib/ufw/ufw-init start
 
 
-131: tests/testarea/lib/ufw/ufw-init stop
+131: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-132: tests/testarea/lib/ufw/ufw-init start
+132: tests.old/testarea/lib/ufw/ufw-init start
 
 
 133: logging full
 
 
-134: tests/testarea/lib/ufw/ufw-init flush-all
+134: tests.old/testarea/lib/ufw/ufw-init flush-all
 
 
-135: tests/testarea/lib/ufw/ufw-init start
+135: tests.old/testarea/lib/ufw/ufw-init start
 
 
-136: tests/testarea/lib/ufw/ufw-init stop
+136: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-137: tests/testarea/lib/ufw/ufw-init start
+137: tests.old/testarea/lib/ufw/ufw-init start
 
 
 138: disable

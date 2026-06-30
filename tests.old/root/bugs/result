@@ -399,10 +399,10 @@ Setting IPV6 to yes
 60: enable
 
 
-61: tests/testarea/lib/ufw/ufw-init stop
+61: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-62: tests/testarea/lib/ufw/ufw-init start
+62: tests.old/testarea/lib/ufw/ufw-init start
 
 
 63: disable
@@ -414,10 +414,10 @@ Setting IPV6 to yes
 65: enable
 
 
-66: tests/testarea/lib/ufw/ufw-init stop
+66: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-67: tests/testarea/lib/ufw/ufw-init start
+67: tests.old/testarea/lib/ufw/ufw-init start
 
 
 68: disable
@@ -429,10 +429,10 @@ Setting IPV6 to yes
 70: enable
 
 
-71: tests/testarea/lib/ufw/ufw-init stop
+71: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-72: tests/testarea/lib/ufw/ufw-init start
+72: tests.old/testarea/lib/ufw/ufw-init start
 
 
 73: disable
@@ -444,10 +444,10 @@ Setting IPV6 to yes
 75: enable
 
 
-76: tests/testarea/lib/ufw/ufw-init stop
+76: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-77: tests/testarea/lib/ufw/ufw-init start
+77: tests.old/testarea/lib/ufw/ufw-init start
 
 
 78: disable
@@ -459,10 +459,10 @@ Setting IPV6 to yes
 80: enable
 
 
-81: tests/testarea/lib/ufw/ufw-init stop
+81: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-82: tests/testarea/lib/ufw/ufw-init start
+82: tests.old/testarea/lib/ufw/ufw-init start
 
 
 83: disable
@@ -474,10 +474,10 @@ Setting IPV6 to yes
 85: enable
 
 
-86: tests/testarea/lib/ufw/ufw-init stop
+86: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-87: tests/testarea/lib/ufw/ufw-init start
+87: tests.old/testarea/lib/ufw/ufw-init start
 
 
 88: disable
@@ -489,10 +489,10 @@ Setting IPV6 to yes
 90: enable
 
 
-91: tests/testarea/lib/ufw/ufw-init stop
+91: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-92: tests/testarea/lib/ufw/ufw-init start
+92: tests.old/testarea/lib/ufw/ufw-init start
 
 
 Setting IPV6 to no
@@ -502,10 +502,10 @@ Setting IPV6 to no
 94: enable
 
 
-95: tests/testarea/lib/ufw/ufw-init stop
+95: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-96: tests/testarea/lib/ufw/ufw-init start
+96: tests.old/testarea/lib/ufw/ufw-init start
 
 
 97: disable
@@ -517,10 +517,10 @@ Setting IPV6 to no
 99: enable
 
 
-100: tests/testarea/lib/ufw/ufw-init stop
+100: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-101: tests/testarea/lib/ufw/ufw-init start
+101: tests.old/testarea/lib/ufw/ufw-init start
 
 
 102: disable
@@ -532,10 +532,10 @@ Setting IPV6 to no
 104: enable
 
 
-105: tests/testarea/lib/ufw/ufw-init stop
+105: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-106: tests/testarea/lib/ufw/ufw-init start
+106: tests.old/testarea/lib/ufw/ufw-init start
 
 
 107: disable
@@ -547,10 +547,10 @@ Setting IPV6 to no
 109: enable
 
 
-110: tests/testarea/lib/ufw/ufw-init stop
+110: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-111: tests/testarea/lib/ufw/ufw-init start
+111: tests.old/testarea/lib/ufw/ufw-init start
 
 
 112: disable
@@ -562,10 +562,10 @@ Setting IPV6 to no
 114: enable
 
 
-115: tests/testarea/lib/ufw/ufw-init stop
+115: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-116: tests/testarea/lib/ufw/ufw-init start
+116: tests.old/testarea/lib/ufw/ufw-init start
 
 
 117: disable
@@ -577,10 +577,10 @@ Setting IPV6 to no
 119: enable
 
 
-120: tests/testarea/lib/ufw/ufw-init stop
+120: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-121: tests/testarea/lib/ufw/ufw-init start
+121: tests.old/testarea/lib/ufw/ufw-init start
 
 
 122: disable
@@ -592,10 +592,10 @@ Setting IPV6 to no
 124: enable
 
 
-125: tests/testarea/lib/ufw/ufw-init stop
+125: tests.old/testarea/lib/ufw/ufw-init stop
 
 
-126: tests/testarea/lib/ufw/ufw-init start
+126: tests.old/testarea/lib/ufw/ufw-init start
 
 
 Bug #512131

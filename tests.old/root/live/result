@@ -1925,10 +1925,10 @@ Compare enable and ufw-init
 263: disable
 
 
-264: tests/testarea/lib/ufw/ufw-init start
+264: tests.old/testarea/lib/ufw/ufw-init start
 
 
-265: tests/testarea/lib/ufw/ufw-init stop
+265: tests.old/testarea/lib/ufw/ufw-init stop
 
 
 266: enable
