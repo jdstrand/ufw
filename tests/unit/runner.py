@@ -28,13 +28,7 @@ import sys
 def find_tests(testdir=None, testscripts=[]):
     """Find tests"""
     if not testdir:
-        if __name__ == "__main__":
-            fn = sys.argv[0]
-        else:
-            print("TODO: find_tests() when imported")
-            sys.exit(1)
-
-        testdir = os.path.dirname(fn)
+        testdir = os.path.dirname(os.path.abspath(__file__))
 
     if len(testscripts) > 1:
         names = testscripts[1:]
@@ -97,16 +91,13 @@ if __name__ == "__main__":
         if os.path.abspath(os.path.normpath(sys.path[i])) == d:
             sys.path[i] = testdir
 
-    print("DEBUG: sys.path=%s" % sys.path)
     tests = find_tests(testscripts=sys.argv)
-    print("DEBUG: test=%s" % str(tests))
 
     # Import this here, so we are guaranteed to get ours from topdir
     from tests.unit.support import TestFailed
 
     passed = []
     failed = []
-    skipped = []
     try:
         for test in tests:
             try:
