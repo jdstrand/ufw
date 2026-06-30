@@ -262,9 +262,9 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 
 **Note:** Activating an already-active venv is harmless and can be done repeatedly.
 
-**Automatic detection:** The test suite (`./run_tests.sh`) automatically uses the
-venv Python interpreter when `VIRTUAL_ENV` is set, so you don't need to specify
-the interpreter explicitly.
+**Interpreter:** With the venv activated, `python3` (and the `make` test targets,
+which default to `PYTHON=python3`) use the venv interpreter. Pass `PYTHON=` to
+override, e.g. `make test PYTHON=python3.13`.
 
 #### Troubleshooting
 
@@ -295,14 +295,17 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 ```
 
 **Individual tests:**
-* `python3 -m unittest tests.unit.<filename>.<class>.<test>` - run a single test
+* `python3 -m unittest tests.unit.<filename>.<class>.<test>` - run a single unit test
 * `python3 ./tests/unit/runner.py` - run all unit tests
-* `./run_tests.sh -s` - run all tests (unit + functional)
-* `./run_tests.sh -s unit` - run only unit tests
+* `python3 ./tests/functional/runner.py test_<name>.py` - run one functional module
+* `python3 ./tests/functional/runner.py` - run all functional tests
 
 **Make targets:**
 * `make test` - run all tests (unit + functional)
 * `make unittest` - run only unit tests
+* `make functest` - run only functional tests (in-process, fake iptables)
+* `make e2e` - run end-to-end tests (real iptables; needs UFW_E2E=1 + root, in a VM)
+* `make snap-test` - run the snap config-merge upgrade test
 * `make coverage` - run unit tests with coverage
 * `make coverage-report` - show coverage report with missing lines
 * `make syntax-check` - run flake8 and pylint
@@ -311,34 +314,33 @@ cd "$(git rev-parse --show-toplevel)" && source ./.venv.ai/bin/activate
 
 **Debugging test failures:**
 
-When a functional test fails, the error message will show:
-```
-FAILED tests/<class>/<testname> -- result found in tests/testarea/tmp/result
-For more information, see:
-diff -Naur tests/<class>/<testname>/result tests/testarea/tmp/result
-```
+Unit and functional tests are standard Python `unittest` tests, so a failure
+prints a normal assertion traceback. Many functional tests (good/bad/bugs/ipv6)
+compare against transcript goldens under
+`tests/functional/data/transcripts/<class>/<name>`; a failure shows a diff of
+expected vs actual. If the change is intentional, re-bless by updating the
+golden.
 
-To debug:
-1. Run the diff command shown to see what changed
-2. Check `tests/testarea/tmp/result` for actual output
-3. Check `tests/<class>/<testname>/result` for expected output
-4. Examine `tests/<class>/<testname>/runtest.sh` to understand what the test does
-5. Functional tests install to `tests/testarea/` with this structure:
-   - `tests/testarea/usr/sbin/ufw` - installed ufw command
-   - `tests/testarea/usr/lib/python3/dist-packages/ufw/` - installed Python package
-   - `tests/testarea/etc/ufw/` - configuration files
-   - `tests/testarea/tmp/result` - test output
+The legacy shell harness (archived under `tests.old/`) instead installs to
+`tests.old/testarea/` and, on failure, prints:
+```
+FAILED tests.old/<class>/<testname> -- result found in tests.old/testarea/tmp/result
+diff -Naur tests.old/<class>/<testname>/result tests.old/testarea/tmp/result
+```
+There, compare its `result` (expected) against `testarea/tmp/result` (actual)
+and read the test's `runtest.sh`.
 
 **Running individual functional tests:**
 ```bash
-# Run a specific functional test category
-./run_tests.sh -s good/reports
+# Run one functional module (in-process suite)
+python3 ./tests/functional/runner.py test_good.py
 
-# Run with -s to stop on first failure
-./run_tests.sh -s
+# Run the whole functional suite
+python3 ./tests/functional/runner.py
 
-# Run without -s to see all failures
-./run_tests.sh
+# Legacy shell harness (archived), a category or all:
+./tests.old/run_tests.sh -s good/reports
+./tests.old/run_tests.sh -s
 ```
 
 ### Workflow

@@ -423,7 +423,9 @@ class FunctionalTestCase(unittest.TestCase):
     """Base class for in-process functional tests.
 
     Subclasses set ``class_name`` (e.g. "good") which selects the matching
-    tests/<class_name>/<name> data when needed. Each test method replays a
+    tests/functional/data/transcripts/<class_name>/<name> transcript (and,
+    under UFW_TEST_VERIFY_PARITY, the tests.old/<class_name>/<name>/result
+    golden) when needed. Each test method replays a
     sequence of ufw commands via self.ufw()/assert_ok()/assert_fail() and makes
     targeted assertions on output and on-disk rule files.
     """
@@ -514,7 +516,7 @@ class FunctionalTestCase(unittest.TestCase):
         # Completeness oracle: assert the exact ufw command sequence this test
         # issued matches the old shell test's golden "N: <args>" headers.
         sub = self._subname()
-        golden = os.path.join(REPO_ROOT, "tests", self.class_name, sub, "result")
+        golden = os.path.join(REPO_ROOT, "tests.old", self.class_name, sub, "result")
         if not os.path.exists(golden):
             self.fail("no old golden to verify parity: %s" % golden)
         # Compare the ufw argument sequences, not the leading "N:" counter: some

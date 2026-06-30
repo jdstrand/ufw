@@ -15,7 +15,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cp tests/defaults/profiles/* $TESTPATH/etc/ufw/applications.d
+cp tests.old/defaults/profiles/* $TESTPATH/etc/ufw/applications.d
 
 let count=0
 do_cmd() {

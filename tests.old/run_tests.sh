@@ -17,8 +17,8 @@
 
 export LANG=C
 
-testdir="tests"
-tests="unit installation bad bugs good util"
+testdir="tests.old"
+tests="installation bad bugs good"
 
 set -e
 # Some systems may not have iptables in their PATH. Try to account for that.
@@ -133,34 +133,6 @@ trap "rm -rf $statsdir" EXIT HUP INT QUIT TERM
 export statsdir
 echo "0" > $statsdir/individual
 
-# Unit tests
-for class in $tests
-do
-    if [ "$class" != "unit" ]; then
-        # Functional tests handled separately (see below)
-        continue
-    fi
-
-    if [ ! -z "$subclass" ]; then
-        if [ ! -f "$testdir/$class/$subclass" ]; then
-            echo "Could not find '$testdir/$class/$subclass'"
-            exit 1
-        fi
-    fi
-    echo "= Unit Tests ="
-    if ! $interpreter ./tests/unit/runner.py $subclass ; then
-        echo ""
-        echo "Found unit test failures. Aborting and skipping functional tests"
-        exit 1
-    fi
-    # Exit early if only running unit tests
-    if [ "$tests" = "unit" ]; then
-        exit 0
-    fi
-    echo ""
-    echo ""
-done
-
 # clean up before functional tests
 rm -f "$CUR/src/*.pyc"
 rm -rf "$CUR/src/__pycache__"
@@ -181,11 +153,6 @@ sysctl -w net.ipv6.conf.all.forwarding=0 2>/dev/null || true
 
 for class in $tests
 do
-    if [ "$class" = "unit" ]; then
-        # Unit tests handled separately (see above)
-        continue
-    fi
-
     for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
     do
         if [ ! -z "$subclass" ]; then
@@ -312,6 +279,13 @@ echo "Skipped:             $skipped"
 echo "Errors:              $errors"
 
 if [ "$errors" != "0" ]; then
+    exit 1
+fi
+
+# A run that attempted nothing (e.g. a typo'd or unknown class/subclass
+# selection) must not exit green having run zero tests.
+if [ "$numtests" = "0" ]; then
+    echo "ERROR: no tests were attempted (unknown class/subclass?)"
     exit 1
 fi
 

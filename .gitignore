@@ -2,7 +2,7 @@ build
 build/*
 staging
 tmp
-tests/testarea
+tests.old/testarea
 locales/mo/*.mo
 debian/ufw
 build-stamp

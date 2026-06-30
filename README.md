@@ -426,20 +426,22 @@ This runs the in-process functional suite (`make functest`, in
 in-process against a fake `iptables` backend, so they are fast and MUST NOT be
 run as root (the runner refuses to).
 
-The older shell-driven harness is also available and lets you specify an
-interpreter for the tests:
+The legacy shell-driven harness has been archived under `tests.old/` -- its
+command sequences are now covered by `make functest` (and the real-`iptables`
+checks by `make e2e`). It can still be run from the repo root if needed, and
+lets you specify an interpreter:
 
 ```bash
-$ ./run_tests.sh -s
-$ ./run_tests.sh -s -i /usr/local/bin/python3.13
+$ ./tests.old/run_tests.sh -s
+$ ./tests.old/run_tests.sh -s -i /usr/local/bin/python3.13
 ```
 
-For the root tests (these are `iptables` version dependent, will modify your
+For its root tests (these are `iptables` version dependent, will modify your
 existing firewall and insert kernel modules, so they require root privileges
 and aren't run by default):
 
 ```bash
-$ sudo ./run_tests.sh -s root
+$ sudo ./tests.old/run_tests.sh -s root
 ```
 
 Finally, `ufw`'s behavior may differ based on available kernel features. The
@@ -484,7 +486,8 @@ $ sudo sh -c "PYTHONPATH=/tmp/ufw/usr/lib/python3/dist-packages /tmp/ufw/usr/sbi
 
 ## Unit Tests
 
-`ufw` unit tests are in `tests/unit` and are run as part of `./run_tests.sh`.
+`ufw` unit tests are in `tests/unit` and are run by `make unittest` (and as
+part of `make test`, which also runs the functional suite).
 
 To run individual unit tests directly:
 
@@ -509,8 +512,8 @@ $ pip install -r ./requirements.txt -e .
 ```
 
 This creates an editable installation where changes to the source code are
-immediately reflected without reinstalling. The test suite (`./run_tests.sh`)
-automatically uses the venv Python if `VIRTUAL_ENV` is set.
+immediately reflected without reinstalling. Pass `PYTHON=` to the `make` test
+targets (e.g. `make test PYTHON=python3.13`) to choose the interpreter.
 
 Within this environment, you can run various linters and coverage. Eg:
 

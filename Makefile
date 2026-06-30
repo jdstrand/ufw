@@ -188,11 +188,11 @@ mo:
 	make -C locales all
 
 test:
-	./run_tests.sh -s -i $(PYTHON)
+	$(MAKE) unittest PYTHON=$(PYTHON)
 	$(MAKE) functest PYTHON=$(PYTHON)
 
 unittest:
-	./run_tests.sh -s -i $(PYTHON) unit
+	$(PYTHON) ./tests/unit/runner.py
 
 functest:
 	$(PYTHON) ./tests/functional/runner.py
@@ -231,7 +231,7 @@ snap-test:
 	@./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && \
 		diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
 
-check: man-check test unittest
+check: man-check test
 
 syntax-check: clean
 	./tests/run-flake8
