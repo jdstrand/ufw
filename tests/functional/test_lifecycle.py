@@ -128,6 +128,61 @@ class LifecycleTests(FunctionalTestCase):
         self.assertEqual(0, self.tuple_count(self.user_rules))
         self.assertEqual(0, self.tuple_count(self.user6_rules))
 
+    def test_insert_position(self):
+        """`insert N` places the rule at position N in the persisted order.
+
+        Neither the transcript net (a rules-file delta keeps the added lines
+        but drops their position) nor the presence/count checks elsewhere can
+        distinguish an insert from an append, so pin the resulting tuple
+        order directly: at the head and in the middle."""
+        ur = self.user_rules
+        self.assert_ok("allow", "22")
+        self.assert_ok("deny", "25")
+
+        # head: insert 1 lands first, the existing order shifts down intact
+        self.assert_ok("insert", "1", "allow", "80/tcp")
+        self.assertEqual(
+            [
+                "### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0 in",
+            ],
+            self.tuples(ur),
+        )
+
+        # middle: insert 3 lands between 22 and 25
+        self.assert_ok("insert", "3", "reject", "53")
+        self.assertEqual(
+            [
+                "### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### reject any 53 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0 in",
+            ],
+            self.tuples(ur),
+        )
+
+    def test_insert_position_ipv6(self):
+        """With IPV6=yes a dual-family `insert N` takes position N in BOTH
+        families' persisted order."""
+        self.enable_ipv6()
+        self.assert_ok("allow", "22")
+        self.assert_ok("deny", "25")
+
+        self.assert_ok("insert", "1", "allow", "80/tcp")
+        for path, host in (
+            (self.user_rules, "0.0.0.0/0"),
+            (self.user6_rules, "::/0"),
+        ):
+            self.assertEqual(
+                [
+                    "### tuple ### allow tcp 80 %s any %s in" % (host, host),
+                    "### tuple ### allow any 22 %s any %s in" % (host, host),
+                    "### tuple ### deny any 25 %s any %s in" % (host, host),
+                ],
+                self.tuples(path),
+            )
+
     def test_delete_by_number(self):
         """Deleting by rule number removes the right rule (tests/root/live).
 
