@@ -530,10 +530,114 @@ class SetRuleErrorPathsTestCase(FrontendTestBase):
         self.assertTrue("Could not back out rule" in err)
 
 
+class DeleteRuleAndActionsTestCase(FrontendTestBase):
+    """delete_rule() lookup/prompt paths and do_action() error edges"""
+
+    def _rule(self, v6=False, forward=False):
+        r = ufw.common.UFWRule("allow", "tcp", "22")
+        r.v6 = v6
+        r.forward = forward
+        return r
+
+    def test_delete_rule_bad_number(self):
+        """Test delete_rule() - unparseable and out-of-range numbers"""
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.ui.delete_rule, "x", True
+        )
+        for n in ["0", "999"]:
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.ui.delete_rule, n, True
+            )
+
+    def test_delete_rule_not_found(self):
+        """Test delete_rule() - number in range but rule not found"""
+        with unittest.mock.patch.object(
+            self.ui.backend, "get_rules", return_value=[self._rule()]
+        ):
+            with unittest.mock.patch.object(
+                self.ui.backend, "get_rule_by_number", return_value=None
+            ):
+                tests.unit.support.check_for_exception(
+                    self, ufw.common.UFWError, self.ui.delete_rule, "1", True
+                )
+
+    def test_delete_rule_v6(self):
+        """Test delete_rule() - v6 rule selects ip_version 'v6'"""
+        rule = self._rule(v6=True)
+        with unittest.mock.patch.object(
+            self.ui.backend, "get_rules", return_value=[rule]
+        ):
+            with unittest.mock.patch.object(
+                self.ui.backend, "get_rule_by_number", return_value=rule
+            ):
+                with unittest.mock.patch.object(
+                    self.ui, "set_rule", return_value="deleted"
+                ) as m:
+                    res = self.ui.delete_rule("1", True)
+        self.assertEqual(res, "deleted")
+        m.assert_called_once_with(rule, "v6")
+
+    def _delete_with_prompt(self, rule, answer):
+        import io
+
+        with unittest.mock.patch.object(
+            self.ui.backend, "get_rules", return_value=[rule]
+        ):
+            with unittest.mock.patch.object(
+                self.ui.backend, "get_rule_by_number", return_value=rule
+            ):
+                with unittest.mock.patch.object(
+                    self.ui, "set_rule", return_value="deleted"
+                ):
+                    with unittest.mock.patch("sys.stdin", io.StringIO("%s\n" % answer)):
+                        return self.ui.delete_rule("1", False)
+
+    def test_delete_rule_prompt(self):
+        """Test delete_rule() - interactive prompt"""
+        res = self._delete_with_prompt(self._rule(), "n")
+        self.assertEqual(res, "Aborted")
+
+        res = self._delete_with_prompt(self._rule(), "y")
+        self.assertEqual(res, "deleted")
+
+        # route rules are displayed with the 'route' prefix
+        res = self._delete_with_prompt(self._rule(forward=True), "y")
+        self.assertEqual(res, "deleted")
+        assert self.msg_output is not None
+        self.assertTrue("route allow 22/tcp" in self.msg_output.getvalue())
+
+    def test_do_action_bad_default_policy(self):
+        """Test do_action() - malformed default- action"""
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.ui.do_action, "default-bogus", "", "", True
+        )
+
+    def test_do_action_remove_bad_appname_sapp(self):
+        """Test do_action() remove bad appname (sapp)"""
+        c = "delete allow from any app &^%$"
+        pr = ufw.frontend.parse_command(["ufw"] + c.split())
+        tests.unit.support.check_for_exception(
+            self,
+            ufw.common.UFWError,
+            self.ui.do_action,
+            pr.action,
+            pr.data["rule"],
+            pr.data["iptype"],
+            True,
+        )
+
+    def test_do_action_unsupported(self):
+        """Test do_action() - unsupported action"""
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.ui.do_action, "bogus", "", "", True
+        )
+
+
 def test_main():  # used by runner.py
     tests.unit.support.run_unittest(
         FrontendTestCase,
         SetRuleErrorPathsTestCase,
+        DeleteRuleAndActionsTestCase,
     )
 
 
