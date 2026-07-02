@@ -40,6 +40,9 @@ ufw (0.36.3) UNRELEASED; urgency=medium
     - src/backend_iptables.py: warn when a rules file looks truncated
       (missing COMMIT line) and refuse to rewrite it, since that would
       permanently discard the rules lost by the truncation
+    - src/backend_iptables.py: an interrupted 'ufw reset' can no
+      longer leave a truncated rules file (reset has always replaced
+      files outright)
     - tests/e2e/test_concurrency.py: regression tests (torn reads during
       churn, SIGKILL mid-update, concurrent writers)
 
