@@ -212,8 +212,14 @@ e2e:
 old-test:
 	./tests.old/run_tests.sh -s -i $(PYTHON)
 
+# Coverage is the union of the unit and functional suites: run each under
+# 'coverage run -p' (separate data files) then combine, so the report shows
+# what the test suite as a whole exercises.
 coverage:
-	$(PYTHON) -m coverage run ./tests/unit/runner.py
+	rm -f .coverage .coverage.*
+	$(PYTHON) -m coverage run -p ./tests/unit/runner.py
+	$(PYTHON) -m coverage run -p ./tests/functional/runner.py
+	$(PYTHON) -m coverage combine
 
 coverage-report:
 	$(PYTHON) -m coverage report --show-missing --omit="tests/*"
@@ -278,4 +284,4 @@ clean:
 	rm -rf tests/unit/__pycache__ tests/functional/__pycache__
 	rm -f src/*.pyc tests/*.pyc tests/unit/*.pyc tests/functional/*.pyc
 	rm -f locales/mo/*.mo
-	rm -f .coverage
+	rm -f .coverage .coverage.*
