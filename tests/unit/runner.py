@@ -32,6 +32,20 @@ def find_tests(testdir=None, testscripts=[]):
 
     if len(testscripts) > 1:
         names = testscripts[1:]
+        # An explicitly named test that doesn't resolve is a typo'd
+        # invocation (e.g. a missing .py); error out rather than select
+        # zero tests and exit green having run nothing.
+        for name in names:
+            if name[:5] != "test_" or name[-3:] != ".py":
+                sys.stderr.write(
+                    "ERROR: unknown test '%s' (expected test_<name>.py)\n" % name
+                )
+                sys.exit(1)
+            if not os.path.exists(os.path.join(testdir, name)):
+                sys.stderr.write(
+                    "ERROR: no such test: %s\n" % os.path.join(testdir, name)
+                )
+                sys.exit(1)
     else:
         names = os.listdir(testdir)
     tests = []
