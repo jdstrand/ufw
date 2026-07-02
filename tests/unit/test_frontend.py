@@ -633,11 +633,156 @@ class DeleteRuleAndActionsTestCase(FrontendTestBase):
         )
 
 
+class ApplicationAndShowTestCase(FrontendTestBase):
+    """Application-command internals, show helpers and reset()"""
+
+    def test_get_show_listening_no_ipv6(self):
+        """Test get_show_listening() - IPv6 disabled"""
+        with unittest.mock.patch.object(
+            self.ui.backend, "use_ipv6", return_value=False
+        ):
+            res = self.ui.get_show_listening()
+        self.assertTrue(isinstance(res, str))
+
+    def test_get_show_added_route(self):
+        """Test get_show_added() - route rules carry the route prefix"""
+        r = ufw.common.UFWRule("allow", "tcp", "22")
+        r.forward = True
+        with unittest.mock.patch.object(self.ui.backend, "get_rules", return_value=[r]):
+            res = self.ui.get_show_added()
+        self.assertTrue(
+            "route allow 22/tcp" in res, "Could not find route rule in:\n%s" % res
+        )
+
+    def test_get_application_info_invalid_profile(self):
+        """Test get_application_info() - profile fails verification"""
+        with unittest.mock.patch("ufw.applications.verify_profile", return_value=False):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.ui.get_application_info, "WWW"
+            )
+
+    def test_application_update_found(self):
+        """Test application_update() - updated profiles accumulate output"""
+        with unittest.mock.patch.object(
+            self.ui.backend, "update_app_rule", return_value=("Rules updated", True)
+        ):
+            res = self.ui.application_update("all")
+        self.assertTrue("Rules updated\n" in res)
+
+        with unittest.mock.patch.object(
+            self.ui.backend, "update_app_rule", return_value=("Rules updated", True)
+        ):
+            res = self.ui.application_update("WWW")
+        self.assertEqual(res, "Rules updated\n")
+
+    def test_application_update_reload(self):
+        """Test application_update() - firewall reload after update"""
+        with unittest.mock.patch.object(
+            self.ui.backend, "update_app_rule", return_value=("", True)
+        ):
+            with unittest.mock.patch.object(
+                self.ui.backend, "is_enabled", return_value=True
+            ):
+                with unittest.mock.patch.object(
+                    self.ui.backend, "_reload_user_rules"
+                ) as m:
+                    res = self.ui.application_update("WWW")
+        self.assertEqual(res, "Firewall reloaded")
+        m.assert_called_once_with()
+
+    def test_application_update_reload_error(self):
+        """Test application_update() - reload failure is re-raised"""
+        with unittest.mock.patch.object(
+            self.ui.backend, "update_app_rule", return_value=("", True)
+        ):
+            with unittest.mock.patch.object(
+                self.ui.backend, "is_enabled", return_value=True
+            ):
+                with unittest.mock.patch.object(
+                    self.ui.backend,
+                    "_reload_user_rules",
+                    side_effect=RuntimeError("boom"),
+                ):
+                    self.assertRaises(RuntimeError, self.ui.application_update, "WWW")
+
+    def test_application_update_skip_reload_under_ssh(self):
+        """Test application_update() - reload skipped under ssh"""
+        self.ui.backend.do_checks = True
+        try:
+            with unittest.mock.patch("ufw.util.under_ssh", return_value=True):
+                with unittest.mock.patch.object(
+                    self.ui.backend,
+                    "update_app_rule",
+                    return_value=("", True),
+                ):
+                    with unittest.mock.patch.object(
+                        self.ui.backend, "is_enabled", return_value=True
+                    ):
+                        res = self.ui.application_update("WWW")
+        finally:
+            self.ui.backend.do_checks = False
+        self.assertEqual(res, "Skipped reloading firewall")
+
+    def test_application_add_no_rule_data(self):
+        """Test application_add() - parsed command without rule data"""
+        pr = unittest.mock.MagicMock()
+        pr.action = "allow"
+        pr.data = {}
+        self.ui.backend.defaults["default_application_policy"] = "accept"
+        try:
+            with unittest.mock.patch.object(
+                ufw.frontend, "parse_command", return_value=pr
+            ):
+                with unittest.mock.patch.object(
+                    self.ui, "do_action", return_value="ok"
+                ) as m:
+                    res = self.ui.application_add("WWW")
+        finally:
+            self.ui.backend.defaults["default_application_policy"] = "skip"
+        self.assertEqual(res, "ok")
+        m.assert_called_once_with("allow", "", "")
+
+    def test_do_application_action_update_with_new(self):
+        """Test do_application_action() - update-with-new joins output"""
+        with unittest.mock.patch.object(
+            self.ui, "application_update", return_value="updated"
+        ):
+            with unittest.mock.patch.object(
+                self.ui, "application_add", return_value="added"
+            ):
+                res = self.ui.do_application_action("update-with-new", "WWW")
+        self.assertEqual(res, "updated\nadded")
+
+    def test_do_application_action_unsupported(self):
+        """Test do_application_action() - unsupported action"""
+        tests.unit.support.check_for_exception(
+            self,
+            ufw.common.UFWError,
+            self.ui.do_application_action,
+            "bogus",
+            "WWW",
+        )
+
+    def test_reset_prompt_under_ssh(self):
+        """Test reset() - ssh-aware prompt is selected"""
+        self.ui.backend.do_checks = True
+        try:
+            with unittest.mock.patch("ufw.util.under_ssh", return_value=True):
+                with unittest.mock.patch.object(
+                    self.ui.backend, "reset", return_value="reset"
+                ):
+                    res = self.ui.reset(force=True)
+        finally:
+            self.ui.backend.do_checks = False
+        self.assertEqual(res, "reset")
+
+
 def test_main():  # used by runner.py
     tests.unit.support.run_unittest(
         FrontendTestCase,
         SetRuleErrorPathsTestCase,
         DeleteRuleAndActionsTestCase,
+        ApplicationAndShowTestCase,
     )
 
 
