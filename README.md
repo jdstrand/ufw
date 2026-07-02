@@ -371,6 +371,11 @@ $ sudo ufw disable
 $ sudo ufw enable
 ```
 
+Note that with `IPV6=no`, enabling or reloading ufw replaces the IPv6
+firewall with a deny-all policy that accepts only loopback traffic -- any
+IPv6 rules added outside of ufw are removed. See `man ufw-framework` for
+details.
+
 
 ## Application Integration
 
