@@ -1100,21 +1100,19 @@ AAA
 
     def test_get_ip_from_if(self):
         """Test get_ip_from_if()"""
-        # TODO: implement for py3
-        #        ip = ufw.util.get_ip_from_if("lo", False)
-        #        self.assertTrue(ip.startswith("127"))
-        #
-        #        tests.unit.support.check_for_exception(
-        #            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
-        #        )
-        #
-        #        # just run through the code, we may not have an IPv6 address
-        #        try:
-        #            ufw.util.get_ip_from_if("lo", True)
-        #        except IOError:
-        #            pass
+        import unittest.mock
 
-        return tests.unit.support.skipped(self, "TODO: python3")
+        # mock the SIOCGIFADDR ioctl (the address sits at bytes 20:24) so
+        # the result doesn't depend on the host's interfaces; the str ->
+        # bytes struct.pack() argument conversion still runs for real
+        buf = b"\x00" * 20 + b"\x7f\x00\x00\x01"
+        with unittest.mock.patch("fcntl.ioctl", return_value=buf):
+            ip = ufw.util.get_ip_from_if("lo", False)
+        self.assertEqual(ip, "127.0.0.1")
+
+        tests.unit.support.check_for_exception(
+            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
+        )
 
     def test_get_if_from_ip(self):
         """Test get_if_from_ip()"""

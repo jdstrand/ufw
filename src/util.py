@@ -879,7 +879,7 @@ def get_ip_from_if(ifname: str, v6: bool = False) -> str:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             # fmt: off
-            addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack("256s", ifname[:15]))[20:24])
+            addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack("256s", ifname[:15].encode()))[20:24])
             # fmt: on
         except Exception:
             raise IOError(errno.ENODEV, "No such device")
