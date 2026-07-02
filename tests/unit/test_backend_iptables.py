@@ -1047,10 +1047,71 @@ class StatusAndPolicyTestCase(BackendIptablesTestBase):
         self.assertTrue("Anywhere on eth0" in res, "Could not find eth0 in:\n%s" % res)
 
 
+class RaisedErrorsTestCase(BackendIptablesTestBase):
+    """Failures updating the rules files or the running firewall raise"""
+
+    def test_set_rule_write_failure(self):
+        """Test set_rule() - failure writing the rules file raises"""
+        self.backend.dryrun = False
+        pr = ufw.frontend.parse_command(["ufw", "allow", "22"])
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=OSError("boom")
+        ):
+            try:
+                self.backend.set_rule(pr.data["rule"])
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Couldn't update rules file")
+
+    def test_update_logging_write_failure(self):
+        """Test update_logging() - failure writing the rules file raises"""
+        self.backend.dryrun = False
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=OSError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Couldn't update rules file for logging")
+
+    def test_set_rule_live_apply_failure(self):
+        """Test set_rule() - failure updating the running firewall raises"""
+        import io
+        import sys
+
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+
+        def fake_cmd(args):
+            if "-L" in args:
+                return (0, "")
+            return (1, "boom")
+
+        pr = ufw.frontend.parse_command(["ufw", "allow", "22"])
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            with unittest.mock.patch.object(
+                self.backend, "_need_reload", return_value=False
+            ):
+                with unittest.mock.patch.object(
+                    ufw.backend_iptables, "cmd", side_effect=fake_cmd
+                ):
+                    try:
+                        self.backend.set_rule(pr.data["rule"])
+                        self.fail("UFWError not thrown")
+                    except ufw.common.UFWError as e:
+                        self.assertEqual(e.value, "Could not update running firewall")
+        finally:
+            sys.stderr = old_stderr
+
+
 def test_main():  # used by runner.py
     tests.unit.support.run_unittest(
         BackendIptablesTestCase,
         StatusAndPolicyTestCase,
+        RaisedErrorsTestCase,
     )
 
 

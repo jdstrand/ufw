@@ -1212,7 +1212,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             raise
         except Exception:
             err_msg = tr("Couldn't update rules file")
-            UFWError(err_msg)
+            raise UFWError(err_msg)
 
         # We wrote out the rules, so set reasonable string. We will change
         # this below when operating on the live firewall.
@@ -1288,7 +1288,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     (rc, out) = cmd([exe] + s)
                     if rc != 0:
                         msg(str(out), sys.stderr)
-                        UFWError(err_msg)
+                        raise UFWError(err_msg)
 
                     # delete any lingering RETURN rules (needed for upgrades)
                     if flag == "-A" and pat_log.search(" ".join(s)):
@@ -1358,7 +1358,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             raise
         except Exception:
             err_msg = tr("Couldn't update rules file for logging")
-            UFWError(err_msg)
+            raise UFWError(err_msg)
 
         # Don't update the running firewall if not enabled
         if not self.is_enabled():
