@@ -16,6 +16,7 @@
 #
 
 import unittest
+import unittest.mock
 import os
 
 from io import StringIO
@@ -27,7 +28,9 @@ import ufw.frontend
 import ufw.util
 
 
-class FrontendTestCase(unittest.TestCase):
+class FrontendTestBase(unittest.TestCase):
+    """Shared sandbox setup: a dry-run UFWFrontend with msg() captured"""
+
     ui: ufw.frontend.UFWFrontend
     msg_output: Optional[StringIO]
     saved_msg_output: object
@@ -72,6 +75,16 @@ class FrontendTestCase(unittest.TestCase):
 
         self.ui = None  # type: ignore[assignment]
 
+    def _init_ui(self, dryrun=True):
+        """Construct a UFWFrontend outside msg() capture (backend init may
+        warn), then restore capture"""
+        ufw.util.msg_output = self.saved_msg_output
+        ui = ufw.frontend.UFWFrontend(dryrun=dryrun)
+        ufw.util.msg_output = self.msg_output
+        return ui
+
+
+class FrontendTestCase(FrontendTestBase):
     def test_parse_command(self):
         """Test parse_command()"""
         # test_parser.py will handle command combinations exhaustively, let's
@@ -385,8 +398,119 @@ class FrontendTestCase(unittest.TestCase):
         self.ui.backend.defaults["default_application_policy"] = "skip"
 
 
+class SetRuleErrorPathsTestCase(FrontendTestBase):
+    """set_rule()/parse_command() error handling and the multi-rule backout"""
+
+    def test_parse_command_reraises_ufwerror(self):
+        """Test parse_command() re-raises UFWError after error()"""
+        # error() normally exits; neuter it so the re-raise is reachable
+        with unittest.mock.patch.object(ufw.frontend, "error"):
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.frontend.parse_command,
+                ["ufw", "allow", "80:70000/tcp"],
+            )
+
+    def test_set_rule_app_remove_both(self):
+        """Test set_rule() - remove app rule with ip_version 'both'"""
+        ui = self._init_ui(dryrun=False)
+
+        pr = ufw.frontend.parse_command(["ufw", "allow", "WWW"])
+        ui.do_action(pr.action, pr.data["rule"], pr.data["iptype"], force=True)
+
+        pr = ufw.frontend.parse_command(["ufw", "delete", "allow", "WWW"])
+        res = ui.set_rule(pr.data["rule"], "both")
+        self.assertTrue(res != "", "Output is empty")
+
+    def test_set_rule_app_remove_nonexistent(self):
+        """Test set_rule() - remove nonexistent app rule (v4 and v6)"""
+        ui = self._init_ui(dryrun=False)
+
+        pr = ufw.frontend.parse_command(["ufw", "delete", "allow", "WWW"])
+        res = ui.set_rule(pr.data["rule"], "v4")
+        self.assertEqual(res, "Could not delete non-existent rule")
+
+        pr = ufw.frontend.parse_command(["ufw", "delete", "allow", "WWW"])
+        res = ui.set_rule(pr.data["rule"], "v6")
+        self.assertEqual(res, "Could not delete non-existent rule (v6)")
+
+    def test_set_rule_invalid_ip_version_app_remove(self):
+        """Test set_rule() - invalid ip_version with app rule removal"""
+        pr = ufw.frontend.parse_command(["ufw", "delete", "allow", "WWW"])
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.ui.set_rule, pr.data["rule"], "bogus"
+        )
+
+    def test_set_rule_invalid_ip_version(self):
+        """Test set_rule() - invalid ip_version (IPv6 enabled and disabled)"""
+        # a single failing rule ends in error(); neuter it to return
+        pr = ufw.frontend.parse_command(["ufw", "allow", "12345"])
+        with unittest.mock.patch.object(ufw.frontend, "error") as m:
+            self.ui.set_rule(pr.data["rule"], "bogus")
+        m.assert_called_once_with("Invalid IP version 'bogus'")
+
+        pr = ufw.frontend.parse_command(["ufw", "allow", "12345"])
+        with unittest.mock.patch.object(
+            self.ui.backend, "use_ipv6", return_value=False
+        ):
+            with unittest.mock.patch.object(ufw.frontend, "error") as m:
+                self.ui.set_rule(pr.data["rule"], "bogus")
+        m.assert_called_once_with("Invalid IP version 'bogus'")
+
+    def test_set_rule_backout(self):
+        """Test set_rule() - failing multi-rule application is backed out"""
+        # CIFS expands to two rules; the first is accepted and the second
+        # fails, forcing the backout of the first
+        pr = ufw.frontend.parse_command(["ufw", "allow", "CIFS"])
+        with unittest.mock.patch.object(
+            self.ui.backend,
+            "set_rule",
+            side_effect=["", ufw.common.UFWError("boom")],
+        ):
+            try:
+                self.ui.set_rule(pr.data["rule"], "v4")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertTrue("Error applying application rules" in e.value)
+                self.assertTrue("successfully unapplied" in e.value)
+
+    def test_set_rule_backout_undo_error(self):
+        """Test set_rule() - failed backout of a failing application"""
+        import io
+        import sys
+
+        pr = ufw.frontend.parse_command(["ufw", "allow", "CIFS"])
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            with unittest.mock.patch.object(
+                self.ui.backend,
+                "set_rule",
+                side_effect=["", ufw.common.UFWError("boom")],
+            ):
+                # make the backout's removal lookups fail too
+                with unittest.mock.patch.object(
+                    self.ui.backend,
+                    "get_app_rules_from_system",
+                    side_effect=ufw.common.UFWError("nope"),
+                ):
+                    try:
+                        self.ui.set_rule(pr.data["rule"], "v4")
+                        self.fail("UFWError not thrown")
+                    except ufw.common.UFWError as e:
+                        self.assertTrue("Some rules could not be unapplied" in e.value)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+        self.assertTrue("Could not back out rule" in err)
+
+
 def test_main():  # used by runner.py
-    tests.unit.support.run_unittest(FrontendTestCase)
+    tests.unit.support.run_unittest(
+        FrontendTestCase,
+        SetRuleErrorPathsTestCase,
+    )
 
 
 if __name__ == "__main__":  # used when standalone
