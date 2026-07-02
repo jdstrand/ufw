@@ -17,6 +17,7 @@
 #
 
 import unittest
+import unittest.mock
 import tests.unit.support
 import ufw.util
 import ufw.common
@@ -702,6 +703,182 @@ class UtilTestCase(unittest.TestCase):
         tests.unit.support.check_for_exception(
             self, OSError, ufw.util.close_files, fns, False
         )
+
+    def test_close_files_atomic_replace(self):
+        """Test close_files() - replaces the original atomically"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        with open(tmp, "w") as f:
+            f.write("old content\nCOMMIT\n")
+        os.chmod(tmp, 0o640)
+        os.utime(tmp, (1, 1))  # ancient mtime: the update must refresh it
+
+        fns = ufw.util.open_files(tmp)
+        # the tempfile must be in the same directory as the original so the
+        # replacement can be a rename (atomic), not a copy (truncate + write)
+        self.assertEqual(
+            os.path.dirname(fns["tmpname"]), os.path.dirname(os.path.realpath(tmp))
+        )
+        tmp_ino = os.fstat(fns["tmp"]).st_ino
+        ufw.util.write_to_file(fns["tmp"], "new content\nCOMMIT\n")
+        ufw.util.close_files(fns)
+
+        with open(tmp) as f:
+            self.assertEqual(f.read(), "new content\nCOMMIT\n")
+        st = os.stat(tmp)
+        # rename semantics: the original path now carries the tempfile's inode
+        self.assertEqual(st.st_ino, tmp_ino)
+        # the original's permissions were preserved ...
+        self.assertEqual(st.st_mode & 0o7777, 0o640)
+        # ... but not its mtime: the content is new
+        self.assertGreater(st.st_mtime, 1)
+        self.assertFalse(os.path.exists(fns["tmpname"]))
+
+    def test_close_files_updates_symlink_target(self):
+        """Test close_files() - a symlinked original is updated through the
+        link (the rename must not replace the symlink with a plain file)"""
+        self.tmpdir = tempfile.mkdtemp()
+        real = os.path.join(self.tmpdir, "real.rules")
+        with open(real, "w") as f:
+            f.write("old\n")
+        link = os.path.join(self.tmpdir, "user.rules")
+        os.symlink("real.rules", link)
+
+        fns = ufw.util.open_files(link)
+        # resolved to the target: staged beside it, renamed over it
+        self.assertEqual(fns["origname"], os.path.realpath(real))
+        ufw.util.write_to_file(fns["tmp"], "new\n")
+        ufw.util.close_files(fns)
+
+        self.assertTrue(os.path.islink(link))
+        with open(real) as f:
+            self.assertEqual(f.read(), "new\n")
+
+    def test_close_files_original_intact_on_failure(self):
+        """Test close_files() - a failed update never touches the original"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        orig_content = "old content\nCOMMIT\n"
+        with open(tmp, "w") as f:
+            f.write(orig_content)
+
+        # a failing rename leaves the original untouched (all writing happened
+        # off to the side) and cleans up the tempfile
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "partial")
+        with unittest.mock.patch("os.rename", side_effect=OSError("boom")):
+            tests.unit.support.check_for_exception(
+                self, OSError, ufw.util.close_files, fns, True
+            )
+        with open(tmp) as f:
+            self.assertEqual(f.read(), orig_content)
+        self.assertFalse(os.path.exists(fns["tmpname"]))
+
+        # same for a failure before the rename (e.g. the content fsync)
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "partial")
+        with unittest.mock.patch("os.fsync", side_effect=OSError("boom")):
+            tests.unit.support.check_for_exception(
+                self, OSError, ufw.util.close_files, fns, True
+            )
+        with open(tmp) as f:
+            self.assertEqual(f.read(), orig_content)
+        self.assertFalse(os.path.exists(fns["tmpname"]))
+
+        # and for a failed close of the tempfile after a good fsync
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "partial")
+        with unittest.mock.patch("os.close", side_effect=OSError("boom")):
+            tests.unit.support.check_for_exception(
+                self, OSError, ufw.util.close_files, fns, True
+            )
+        os.close(fns["tmp"])  # the mocked close didn't really close it
+        with open(tmp) as f:
+            self.assertEqual(f.read(), orig_content)
+        self.assertFalse(os.path.exists(fns["tmpname"]))
+
+    def test_close_files_durability(self):
+        """Test close_files() - content is fsynced; dir fsync is best effort"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        with open(tmp, "w") as f:
+            f.write("old\n")
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "new\n")
+        with unittest.mock.patch("os.fsync") as fake_fsync:
+            ufw.util.close_files(fns)
+        # once for the tempfile's content, once for the directory's rename
+        self.assertEqual(fake_fsync.call_count, 2)
+        self.assertEqual(fake_fsync.call_args_list[0][0][0], fns["tmp"])
+        with open(tmp) as f:
+            self.assertEqual(f.read(), "new\n")
+
+        # an unopenable directory must not fail an already-complete update
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "newer\n")
+        with unittest.mock.patch("os.open", side_effect=OSError("boom")):
+            ufw.util.close_files(fns)
+        with open(tmp) as f:
+            self.assertEqual(f.read(), "newer\n")
+
+    def test_close_files_preserves_foreign_ownership(self):
+        """Test close_files() - ownership of a foreign-owned file is kept"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        with open(tmp, "w") as f:
+            f.write("old\n")
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "new\n")
+        st = os.stat(tmp)
+        # pretend the original belongs to someone else (as when root replaces
+        # a package-owned file) and verify the chown non-root cannot perform
+        with unittest.mock.patch("os.fchown") as fake_chown:
+            with unittest.mock.patch("os.geteuid", return_value=st.st_uid + 1):
+                ufw.util.close_files(fns)
+        fake_chown.assert_called_once_with(fns["tmp"], st.st_uid, st.st_gid)
+        with open(tmp) as f:
+            self.assertEqual(f.read(), "new\n")
+
+    def test_close_files_foreign_ownership_keeps_setgid(self):
+        """Test close_files() - ownership is set before the mode copy, so
+        the chown cannot strip a setgid bit (chown(2) clears setuid/setgid)"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        with open(tmp, "w") as f:
+            f.write("old\n")
+        # setgid + group-execute: exactly the combination a chown strips
+        os.chmod(tmp, 0o2750)
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns["tmp"], "new\n")
+        st = os.stat(tmp)
+        # pretending the euid differs forces the ownership branch; the
+        # fchown to our own uid/gid is real (permitted without privilege)
+        # and really clears setuid/setgid from the fd's current mode
+        with unittest.mock.patch("os.geteuid", return_value=st.st_uid + 1):
+            ufw.util.close_files(fns)
+        self.assertEqual(os.stat(tmp).st_mode & 0o7777, 0o2750)
+
+    def test_open_files_unwritable_dir(self):
+        """Test open_files() - unwritable directory is a friendly error (the
+        callers precheck the file's writability, not the directory's; the
+        runner guarantees non-root, which would bypass the permissions)"""
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "user.rules")
+        with open(tmp, "w") as f:
+            f.write("old\n")
+        os.chmod(self.tmpdir, 0o500)
+        try:
+            ufw.util.open_files(tmp)
+        except ufw.common.UFWError as e:
+            d = os.path.dirname(os.path.realpath(tmp))
+            self.assertIn("Couldn't create temporary file in '%s'" % (d), e.value)
+        else:
+            self.fail("UFWError not raised")
+        finally:
+            os.chmod(self.tmpdir, 0o755)
 
     def test_cmd(self):
         """Test cmd()"""

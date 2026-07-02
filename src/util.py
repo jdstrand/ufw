@@ -232,14 +232,26 @@ def open_file_read(fn: str) -> IO[Any]:
 
 
 def open_files(fn: str) -> Dict[str, Any]:
-    """Opens the specified file read-only and a tempfile read-write."""
+    """Opens the specified file read-only and a tempfile read-write. The
+    tempfile is created next to the original (not in TMPDIR) so that
+    close_files() can atomically rename it over the original. Symlinks are
+    resolved first so the rename updates the link's target, not the link."""
+    fn = os.path.realpath(fn)
     orig = open_file_read(fn)
 
     try:
-        (tmp, tmpname) = mkstemp()
-    except Exception:  # pragma: no cover
+        (tmp, tmpname) = mkstemp(
+            prefix=".%s." % (os.path.basename(fn)),
+            dir=os.path.dirname(fn),
+        )
+    except OSError:
         orig.close()
-        raise
+        # the callers' writability prechecks test the file, but staging the
+        # replacement needs the directory
+        from ufw.common import UFWError
+
+        err_msg = tr("Couldn't create temporary file in '%s'") % (os.path.dirname(fn))
+        raise UFWError(err_msg)
 
     return {"orig": orig, "origname": fn, "tmp": tmp, "tmpname": tmpname}
 
@@ -264,17 +276,56 @@ def write_to_file(fd: int, out: str) -> None:
 
 
 def close_files(fns: Dict[str, Any], update: bool = True) -> None:
-    """Closes the specified files (as returned by open_files), and update
-    original file with the temporary file.
+    """Closes the specified files (as returned by open_files) and, when
+    updating, atomically replaces the original with the temporary file
+    (fsync + rename), so readers and crashes only ever see a complete old
+    or complete new file. The original's inode is replaced, so a hard link
+    to it keeps the old content.
     """
     fns["orig"].close()
-    os.close(fns["tmp"])
 
-    if update:
+    if not update:
+        os.close(fns["tmp"])
+        os.unlink(fns["tmpname"])
+        return
+
+    try:
+        # mkstemp() created the tempfile with our euid/egid, so ownership
+        # only needs adjusting when replacing a file owned by someone else.
+        # Ownership first: chown(2) clears setuid/setgid, and copystat
+        # (mode and, best effort, xattrs -- never ownership) must win
+        st = os.stat(fns["origname"])
+        if (st.st_uid, st.st_gid) != (os.geteuid(), os.getegid()):
+            os.fchown(fns["tmp"], st.st_uid, st.st_gid)
         shutil.copystat(fns["origname"], fns["tmpname"])
-        shutil.copy(fns["tmpname"], fns["origname"])
+        # the content is new, so undo copystat's mtime carry-over
+        os.utime(fns["tmpname"])
+    except Exception:
+        os.close(fns["tmp"])
+        os.unlink(fns["tmpname"])
+        raise
 
-    os.unlink(fns["tmpname"])
+    try:
+        try:
+            os.fsync(fns["tmp"])
+        finally:
+            os.close(fns["tmp"])
+        os.rename(fns["tmpname"], fns["origname"])
+    except Exception:
+        os.unlink(fns["tmpname"])
+        raise
+
+    # Make the rename itself durable across a power loss. Best effort: the
+    # update succeeded above, so an unopenable/unsyncable directory must not
+    # fail it now.
+    try:
+        dirfd = os.open(os.path.dirname(fns["origname"]), os.O_RDONLY)
+        try:
+            os.fsync(dirfd)
+        finally:
+            os.close(dirfd)
+    except OSError:
+        pass
 
 
 def cmd(command: List[str]) -> List[Union[int, str]]:
