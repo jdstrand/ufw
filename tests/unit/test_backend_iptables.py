@@ -537,6 +537,17 @@ ports=80/tcp
         )
         self.assertEqual(self.backend.defaults["new_input_policy"], "accept")
 
+    def test_set_default_write_failure_cleans_up(self):
+        """Test set_default() - a failed write leaves no tempfile behind"""
+        f = self.backend.files["defaults"]
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=OSError("boom")):
+            self.assertRaises(
+                OSError, self.backend.set_default, f, "NEW_INPUT_POLICY", "accept"
+            )
+        d = os.path.dirname(f)
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
     def test_set_bad_default(self):
         """Test bad set_default_policy()"""
         tests.unit.support.check_for_exception(
@@ -933,6 +944,28 @@ class StatusAndPolicyTestCase(BackendIptablesTestBase):
                 Exception, self.backend.set_default_policy, "allow", "incoming"
             )
 
+    def test_set_default_policy_write_failure_cleans_up(self):
+        """Test set_default_policy() - a failed after_rules rewrite leaves
+        no tempfile behind"""
+        self.backend.dryrun = False
+        real_write = ufw.util.write_to_file
+
+        # only the after_rules files contain COMMIT; set_default()'s writes
+        # to the defaults file pass through untouched
+        def fake_write(fd, out):
+            if "COMMIT" in out:
+                raise OSError("boom")
+            real_write(fd, out)
+
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=fake_write):
+            self.assertRaises(
+                OSError, self.backend.set_default_policy, "deny", "incoming"
+            )
+        for f in [self.backend.files["after_rules"], self.backend.files["defaults"]]:
+            d = os.path.dirname(f)
+            leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+            self.assertEqual(leaks, [], "leaked tempfile in %s" % d)
+
     def test_set_default_policy_swaps_log_lines(self):
         """Test set_default_policy() - catch-all log rules are swapped"""
         self.backend.dryrun = False
@@ -1302,6 +1335,14 @@ class RulesFileIOTestCase(BackendIptablesTestBase):
             self, ufw.common.UFWError, self.backend._write_rules, False
         )
         self.backend.defaults["loglevel"] = "low"
+
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+        # the failures above discarded their staging tempfile
+        d = os.path.dirname(self.backend.files["rules"])
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
 
         with unittest.mock.patch("ufw.util.close_files", side_effect=OSError("boom")):
             self.assertRaises(OSError, self.backend._write_rules, False)

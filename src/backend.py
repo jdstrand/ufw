@@ -363,18 +363,23 @@ class UFWBackend(metaclass=abc.ABCMeta):
         fns = ufw.util.open_files(fn)
         fd = fns["tmp"]
 
-        found = False
-        pat = re.compile(r"^" + opt + "=")
-        for line in fns["orig"]:
-            if pat.search(line):
-                ufw.util.write_to_file(fd, opt + "=" + value + "\n")
-                found = True
-            else:
-                ufw.util.write_to_file(fd, line)
+        try:
+            found = False
+            pat = re.compile(r"^" + opt + "=")
+            for line in fns["orig"]:
+                if pat.search(line):
+                    ufw.util.write_to_file(fd, opt + "=" + value + "\n")
+                    found = True
+                else:
+                    ufw.util.write_to_file(fd, line)
 
-        # Add the entry if not found
-        if not found:
-            ufw.util.write_to_file(fd, opt + "=" + value + "\n")
+            # Add the entry if not found
+            if not found:
+                ufw.util.write_to_file(fd, opt + "=" + value + "\n")
+        except Exception:
+            # don't leave the staging tempfile behind
+            ufw.util.close_files(fns, False)
+            raise
 
         try:
             ufw.util.close_files(fns)

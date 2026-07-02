@@ -174,11 +174,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     raise
                 fd = fns["tmp"]
 
-                for line in fns["orig"]:
-                    if pat.search(line):
-                        ufw.util.write_to_file(fd, pat.sub(new_log_str, line))
-                    else:
-                        ufw.util.write_to_file(fd, line)
+                try:
+                    for line in fns["orig"]:
+                        if pat.search(line):
+                            ufw.util.write_to_file(fd, pat.sub(new_log_str, line))
+                        else:
+                            ufw.util.write_to_file(fd, line)
+                except Exception:
+                    # don't leave the staging tempfile behind
+                    ufw.util.close_files(fns, False)
+                    raise
 
                 try:
                     ufw.util.close_files(fns)
@@ -925,179 +930,196 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise
 
-        # Initialize the capabilities database
-        self.initcaps()
-
-        chain_prefix = "ufw"
-        rules = self.rules
-        if v6:
-            chain_prefix = "ufw6"
-            rules = self.rules6
-
-        if self.dryrun:
-            fd = sys.stdout.fileno()
-        else:
-            fd = fns["tmp"]
-
-        # Write header
-        ufw.util.write_to_file(fd, "*filter\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
-
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n")
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
-
-        # Rate limiting is runtime supported
-        if (
-            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
-        ) or (
-            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
-        ):
-            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
-            ufw.util.write_to_file(
-                fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n"
-            )
-
-        ufw.util.write_to_file(fd, "### RULES ###\n")
-
-        # Write rules
-        for r in rules:
-            action = r.action
-            # route rules use 'route:<action> ...'
-            if r.forward:
-                action = "route:" + r.action
-            if r.logtype != "":
-                action += "_" + r.logtype
-
-            ifaces = ""
-            if r.interface_in == "" and r.interface_out == "":
-                ifaces = r.direction
-            elif r.interface_in != "" and r.interface_out != "":
-                ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
-            else:
-                if r.interface_in != "":
-                    ifaces += "%s_%s" % (r.direction, r.interface_in)
-                else:
-                    ifaces += "%s_%s" % (r.direction, r.interface_out)
-
-            if r.dapp == "" and r.sapp == "":
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s" % (
-                    action,
-                    r.protocol,
-                    r.dport,
-                    r.dst,
-                    r.sport,
-                    r.src,
-                    ifaces,
-                )
-                if r.comment != "":
-                    tstr += " comment=%s" % r.comment
-                ufw.util.write_to_file(fd, tstr + "\n")
-            else:
-                pat_space = re.compile(" ")
-                dapp = "-"
-                if r.dapp:
-                    dapp = pat_space.sub("%20", r.dapp)
-                sapp = "-"
-                if r.sapp:
-                    sapp = pat_space.sub("%20", r.sapp)
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % (
-                    action,
-                    r.protocol,
-                    r.dport,
-                    r.dst,
-                    r.sport,
-                    r.src,
-                    dapp,
-                    sapp,
-                    ifaces,
-                )
-                if r.comment != "":
-                    tstr += " comment=%s" % r.comment
-                ufw.util.write_to_file(fd, tstr + "\n")
-
-            chain_suffix = "input"
-            if r.forward:
-                chain_suffix = "forward"
-            elif r.direction == "out":
-                chain_suffix = "output"
-            chain = "%s-user-%s" % (chain_prefix, chain_suffix)
-            rule_str = "-A %s %s\n" % (chain, r.format_rule())
-
-            for s in self._get_rules_from_formatted(
-                rule_str, chain_prefix, chain_suffix
-            ):
-                ufw.util.write_to_file(fd, s)
-
-        # Write footer
-        ufw.util.write_to_file(fd, "\n### END RULES ###\n")
-
-        # Add logging rules, skipping any delete ('-D') rules
-        ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
         try:
-            lrules_t = self._get_logging_rules(self.defaults["loglevel"])
-        except Exception:
-            raise
-        for c, r, _ in lrules_t:
-            if len(r) > 0 and r[0] == "-D":
-                continue
-            if c.startswith(chain_prefix + "-"):
-                ufw.util.write_to_file(
-                    fd, " ".join(r).replace("[", '"[').replace("] ", '] "') + "\n"
-                )
-        ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+            # Initialize the capabilities database
+            self.initcaps()
 
-        # Rate limiting is runtime supported
-        if (
-            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
-        ) or (
-            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
-        ):
-            ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
-            if self.defaults["loglevel"] != "off":
-                ufw.util.write_to_file(
-                    fd,
-                    "-A "
-                    + chain_prefix
-                    + "-user-limit "
-                    + " ".join(self.ufw_user_limit_log)
-                    + ' "'
-                    + self.ufw_user_limit_log_text
-                    + ' "\n',
-                )
-            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
+            chain_prefix = "ufw"
+            rules = self.rules
+            if v6:
+                chain_prefix = "ufw6"
+                rules = self.rules6
+
+            if self.dryrun:
+                fd = sys.stdout.fileno()
+            else:
+                fd = fns["tmp"]
+
+            # Write header
+            ufw.util.write_to_file(fd, "*filter\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
+
             ufw.util.write_to_file(
-                fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n"
+                fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n"
             )
-            ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
 
-        ufw.util.write_to_file(fd, "COMMIT\n")
+            # Rate limiting is runtime supported
+            if (
+                chain_prefix == "ufw"
+                and self.caps is not None
+                and self.caps["limit"]["4"]
+            ) or (
+                chain_prefix == "ufw6"
+                and self.caps is not None
+                and self.caps["limit"]["6"]
+            ):
+                ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
+                ufw.util.write_to_file(
+                    fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n"
+                )
+
+            ufw.util.write_to_file(fd, "### RULES ###\n")
+
+            # Write rules
+            for r in rules:
+                action = r.action
+                # route rules use 'route:<action> ...'
+                if r.forward:
+                    action = "route:" + r.action
+                if r.logtype != "":
+                    action += "_" + r.logtype
+
+                ifaces = ""
+                if r.interface_in == "" and r.interface_out == "":
+                    ifaces = r.direction
+                elif r.interface_in != "" and r.interface_out != "":
+                    ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
+                else:
+                    if r.interface_in != "":
+                        ifaces += "%s_%s" % (r.direction, r.interface_in)
+                    else:
+                        ifaces += "%s_%s" % (r.direction, r.interface_out)
+
+                if r.dapp == "" and r.sapp == "":
+                    tstr = "\n### tuple ### %s %s %s %s %s %s %s" % (
+                        action,
+                        r.protocol,
+                        r.dport,
+                        r.dst,
+                        r.sport,
+                        r.src,
+                        ifaces,
+                    )
+                    if r.comment != "":
+                        tstr += " comment=%s" % r.comment
+                    ufw.util.write_to_file(fd, tstr + "\n")
+                else:
+                    pat_space = re.compile(" ")
+                    dapp = "-"
+                    if r.dapp:
+                        dapp = pat_space.sub("%20", r.dapp)
+                    sapp = "-"
+                    if r.sapp:
+                        sapp = pat_space.sub("%20", r.sapp)
+                    tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % (
+                        action,
+                        r.protocol,
+                        r.dport,
+                        r.dst,
+                        r.sport,
+                        r.src,
+                        dapp,
+                        sapp,
+                        ifaces,
+                    )
+                    if r.comment != "":
+                        tstr += " comment=%s" % r.comment
+                    ufw.util.write_to_file(fd, tstr + "\n")
+
+                chain_suffix = "input"
+                if r.forward:
+                    chain_suffix = "forward"
+                elif r.direction == "out":
+                    chain_suffix = "output"
+                chain = "%s-user-%s" % (chain_prefix, chain_suffix)
+                rule_str = "-A %s %s\n" % (chain, r.format_rule())
+
+                for s in self._get_rules_from_formatted(
+                    rule_str, chain_prefix, chain_suffix
+                ):
+                    ufw.util.write_to_file(fd, s)
+
+            # Write footer
+            ufw.util.write_to_file(fd, "\n### END RULES ###\n")
+
+            # Add logging rules, skipping any delete ('-D') rules
+            ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
+            try:
+                lrules_t = self._get_logging_rules(self.defaults["loglevel"])
+            except Exception:
+                raise
+            for c, r, _ in lrules_t:
+                if len(r) > 0 and r[0] == "-D":
+                    continue
+                if c.startswith(chain_prefix + "-"):
+                    ufw.util.write_to_file(
+                        fd, " ".join(r).replace("[", '"[').replace("] ", '] "') + "\n"
+                    )
+            ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+
+            # Rate limiting is runtime supported
+            if (
+                chain_prefix == "ufw"
+                and self.caps is not None
+                and self.caps["limit"]["4"]
+            ) or (
+                chain_prefix == "ufw6"
+                and self.caps is not None
+                and self.caps["limit"]["6"]
+            ):
+                ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
+                if self.defaults["loglevel"] != "off":
+                    ufw.util.write_to_file(
+                        fd,
+                        "-A "
+                        + chain_prefix
+                        + "-user-limit "
+                        + " ".join(self.ufw_user_limit_log)
+                        + ' "'
+                        + self.ufw_user_limit_log_text
+                        + ' "\n',
+                    )
+                ufw.util.write_to_file(
+                    fd, "-A " + chain_prefix + "-user-limit -j REJECT\n"
+                )
+                ufw.util.write_to_file(
+                    fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n"
+                )
+                ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
+
+            ufw.util.write_to_file(fd, "COMMIT\n")
+        except Exception:
+            # don't leave the staging tempfile behind
+            ufw.util.close_files(fns, False)
+            raise
 
         try:
             if self.dryrun:
