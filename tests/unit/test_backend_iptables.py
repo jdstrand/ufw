@@ -1107,11 +1107,103 @@ class RaisedErrorsTestCase(BackendIptablesTestBase):
             sys.stderr = old_stderr
 
 
+class RulesFileIOTestCase(BackendIptablesTestBase):
+    """_read_rules()/_write_rules() error paths over crafted rules files"""
+
+    def _append_rules_file(self, lines):
+        f = self.backend.files["rules"]
+        with open(f, "a") as fd:
+            fd.write("\n".join(lines) + "\n")
+
+    def test__read_rules_unreadable(self):
+        """Test _read_rules() - unreadable rules file"""
+        f = self.backend.files["rules"]
+        os.chmod(f, 0)
+        try:
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.backend_iptables.UFWBackendIptables,
+                True,
+            )
+        finally:
+            os.chmod(f, 0o640)
+
+    def test__read_rules_malformed_tuples(self):
+        """Test _read_rules() - malformed tuples are skipped with a warning"""
+        import io
+        import sys
+
+        self._append_rules_file(
+            [
+                "### tuple ### allow tcp",
+                "### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 xx_foo",
+                "### tuple ### allow tcp 99999 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### route:allow any any 0.0.0.0/0 any 0.0.0.0/0 "
+                + "in_eth0!out_eth1",
+            ]
+        )
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        # only the route rule is valid
+        self.assertEqual(len(backend.rules), 1)
+        rule = backend.rules[0]
+        self.assertTrue(rule.forward)
+        self.assertEqual(rule.interface_in, "eth0")
+        self.assertEqual(rule.interface_out, "eth1")
+
+        for search in [
+            "Skipping malformed tuple (bad length): allow tcp",
+            "Skipping malformed tuple (iface)",
+            "Skipping malformed tuple: allow tcp 99999",
+        ]:
+            self.assertTrue(
+                search in err, "Could not find '%s' in:\n%s" % (search, err)
+            )
+
+    def test__write_rules_failures(self):
+        """Test _write_rules() - open/logging/close failures raise"""
+        self.backend.dryrun = False
+
+        with unittest.mock.patch("ufw.util.open_files", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+        self.backend.defaults["loglevel"] = "bogus"
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend._write_rules, False
+        )
+        self.backend.defaults["loglevel"] = "low"
+
+        with unittest.mock.patch("ufw.util.close_files", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+    def test__get_lists_from_formatted(self):
+        """Test _get_lists_from_formatted() - log prefix kept as one arg"""
+        res = self.backend._get_lists_from_formatted(
+            "-A ufw-user-input -p tcp --dport 22 -j ACCEPT_log", "ufw", "input"
+        )
+        found = False
+        for args in res:
+            if "--log-prefix" in args:
+                found = True
+                idx = args.index("--log-prefix")
+                self.assertEqual(args[idx + 1], "[UFW ALLOW] ")
+        self.assertTrue(found, "Could not find '--log-prefix' in %s" % res)
+
+
 def test_main():  # used by runner.py
     tests.unit.support.run_unittest(
         BackendIptablesTestCase,
         StatusAndPolicyTestCase,
         RaisedErrorsTestCase,
+        RulesFileIOTestCase,
     )
 
 
