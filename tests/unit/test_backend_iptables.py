@@ -1198,12 +1198,168 @@ class RulesFileIOTestCase(BackendIptablesTestBase):
         self.assertTrue(found, "Could not find '--log-prefix' in %s" % res)
 
 
+class LifecycleTestCase(BackendIptablesTestBase):
+    """start/stop/reload/logging failure branches (pinned ufw-init and
+    iptables results)"""
+
+    def test_stop_start_firewall_failure_with_rootdir(self):
+        """Test stop/start_firewall() - rootdir args and init failure"""
+        self.backend.dryrun = False
+        # exercise the --rootdir/--datadir argument building; 'false'
+        # ignores them and fails like a broken ufw-init would
+        self.backend.rootdir = "/nonexistent/root"
+        self.backend.datadir = "/nonexistent/data"
+        self.backend.files["init"] = "false"
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.stop_firewall
+        )
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.start_firewall
+        )
+
+    def test_start_firewall_loglevel(self):
+        """Test start_firewall() - missing/invalid loglevel handling"""
+        self.backend.dryrun = False
+        self.backend.files["init"] = "true"
+
+        # missing loglevel is added
+        del self.backend.defaults["loglevel"]
+        self.backend.start_firewall()
+        self.assertEqual(self.backend.defaults["loglevel"], "low")
+
+        del self.backend.defaults["loglevel"]
+        with unittest.mock.patch.object(
+            self.backend, "set_loglevel", side_effect=Exception("boom")
+        ):
+            try:
+                self.backend.start_firewall()
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Could not set LOGLEVEL")
+
+        self.backend.defaults["loglevel"] = "low"
+        with unittest.mock.patch.object(
+            self.backend, "update_logging", side_effect=Exception("boom")
+        ):
+            try:
+                self.backend.start_firewall()
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Could not load logging rules")
+
+    def test__need_reload(self):
+        """Test _need_reload() - limit capabilities and missing chains"""
+        self.backend.dryrun = False
+        self.backend.caps = {"limit": {"4": False, "6": False}}
+        self.assertFalse(self.backend._need_reload(False))
+        self.assertFalse(self.backend._need_reload(True))
+
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "")
+        ):
+            self.assertTrue(self.backend._need_reload(False))
+
+    def test__reload_user_rules_failures(self):
+        """Test _reload_user_rules() - restore failures (v4 and v6)"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd_pipe", return_value=(1, "")
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend._reload_user_rules
+            )
+
+        self.backend.defaults["ipv6"] = "yes"
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd_pipe", side_effect=[(0, ""), (1, "")]
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend._reload_user_rules
+            )
+
+    def test__chain_cmd(self):
+        """Test _chain_cmd() - failures honor fail_ok"""
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "")
+        ):
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                self.backend._chain_cmd,
+                "ufw6-user-input",
+                ["-L", "ufw6-user-input", "-n"],
+            )
+            # fail_ok swallows the failure
+            self.backend._chain_cmd(
+                "ufw-user-input", ["-L", "ufw-user-input", "-n"], fail_ok=True
+            )
+
+    def test_update_logging_failures(self):
+        """Test update_logging() - level and running-firewall failures"""
+        self.backend.dryrun = False
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.update_logging, "bogus"
+        )
+
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=ufw.common.UFWError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "boom")
+
+        self.backend.defaults["enabled"] = "yes"
+        err_msg = "Could not update running firewall"
+
+        # chain consistency check fails
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=ufw.common.UFWError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+        # flushing the logging chains fails
+        def fail_flush(c, args, fail_ok=False):
+            if args[0] == "-F":
+                raise ufw.common.UFWError("boom")
+
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=fail_flush
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+        # adding the logging rules fails
+        def fail_add(c, args, fail_ok=False):
+            if args[0] == "-I":
+                raise ufw.common.UFWError("boom")
+
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=fail_add
+        ):
+            try:
+                self.backend.update_logging("off")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+
 def test_main():  # used by runner.py
     tests.unit.support.run_unittest(
         BackendIptablesTestCase,
         StatusAndPolicyTestCase,
         RaisedErrorsTestCase,
         RulesFileIOTestCase,
+        LifecycleTestCase,
     )
 
 
