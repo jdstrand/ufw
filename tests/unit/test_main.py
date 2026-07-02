@@ -15,9 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import fcntl
 import io
+import os
 import runpy
 import sys
+import tempfile
 import unittest
 import unittest.mock
 import warnings
@@ -32,6 +35,13 @@ class MainTestCase(unittest.TestCase):
     """Drive main_ufw(argv) for the paths the functional suite can't reach
     (it repoints ufw.common.* directly, so it never passes --rootdir or
     --datadir, and it never mocks the frontend out from under main)."""
+
+    def setUp(self):
+        self.tmpdir = None
+
+    def tearDown(self):
+        if self.tmpdir and os.path.isdir(self.tmpdir):
+            tests.unit.support.recursive_rm(self.tmpdir)
 
     def _run_main(self, args):
         """Run main_ufw() in-process, returning (rc, output) with msg() and
@@ -134,6 +144,78 @@ class MainTestCase(unittest.TestCase):
             self.assertRaises(
                 RuntimeError, ufw.main.main_ufw, ["ufw", "--dry-run", "status"]
             )
+
+    def test_lock_taken_before_frontend(self):
+        """Test main_ufw() - the lock is taken before any state is read
+        (UFWFrontend construction parses the rules and config files)"""
+        calls = []
+        ui = self._fake_ui()
+
+        def fake_lock(lockfile, dryrun):
+            calls.append("create_lock")
+            return None
+
+        def fake_frontend(*args, **kwargs):
+            calls.append("frontend")
+            return ui
+
+        # patch create_lock where main uses it (it is imported by name)
+        with unittest.mock.patch.object(ufw.main, "create_lock", side_effect=fake_lock):
+            with unittest.mock.patch.object(
+                ufw.frontend, "UFWFrontend", side_effect=fake_frontend
+            ):
+                (rc, out) = self._run_main(["--dry-run", "status"])
+        self.assertEqual(rc, 0)
+        self.assertEqual(calls, ["create_lock", "frontend"])
+
+    def test_lockfile_not_creatable_runs_unlocked(self):
+        """Test main_ufw() - an uncreatable lockfile (non-root) falls back
+        to unlocked so the frontend's own permission checks report the
+        error"""
+        ui = self._fake_ui()
+        with unittest.mock.patch.object(
+            ufw.main, "create_lock", side_effect=OSError("permission denied")
+        ):
+            with unittest.mock.patch("os.getuid", return_value=1000):
+                with unittest.mock.patch.object(
+                    ufw.frontend, "UFWFrontend", return_value=ui
+                ):
+                    (rc, out) = self._run_main(["--dry-run", "status"])
+        self.assertEqual(rc, 0)
+        ui.do_action.assert_called_once_with("status", "", "", False)
+
+    def test_lockfile_not_creatable_as_root_errors(self):
+        """Test main_ufw() - root refuses to run unlocked when the lockfile
+        cannot be created (unlocked root would reintroduce the race)"""
+        with unittest.mock.patch.object(
+            ufw.main, "create_lock", side_effect=OSError("read-only /run")
+        ):
+            with unittest.mock.patch("os.getuid", return_value=0):
+                with unittest.mock.patch.object(
+                    ufw.frontend, "UFWFrontend", return_value=self._fake_ui()
+                ) as fe:
+                    (rc, out) = self._run_main(["status"])
+        self.assertEqual(rc, 1)
+        self.assertTrue("Couldn't create lock" in out, out)
+        self.assertFalse(fe.called)
+
+    def test_datadir_lockfile_created_and_released(self):
+        """Test main_ufw() - a real lockfile is created under --datadir"""
+        self.tmpdir = tempfile.mkdtemp()
+        lockdir = ufw.util._findpath(ufw.common.state_dir, self.tmpdir)
+        os.makedirs(lockdir)
+        lockfile = os.path.join(lockdir, "ufw.lock")
+
+        ui = self._fake_ui()
+        with unittest.mock.patch.object(ufw.frontend, "UFWFrontend", return_value=ui):
+            # no --dry-run: create_lock() really locks the file
+            (rc, out) = self._run_main(["--datadir=%s" % self.tmpdir, "status"])
+        self.assertEqual(rc, 0)
+        self.assertTrue(os.path.exists(lockfile))
+        # released: an immediate second exclusive lock must not block
+        with open(lockfile, "w") as f:
+            fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            fcntl.lockf(f, fcntl.LOCK_UN)
 
     def test_run_as_script(self):
         """Test main.py - __main__ invokes main_ufw()"""
