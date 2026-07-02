@@ -1181,7 +1181,11 @@ def create_lock(
     lock = None
     if not dryrun:
         lock = open(lockfile, "w")
-        fcntl.lockf(lock, fcntl.LOCK_EX)
+        try:
+            fcntl.lockf(lock, fcntl.LOCK_EX)
+        except Exception:
+            lock.close()
+            raise
     return lock
 
 

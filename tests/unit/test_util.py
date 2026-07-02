@@ -880,6 +880,27 @@ class UtilTestCase(unittest.TestCase):
         finally:
             os.chmod(self.tmpdir, 0o755)
 
+    def test_create_lock_lockf_failure_closes_file(self):
+        """Test create_lock() - a failed lockf doesn't leak the lockfile"""
+        self.tmpdir = tempfile.mkdtemp()
+        lockfile = os.path.join(self.tmpdir, "ufw.lock")
+
+        opened = []
+        real_open = open
+
+        def spy(*args, **kwargs):
+            f = real_open(*args, **kwargs)
+            opened.append(f)
+            return f
+
+        with unittest.mock.patch("builtins.open", side_effect=spy):
+            with unittest.mock.patch("fcntl.lockf", side_effect=OSError("boom")):
+                tests.unit.support.check_for_exception(
+                    self, OSError, ufw.util.create_lock, lockfile, False
+                )
+        self.assertEqual(len(opened), 1)
+        self.assertTrue(opened[0].closed)
+
     def test_cmd(self):
         """Test cmd()"""
         (rc, report) = ufw.util.cmd(["ls", "/"])
