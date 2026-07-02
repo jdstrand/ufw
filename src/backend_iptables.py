@@ -24,6 +24,7 @@ import stat
 import sys
 import time
 import gettext
+from tempfile import mkstemp
 from typing import Optional, List, Any, Set
 
 from ufw.common import UFWError, UFWRule
@@ -1638,14 +1639,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             )
             os.rename(i, fn)
 
-        # Copy files into place
+        # Copy files into place via stage + fsync + rename, so an
+        # interrupted reset cannot leave a truncated rules file
         for i in allfiles:
             old = "%s.%s" % (i, ext)
-            shutil.copy(
-                os.path.join(share_dir, "iptables", os.path.basename(i)),
-                os.path.dirname(i),
+            src = os.path.join(share_dir, "iptables", os.path.basename(i))
+            (tmp, tmpname) = mkstemp(
+                prefix=".%s." % (os.path.basename(i)),
+                dir=os.path.dirname(i),
             )
-            shutil.copymode(old, i)
+            try:
+                with open(src) as origfd:
+                    ufw.util.write_to_file(tmp, origfd.read())
+                shutil.copymode(old, tmpname)
+            except Exception:
+                os.close(tmp)
+                os.unlink(tmpname)
+                raise
+            ufw.util.fsync_rename(tmp, tmpname, i)
 
             try:
                 statinfo = os.stat(i)

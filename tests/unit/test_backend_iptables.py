@@ -1721,6 +1721,44 @@ class ResetTestCase(BackendIptablesTestBase):
         self.assertTrue("is world writable" in res, res)
         self.assertTrue("is world readable" in res, res)
 
+    def test_reset_installs_pristine_files_atomically(self):
+        """Test reset() - pristine files staged + renamed in"""
+        f = self.backend.files["rules"]
+        os.chmod(f, 0o640)
+        with open(f, "w") as fd:
+            fd.write("not pristine\n")
+
+        res = self.backend.reset()
+        self.assertTrue("Backing up" in res, res)
+
+        # pristine content is in place, keeping the pre-reset mode
+        with open(f) as fd:
+            content = fd.read()
+        self.assertTrue("COMMIT" in content, content)
+        self.assertFalse("not pristine" in content, content)
+        self.assertEqual(os.stat(f).st_mode & 0o7777, 0o640)
+
+        # the old content lives on in the timestamped backup
+        d = os.path.dirname(f)
+        backups = [
+            fn for fn in os.listdir(d) if fn.startswith(os.path.basename(f) + ".")
+        ]
+        self.assertEqual(len(backups), 1, backups)
+        with open(os.path.join(d, backups[0])) as fd:
+            self.assertEqual(fd.read(), "not pristine\n")
+
+        # and no staging tempfile is left behind
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
+    def test_reset_staging_failure_cleans_up(self):
+        """Test reset() - a failed staging copy leaves no tempfile behind"""
+        with unittest.mock.patch("shutil.copymode", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend.reset)
+        d = os.path.dirname(self.backend.files["rules"])
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
     def test_reset_stat_failure(self):
         """Test reset() - unstat-able copied file warns and continues"""
         import io

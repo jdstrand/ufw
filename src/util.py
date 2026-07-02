@@ -275,6 +275,34 @@ def write_to_file(fd: int, out: str) -> None:
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
+def fsync_rename(tmp: int, tmpname: str, dst: str) -> None:
+    """fsync the tempfile and rename it over dst. The caller has written the
+    content and set the metadata; the tempfile must be in dst's directory
+    and the fd is consumed. On failure the tempfile is removed and dst is
+    left untouched."""
+    try:
+        try:
+            os.fsync(tmp)
+        finally:
+            os.close(tmp)
+        os.rename(tmpname, dst)
+    except Exception:
+        os.unlink(tmpname)
+        raise
+
+    # Make the rename itself durable across a power loss. Best effort: the
+    # replacement succeeded above, so an unopenable/unsyncable directory must
+    # not fail it now.
+    try:
+        dirfd = os.open(os.path.dirname(os.path.abspath(dst)), os.O_RDONLY)
+        try:
+            os.fsync(dirfd)
+        finally:
+            os.close(dirfd)
+    except OSError:
+        pass
+
+
 def close_files(fns: Dict[str, Any], update: bool = True) -> None:
     """Closes the specified files (as returned by open_files) and, when
     updating, atomically replaces the original with the temporary file
@@ -305,27 +333,7 @@ def close_files(fns: Dict[str, Any], update: bool = True) -> None:
         os.unlink(fns["tmpname"])
         raise
 
-    try:
-        try:
-            os.fsync(fns["tmp"])
-        finally:
-            os.close(fns["tmp"])
-        os.rename(fns["tmpname"], fns["origname"])
-    except Exception:
-        os.unlink(fns["tmpname"])
-        raise
-
-    # Make the rename itself durable across a power loss. Best effort: the
-    # update succeeded above, so an unopenable/unsyncable directory must not
-    # fail it now.
-    try:
-        dirfd = os.open(os.path.dirname(fns["origname"]), os.O_RDONLY)
-        try:
-            os.fsync(dirfd)
-        finally:
-            os.close(dirfd)
-    except OSError:
-        pass
+    fsync_rename(fns["tmp"], fns["tmpname"], fns["origname"])
 
 
 def cmd(command: List[str]) -> List[Union[int, str]]:
