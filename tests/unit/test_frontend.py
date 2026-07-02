@@ -423,6 +423,30 @@ class SetRuleErrorPathsTestCase(FrontendTestBase):
         res = ui.set_rule(pr.data["rule"], "both")
         self.assertTrue(res != "", "Output is empty")
 
+    def test_set_rule_app_remove_both_v6_twin(self):
+        """Test set_rule() - remove 'both' where v6 matches v4 modulo v6"""
+        # rules from the system only differ by v6 when crafted (template
+        # rules always differ in dst: 0.0.0.0/0 vs ::/0), so pin the lookup
+        x = ufw.common.UFWRule("allow", "tcp", "80")
+        x.dapp = "WWW"
+        y = x.dup_rule()
+        # flip only the flag (set_v6() would normalize dst/src to ::/0 and
+        # the twins would no longer match modulo v6)
+        y.v6 = True
+        with unittest.mock.patch.object(
+            self.ui.backend,
+            "get_app_rules_from_system",
+            side_effect=[[x], [y]],
+        ):
+            # only the v6-twin matching is under test; stub the backend
+            # application of the resulting rules
+            with unittest.mock.patch.object(
+                self.ui.backend, "set_rule", return_value="ok"
+            ):
+                pr = ufw.frontend.parse_command(["ufw", "delete", "allow", "WWW"])
+                res = self.ui.set_rule(pr.data["rule"], "both")
+        self.assertTrue(res != "", "Output is empty")
+
     def test_set_rule_app_remove_nonexistent(self):
         """Test set_rule() - remove nonexistent app rule (v4 and v6)"""
         ui = self._init_ui(dryrun=False)

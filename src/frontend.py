@@ -445,7 +445,10 @@ class UFWFrontend:
                         tmprules6 = self.backend.get_app_rules_from_system(rule, True)
                         # Only add rules that are different by more than v6 (we
                         # will handle 'ip_version == both' specially, below).
-                        for x in tmprules:
+                        # Iterate over a snapshot: the loop appends matches to
+                        # tmprules, and an appended rule matches itself, so
+                        # iterating the live list would never terminate.
+                        for x in list(tmprules):
                             for y in tmprules6:
                                 prev6 = y.v6
                                 y.v6 = False
