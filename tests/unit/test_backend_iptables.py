@@ -1793,12 +1793,26 @@ class ResetTestCase(BackendIptablesTestBase):
         self.assertEqual(leaks, [])
 
     def test_reset_staging_failure_cleans_up(self):
-        """Test reset() - a failed staging copy leaves no tempfile behind"""
+        """Test reset() - a failed staging copy leaves no tempfile behind
+        and every live rules file still in place (hard-link backups)"""
+        f = self.backend.files["rules"]
+        with open(f, "w") as fd:
+            fd.write("pre-reset content\n")
+
         with unittest.mock.patch("shutil.copymode", side_effect=OSError("boom")):
             self.assertRaises(OSError, self.backend.reset)
-        d = os.path.dirname(self.backend.files["rules"])
+        d = os.path.dirname(f)
         leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
         self.assertEqual(leaks, [])
+
+        # an interrupted reset must not leave the live path missing
+        for i in self.backend.files:
+            if self.backend.files[i].endswith(".rules"):
+                self.assertTrue(
+                    os.path.exists(self.backend.files[i]), self.backend.files[i]
+                )
+        with open(f) as fd:
+            self.assertEqual(fd.read(), "pre-reset content\n")
 
     def test_reset_stat_failure(self):
         """Test reset() - unstat-able copied file warns and continues"""

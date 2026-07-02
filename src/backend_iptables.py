@@ -1653,13 +1653,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = tr("'%s' already exists. Aborting") % (fn)
                 raise UFWError(err_msg)
 
-        # Move the old to the new
+        # Back up via hard links (not renames) so the live paths stay in
+        # place until the pristine copies are renamed over them below: a
+        # crash between the two loops cannot leave a rules file missing
         for i in allfiles:
             fn = "%s.%s" % (i, ext)
             res += tr("Backing up '%(old)s' to '%(new)s'\n") % (
                 {"old": os.path.basename(i), "new": fn}
             )
-            os.rename(i, fn)
+            os.link(i, fn)
 
         # Copy files into place via stage + fsync + rename, so an
         # interrupted reset cannot leave a truncated rules file
