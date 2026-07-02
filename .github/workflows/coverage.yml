@@ -30,3 +30,14 @@ jobs:
     - name: Run coverage
       run: |
         make coverage && make coverage-report
+
+    # Publish, don't gate: the per-module table lands on the run's summary
+    # page so every run's coverage is visible at a glance (the full
+    # per-line report is in the step log above).
+    - name: Publish coverage summary
+      if: always()
+      run: |
+        if [ -f .coverage ]; then
+          echo "## Coverage" >> "$GITHUB_STEP_SUMMARY"
+          python3 -m coverage report --format=markdown --omit="tests/*" >> "$GITHUB_STEP_SUMMARY"
+        fi

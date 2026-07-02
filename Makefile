@@ -221,8 +221,11 @@ coverage:
 	$(PYTHON) -m coverage run -p ./tests/functional/runner.py
 	$(PYTHON) -m coverage combine
 
+# --fail-under is a safety net against coverage COLLAPSE (a suite silently
+# not running, an import failure skipping modules). It is deliberately far
+# below the achieved coverage -- do not raise it to track normal fluctuation.
 coverage-report:
-	$(PYTHON) -m coverage report --show-missing --omit="tests/*"
+	$(PYTHON) -m coverage report --show-missing --omit="tests/*" --fail-under=80
 
 man-check:
 	$(shell mkdir -p $(TMPDIR) 2>/dev/null)
