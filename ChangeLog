@@ -41,8 +41,11 @@ ufw (0.36.3) UNRELEASED; urgency=medium
       (missing COMMIT line) and refuse to rewrite it, since that would
       permanently discard the rules lost by the truncation
     - src/backend_iptables.py: an interrupted 'ufw reset' can no
-      longer leave a truncated rules file (reset has always replaced
-      files outright)
+      longer leave a rules file truncated or missing (reset has
+      always replaced files outright)
+    - src/util.py, src/backend.py, src/backend_iptables.py: discard the
+      staging tempfile when an update fails partway
+    - src/util.py: close the lockfile when taking the lock fails
     - tests/e2e/test_concurrency.py: regression tests (torn reads during
       churn, SIGKILL mid-update, concurrent writers)
 
