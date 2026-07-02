@@ -24,7 +24,7 @@ import stat
 import sys
 import time
 import gettext
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Set
 
 from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
@@ -750,6 +750,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.use_ipv6():
             rfns.append(self.files["rules6"])
 
+        # A complete rules file ends with iptables-restore's 'COMMIT' line;
+        # a file without one was cut short and the rules after the cut are
+        # gone. Track such files so _write_rules() can refuse to make the
+        # loss permanent. Unlike iptables-restore input in general, these
+        # files are single-table by construction (one *filter, COMMIT
+        # last), so 'has a COMMIT line' means 'not a truncated prefix'; a
+        # hand-added extra table is treated as complete since rewrites drop
+        # unmanaged content anyway.
+        self.rules_files_truncated: Set[str] = set()
+
         for f in rfns:
             try:
                 orig = ufw.util.open_file_read(f)
@@ -757,10 +767,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = tr("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
 
+            complete = False
             pat_tuple = re.compile(r"^### tuple ###\s*")
             pat_iface_in = re.compile(r"in_\w+")
             pat_iface_out = re.compile(r"out_\w+")
             for orig_line in orig:
+                if orig_line.strip() == "COMMIT":
+                    complete = True
                 line = orig_line
 
                 comment = ""
@@ -862,11 +875,43 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             orig.close()
 
+            if not complete:
+                self._flag_truncated(f)
+
+        # user6.rules is parsed only when IPv6 is enabled, but
+        # update_logging() and update_app_rule() rewrite it regardless, so
+        # its completeness matters regardless
+        if self.files["rules6"] not in rfns:
+            f = self.files["rules6"]
+            try:
+                orig = ufw.util.open_file_read(f)
+            except Exception:
+                err_msg = tr("Couldn't open '%s' for reading") % (f)
+                raise UFWError(err_msg)
+            complete = False
+            for line in orig:
+                if line.strip() == "COMMIT":
+                    complete = True
+            orig.close()
+            if not complete:
+                self._flag_truncated(f)
+
+    def _flag_truncated(self, fn: str) -> None:
+        """Record fn as truncated so _write_rules() refuses to rewrite it"""
+        self.rules_files_truncated.add(fn)
+        warn(tr("'%s' looks truncated (missing COMMIT)") % (fn))
+
     def _write_rules(self, v6: bool = False) -> None:
         """Write out new rules to file to user chain file"""
         rules_file = self.files["rules"]
         if v6:
             rules_file = self.files["rules6"]
+
+        # rewriting a truncated file from the partial in-memory list would
+        # make its rule loss permanent
+        if rules_file in self.rules_files_truncated:
+            err_msg = tr("Refusing to rewrite truncated '%s'") % (rules_file)
+            raise UFWError(err_msg)
 
         # Perform this here so we can present a nice error to the user rather
         # than a traceback

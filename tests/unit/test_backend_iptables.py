@@ -1168,6 +1168,128 @@ class RulesFileIOTestCase(BackendIptablesTestBase):
                 search in err, "Could not find '%s' in:\n%s" % (search, err)
             )
 
+    def _truncate_rules_file(self):
+        """Cut user.rules short: a parseable prefix, a rule cut mid-comment,
+        and no COMMIT trailer."""
+        f = self.backend.files["rules"]
+        with open(f) as fd:
+            content = fd.read()
+        with open(f, "w") as fd:
+            fd.write(content[: content.index("COMMIT")])
+            fd.write("### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in\n")
+            # cut mid-comment: odd-length hex, no trailing newline
+            fd.write(
+                "### tuple ### reject any any 0.0.0.0/0 any 10.0.9.104 in"
+                " comment=627920466169"
+            )
+
+    def test__read_rules_truncated_file_warns(self):
+        """Test _read_rules() - truncated file warns, prefix still loads"""
+        import io
+        import sys
+
+        self._truncate_rules_file()
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        self.assertTrue(
+            "looks truncated" in err, "Could not find 'looks truncated' in:\n%s" % err
+        )
+        # the rules before (and at) the cut still load ...
+        self.assertEqual(len(backend.rules), 2)
+        # ... and only the cut file is flagged
+        self.assertEqual(backend.rules_files_truncated, set([backend.files["rules"]]))
+
+    def test__write_rules_truncated_file_refused(self):
+        """Test _write_rules() - refuses to rewrite a truncated file"""
+        import io
+        import sys
+
+        self._truncate_rules_file()
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+        finally:
+            sys.stderr = old_stderr
+
+        try:
+            backend._write_rules(False)
+        except ufw.common.UFWError as e:
+            self.assertTrue(
+                "Refusing to rewrite truncated" in e.value,
+                "Could not find 'Refusing to rewrite truncated' in:\n%s" % e.value,
+            )
+        else:
+            self.fail("UFWError not raised")
+
+        # user6.rules was not damaged, so v6 writes still work (dryrun)
+        ufw.util.msg_output = self.msg_output = StringIO()
+        backend._write_rules(True)
+        self.assertTrue("*filter" in self.msg_output.getvalue())
+
+    def _set_ipv6(self, value):
+        """Flip IPV6 in the defaults file (a fresh backend re-reads it)"""
+        f = self.backend.files["defaults"]
+        with open(f) as fd:
+            content = fd.read()
+        with open(f, "w") as fd:
+            fd.write(re.sub(r"IPV6=\w+", "IPV6=%s" % (value), content))
+
+    def test__read_rules_truncated_v6_flagged_when_ipv6_off(self):
+        """Test _read_rules() - user6.rules is scanned even with IPv6 off
+        (update_logging()/update_app_rule() rewrite it regardless)"""
+        import io
+        import sys
+
+        self._set_ipv6("no")
+        f6 = self.backend.files["rules6"]
+        with open(f6) as fd:
+            content = fd.read()
+        with open(f6, "w") as fd:
+            fd.write(content[: content.index("COMMIT")])
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        self.assertFalse(backend.use_ipv6())
+        self.assertEqual(backend.rules_files_truncated, set([f6]))
+        self.assertTrue(
+            "looks truncated" in err, "Could not find 'looks truncated' in:\n%s" % err
+        )
+        # ... and the flagged file is still refused
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, backend._write_rules, True
+        )
+
+    def test__read_rules_unreadable_v6_when_ipv6_off(self):
+        """Test _read_rules() - unreadable user6.rules errors with IPv6 off
+        (its completeness cannot be verified)"""
+        self._set_ipv6("no")
+        f6 = self.backend.files["rules6"]
+        os.chmod(f6, 0)
+        try:
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.backend_iptables.UFWBackendIptables,
+                True,
+            )
+        finally:
+            os.chmod(f6, 0o640)
+
     def test__write_rules_failures(self):
         """Test _write_rules() - open/logging/close failures raise"""
         self.backend.dryrun = False
