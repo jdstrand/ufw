@@ -1,0 +1,405 @@
+## 0: app list (rc=0)
+O Available applications:
+O   0verkill
+O   A aZ9 _-.+
+O   AIM
+O   Apache
+O   Apache Full
+O   Apache Secure
+O   Bind9
+O   Bonjour
+O   CIFS
+O   Custom Web App
+O   Custom Web App2
+O   DNS
+O   Deluge
+O   Dovecot IMAP
+O   Dovecot POP3
+O   Dovecot Secure IMAP
+O   Dovecot Secure POP3
+O   IMAP
+O   IMAPS
+O   IPP
+O   KTorrent
+O   Kerberos Admin
+O   Kerberos Full
+O   Kerberos KDC
+O   Kerberos Password
+O   LDAP
+O   LDAPS
+O   LPD
+O   MSN
+O   MSN SSL
+O   Mail submission
+O   Multi TCP
+O   Multi UDP
+O   NFS
+O   No Protocol
+O   OpenNTPD
+O   POP3
+O   POP3S
+O   PeopleNearby
+O   SMTP
+O   SSH
+O   Samba
+O   Socks
+O   Telnet
+O   Transmission
+O   Transparent Proxy
+O   VNC
+O   WWW
+O   WWW Cache
+O   WWW Full
+O   WWW Secure
+O   XMPP
+O   Yahoo
+O   a aZ9 _-.+
+O   qBittorrent
+O   svnserve
+## 1: help (rc=1)
+## 2: allow 12345 (rc=1)
+## 3: allow 12345 (rc=1)
++ ### tuple ### allow any 12345 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 12345 -j ACCEPT
++ -A ufw-user-input -p udp --dport 12345 -j ACCEPT
++ 
+## 4: default deny (rc=1)
+## 5: logging medium (rc=1)
+## 6: --dry-run logging low (rc=0)
+O Logging enabled
+## 7: allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
++6 ### tuple ### allow any 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
++6 
+## 8: delete allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+-6 ### tuple ### allow any 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
+-6 
+## 9: --dry-run logging on (rc=0)
+O Logging enabled
+## 10: allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
++6 ### tuple ### allow any 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
++6 
+## 11: delete allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+-6 ### tuple ### allow any 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
+-6 
+## 12: --dry-run logging medium (rc=0)
+O Logging enabled
+## 13: allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
++ -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++ -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 ### tuple ### allow any 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
++6 
++6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+## 14: delete allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+-6 ### tuple ### allow any 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
+-6 
+## 15: --dry-run logging high (rc=0)
+O Logging enabled
+## 16: allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
+- -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
++ -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
++ -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 ### tuple ### allow any 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
++6 
+-6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
++6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
++6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+## 17: delete allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+-6 ### tuple ### allow any 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
+-6 
+## 18: --dry-run logging full (rc=0)
+O Logging enabled
+## 19: allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
++6 ### tuple ### allow any 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
++6 
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
+## 20: delete allow 13 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+-6 ### tuple ### allow any 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 13 -j ACCEPT
+-6 
+## 21: logging off (rc=0)
+O Logging disabled
+- -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
+- -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
+- -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-user-logging-input -j RETURN
++ -I ufw-user-logging-output -j RETURN
++ -I ufw-user-logging-forward -j RETURN
+- -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
+-6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
+-6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-user-logging-input -j RETURN
++6 -I ufw6-user-logging-output -j RETURN
++6 -I ufw6-user-logging-forward -j RETURN
+## 22: logging low (rc=0)
+O Logging enabled
+- -I ufw-user-logging-input -j RETURN
+- -I ufw-user-logging-output -j RETURN
+- -I ufw-user-logging-forward -j RETURN
++ -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++ -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++ -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++ -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
++ -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-6 -I ufw6-user-logging-input -j RETURN
+-6 -I ufw6-user-logging-output -j RETURN
+-6 -I ufw6-user-logging-forward -j RETURN
++6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+## 23: logging on (rc=0)
+O Logging enabled
+## 24: logging medium (rc=0)
+O Logging enabled
++ -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++ -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+## 25: logging high (rc=0)
+O Logging enabled
+- -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+- -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++ -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
++ -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
++ -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10
++6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
++6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
++6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
++6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+## 26: logging full (rc=0)
+O Logging enabled
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++ -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
++6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
+## 27: logging off (rc=0)
+O Logging disabled
+- -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
+- -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
+- -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
+- -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
+- -I ufw-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
+- -I ufw-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
++ -I ufw-user-logging-input -j RETURN
++ -I ufw-user-logging-output -j RETURN
++ -I ufw-user-logging-forward -j RETURN
+- -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-6 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
+-6 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-logging-deny -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
+-6 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
+-6 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
+-6 -I ufw6-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
+-6 -I ufw6-before-logging-output -j LOG --log-prefix "[UFW AUDIT] "
+-6 -I ufw6-before-logging-forward -j LOG --log-prefix "[UFW AUDIT] "
++6 -I ufw6-user-logging-input -j RETURN
++6 -I ufw6-user-logging-output -j RETURN
++6 -I ufw6-user-logging-forward -j RETURN
+## 28: --dry-run allow in on iaslab (rc=0)
+R ### tuple ### allow any 12345 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 12345 -j ACCEPT
+R -A ufw-user-input -p udp --dport 12345 -j ACCEPT
+R ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_iaslab
+R -A ufw-user-input -i iaslab -j ACCEPT
+R ### tuple ### allow any any ::/0 any ::/0 in_iaslab
+R -A ufw6-user-input -i iaslab -j ACCEPT
+O Rules updated
+O Rules updated (v6)
+## 29: --dry-run (rc=1)
+O ERROR: not enough args
+O 
+O <<command help>>
+O 
+## 30: --dry-run status (rc=1)
+O ERROR: Invalid policy 'accept_no_track' for 'input'

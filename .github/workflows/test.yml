@@ -58,3 +58,57 @@ jobs:
     - name: Run tests
       run: |
         make test
+
+  # Snap config-merge upgrade test (snap-files/bin/srv). Shell-only -- no
+  # Python deps and no real firewall -- so it runs as its own lightweight job.
+  snap-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955  # v4.3.0
+
+    - name: Run snap upgrade test
+      run: |
+        make snap-test
+
+  # Legacy shell test harness (archived under tests.old/), kept running as a
+  # transitional safety net until the functest/e2e suites are fully trusted.
+  # Non-root; needs an iptables binary (present on the runner).
+  old-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955  # v4.3.0
+
+    - name: Set up Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt .
+
+    - name: Run legacy shell harness
+      run: |
+        make old-test
+
+  # End-to-end tests against the REAL iptables backend. The runner is a
+  # disposable VM, so it's an acceptable target; UFW_E2E_SKIP_FLUSH=1 skips the
+  # two tests that flush the whole firewall (they'd clobber the runner's other
+  # rules, e.g. Docker's). Root via sudo; its own job so it stays isolated.
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955  # v4.3.0
+
+    # Uses the runner's preinstalled python3, make and iptables. e2e installs
+    # ufw into a sandbox via 'make install' (a plain file copy -- no pip or
+    # setuptools) and drives that binary, and ufw's runtime is stdlib-only, so
+    # no setup-python or dependency install is needed. Python-version coverage
+    # is the 'test' matrix's job; this one exercises the real firewall.
+    - name: Run e2e (skipping whole-firewall-flushing tests)
+      run: |
+        sudo UFW_E2E=1 UFW_E2E_SKIP_FLUSH=1 make e2e

@@ -1,0 +1,2584 @@
+## 0: --dry-run allow 53 (rc=0)
+R ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT
+O Rules updated
+## 1: --dry-run allow 25/tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+O Rules updated
+## 2: --dry-run allow smtp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+O Rules updated
+## 3: --dry-run deny proto tcp to any port 80 (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 80 -j DROP
+O Rules updated
+## 4: --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25 (rc=0)
+R ### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8 in
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+O Rules updated
+## 5: --dry-run deny 80/tcp (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 80 -j DROP
+O Rules updated
+## 6: --dry-run delete deny 80/tcp (rc=0)
+O Rules updated
+## 7: --dry-run limit daytime/tcp (rc=0)
+R ### tuple ### limit tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
+O Rules updated
+## 8: --dry-run deny 53 (rc=0)
+R ### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 53 -j DROP
+R -A ufw-user-input -p udp --dport 53 -j DROP
+O Rules updated
+## 9: --dry-run allow 80/tcp (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 80 -j ACCEPT
+O Rules updated
+## 10: --dry-run allow from 10.0.0.0/8 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
+R -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
+O Rules updated
+## 11: --dry-run allow from 172.16.0.0/12 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12 in
+R -A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
+O Rules updated
+## 12: --dry-run allow from 192.168.0.0/16 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16 in
+R -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+O Rules updated
+## 13: --dry-run deny proto udp from 1.2.3.4 to any port 514 (rc=0)
+R ### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4 in
+R -A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
+O Rules updated
+## 14: --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469 (rc=0)
+R ### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5 in
+R -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+O Rules updated
+## 15: --dry-run allow 1 (rc=0)
+R ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 1 -j ACCEPT
+R -A ufw-user-input -p udp --dport 1 -j ACCEPT
+O Rules updated
+## 16: --dry-run allow 9/udp (rc=0)
+R ### tuple ### allow udp 9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 9 -j ACCEPT
+O Rules updated
+## 17: --dry-run allow 25 (rc=0)
+R ### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+R -A ufw-user-input -p udp --dport 25 -j ACCEPT
+O Rules updated
+## 18: --dry-run allow 25/tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+O Rules updated
+## 19: --dry-run allow 25/udp (rc=0)
+R ### tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 25 -j ACCEPT
+O Rules updated
+## 20: --dry-run delete allow 25 (rc=0)
+O Rules updated
+## 21: --dry-run delete allow 25/tcp (rc=0)
+O Rules updated
+## 22: --dry-run delete allow 25/udp (rc=0)
+O Rules updated
+## 23: --dry-run allow smtp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+O Rules updated
+## 24: --dry-run delete allow smtp (rc=0)
+O Rules updated
+## 25: --dry-run allow smtp/tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 -j ACCEPT
+O Rules updated
+## 26: --dry-run delete allow smtp/tcp (rc=0)
+O Rules updated
+## 27: --dry-run allow tftp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 -j ACCEPT
+O Rules updated
+## 28: --dry-run delete allow tftp (rc=0)
+O Rules updated
+## 29: --dry-run allow tftp/udp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 -j ACCEPT
+O Rules updated
+## 30: --dry-run delete allow tftp/udp (rc=0)
+O Rules updated
+## 31: --dry-run allow daytime (rc=0)
+R ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+R -A ufw-user-input -p udp --dport 13 -j ACCEPT
+O Rules updated
+## 32: --dry-run delete allow daytime (rc=0)
+O Rules updated
+## 33: --dry-run allow daytime/tcp (rc=0)
+R ### tuple ### allow tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+O Rules updated
+## 34: --dry-run delete allow daytime/tcp (rc=0)
+O Rules updated
+## 35: --dry-run allow daytime/udp (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 13 -j ACCEPT
+O Rules updated
+## 36: --dry-run delete allow daytime/udp (rc=0)
+O Rules updated
+## 37: --dry-run allow from 192.168.0.1 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1 in
+R -A ufw-user-input -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 38: --dry-run delete allow from 192.168.0.1 (rc=0)
+O Rules updated
+## 39: --dry-run allow to 10.0.0.1 (rc=0)
+R ### tuple ### allow any any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -d 10.0.0.1 -j ACCEPT
+O Rules updated
+## 40: --dry-run delete allow to 10.0.0.1 (rc=0)
+O Rules updated
+## 41: --dry-run allow to 10.0.0.1 from 192.168.0.1 (rc=0)
+R ### tuple ### allow any any 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 42: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 (rc=0)
+O Rules updated
+## 43: --dry-run allow from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 44: --dry-run delete allow from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 45: --dry-run allow to 10.0.0.1 port 25 (rc=0)
+R ### tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+O Rules updated
+## 46: --dry-run delete allow to 10.0.0.1 port 25 (rc=0)
+O Rules updated
+## 47: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### allow any any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 48: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 49: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+R ### tuple ### allow any 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 50: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+O Rules updated
+## 51: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### allow any 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 52: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 53: --dry-run allow from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 54: --dry-run delete allow from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 55: --dry-run allow to 10.0.0.1 port 25 proto udp (rc=0)
+R ### tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+O Rules updated
+## 56: --dry-run delete allow to 10.0.0.1 port 25 proto udp (rc=0)
+O Rules updated
+## 57: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### allow udp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 58: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 59: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+R ### tuple ### allow udp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 60: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+O Rules updated
+## 61: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### allow udp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 62: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 63: --dry-run allow from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 64: --dry-run delete allow from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 65: --dry-run allow to 10.0.0.1 port 25 proto tcp (rc=0)
+R ### tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+O Rules updated
+## 66: --dry-run delete allow to 10.0.0.1 port 25 proto tcp (rc=0)
+O Rules updated
+## 67: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### allow tcp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 68: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 69: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+R ### tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 70: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+O Rules updated
+## 71: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+O Rules updated
+## 72: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 73: --dry-run deny from 192.168.0.1 (rc=0)
+R ### tuple ### deny any any 0.0.0.0/0 any 192.168.0.1 in
+R -A ufw-user-input -s 192.168.0.1 -j DROP
+O Rules updated
+## 74: --dry-run delete deny from 192.168.0.1 (rc=0)
+O Rules updated
+## 75: --dry-run deny to 10.0.0.1 (rc=0)
+R ### tuple ### deny any any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -d 10.0.0.1 -j DROP
+O Rules updated
+## 76: --dry-run delete deny to 10.0.0.1 (rc=0)
+O Rules updated
+## 77: --dry-run deny to 10.0.0.1 from 192.168.0.1 (rc=0)
+R ### tuple ### deny any any 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j DROP
+O Rules updated
+## 78: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 (rc=0)
+O Rules updated
+## 79: --dry-run deny from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### deny any any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 80: --dry-run delete deny from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 81: --dry-run deny to 10.0.0.1 port 25 (rc=0)
+R ### tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
+O Rules updated
+## 82: --dry-run delete deny to 10.0.0.1 port 25 (rc=0)
+O Rules updated
+## 83: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### deny any any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 84: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 85: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+R ### tuple ### deny any 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+O Rules updated
+## 86: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+O Rules updated
+## 87: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### deny any 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 88: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 89: --dry-run deny from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 90: --dry-run delete deny from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 91: --dry-run deny to 10.0.0.1 port 25 proto udp (rc=0)
+R ### tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
+O Rules updated
+## 92: --dry-run delete deny to 10.0.0.1 port 25 proto udp (rc=0)
+O Rules updated
+## 93: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### deny udp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 94: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 95: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+R ### tuple ### deny udp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+O Rules updated
+## 96: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+O Rules updated
+## 97: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### deny udp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 98: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 99: --dry-run deny from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 100: --dry-run delete deny from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 101: --dry-run deny to 10.0.0.1 port 25 proto tcp (rc=0)
+R ### tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
+O Rules updated
+## 102: --dry-run delete deny to 10.0.0.1 port 25 proto tcp (rc=0)
+O Rules updated
+## 103: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### deny tcp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 104: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 105: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+R ### tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+O Rules updated
+## 106: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+O Rules updated
+## 107: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+O Rules updated
+## 108: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 109: --dry-run limit from 192.168.0.1 (rc=0)
+R ### tuple ### limit any any 0.0.0.0/0 any 192.168.0.1 in
+R -A ufw-user-input -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -s 192.168.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 110: --dry-run delete limit from 192.168.0.1 (rc=0)
+O Rules updated
+## 111: --dry-run limit to 10.0.0.1 (rc=0)
+R ### tuple ### limit any any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -d 10.0.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 112: --dry-run delete limit to 10.0.0.1 (rc=0)
+O Rules updated
+## 113: --dry-run limit to 10.0.0.1 from 192.168.0.1 (rc=0)
+R ### tuple ### limit any any 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 114: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 (rc=0)
+O Rules updated
+## 115: --dry-run limit from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### limit any any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 116: --dry-run delete limit from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 117: --dry-run limit to 10.0.0.1 port 25 (rc=0)
+R ### tuple ### limit any 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ufw-user-limit-accept
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ufw-user-limit-accept
+O Rules updated
+## 118: --dry-run delete limit to 10.0.0.1 port 25 (rc=0)
+O Rules updated
+## 119: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### limit any any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 120: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 121: --dry-run limit to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+R ### tuple ### limit any 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-limit-accept
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 122: --dry-run delete limit to 10.0.0.1 port 25 from 192.168.0.1 (rc=0)
+O Rules updated
+## 123: --dry-run limit to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### limit any 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 124: --dry-run delete limit to 10.0.0.1 port 25 from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 125: --dry-run limit from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 126: --dry-run delete limit from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 127: --dry-run limit to 10.0.0.1 port 25 proto udp (rc=0)
+R ### tuple ### limit udp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ufw-user-limit-accept
+O Rules updated
+## 128: --dry-run delete limit to 10.0.0.1 port 25 proto udp (rc=0)
+O Rules updated
+## 129: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+R ### tuple ### limit udp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 130: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto udp (rc=0)
+O Rules updated
+## 131: --dry-run limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+R ### tuple ### limit udp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 132: --dry-run delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 (rc=0)
+O Rules updated
+## 133: --dry-run limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### limit udp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 134: --dry-run delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 135: --dry-run limit from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 136: --dry-run delete limit from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 137: --dry-run limit to 10.0.0.1 port 25 proto tcp (rc=0)
+R ### tuple ### limit tcp 25 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ufw-user-limit-accept
+O Rules updated
+## 138: --dry-run delete limit to 10.0.0.1 port 25 proto tcp (rc=0)
+O Rules updated
+## 139: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+R ### tuple ### limit tcp any 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 140: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+## 141: --dry-run limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+R ### tuple ### limit tcp 25 10.0.0.1 any 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-limit-accept
+O Rules updated
+## 142: --dry-run delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 (rc=0)
+O Rules updated
+## 143: --dry-run limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+R ### tuple ### limit tcp 25 10.0.0.1 80 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
+O Rules updated
+## 144: --dry-run delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80 (rc=0)
+O Rules updated
+## 145: --dry-run allow to any port smtp from any port smtp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 25 -j ACCEPT
+O Rules updated
+## 146: --dry-run delete allow to any port smtp from any port smtp (rc=0)
+O Rules updated
+## 147: --dry-run allow to any port smtp from any port daytime (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
+O Rules updated
+## 148: --dry-run delete allow to any port smtp from any port daytime (rc=0)
+O Rules updated
+## 149: --dry-run allow to any port daytime from any port smtp (rc=0)
+R ### tuple ### allow tcp 13 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
+O Rules updated
+## 150: --dry-run delete allow to any port daytime from any port smtp (rc=0)
+O Rules updated
+## 151: --dry-run allow to any port smtp from any port 23 (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 23 -j ACCEPT
+O Rules updated
+## 152: --dry-run delete allow to any port smtp from any port 23 (rc=0)
+O Rules updated
+## 153: --dry-run allow to any port 23 from any port smtp (rc=0)
+R ### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 23 --sport 25 -j ACCEPT
+O Rules updated
+## 154: --dry-run delete allow to any port 23 from any port smtp (rc=0)
+O Rules updated
+## 155: --dry-run allow to any port tftp from any port tftp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 69 -j ACCEPT
+O Rules updated
+## 156: --dry-run delete allow to any port tftp from any port tftp (rc=0)
+O Rules updated
+## 157: --dry-run allow to any port tftp from any port daytime (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 13 -j ACCEPT
+O Rules updated
+## 158: --dry-run delete allow to any port tftp from any port daytime (rc=0)
+O Rules updated
+## 159: --dry-run allow to any port daytime from any port tftp (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 13 --sport 69 -j ACCEPT
+O Rules updated
+## 160: --dry-run delete allow to any port daytime from any port tftp (rc=0)
+O Rules updated
+## 161: --dry-run allow to any port tftp from any port 23 (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 23 -j ACCEPT
+O Rules updated
+## 162: --dry-run delete allow to any port tftp from any port 23 (rc=0)
+O Rules updated
+## 163: --dry-run allow to any port 23 from any port tftp (rc=0)
+R ### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 23 --sport 69 -j ACCEPT
+O Rules updated
+## 164: --dry-run delete allow to any port 23 from any port tftp (rc=0)
+O Rules updated
+## 165: --dry-run allow to any port daytime from any port 23 (rc=0)
+R ### tuple ### allow any 13 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
+R -A ufw-user-input -p udp --dport 13 --sport 23 -j ACCEPT
+O Rules updated
+## 166: --dry-run delete allow to any port daytime from any port 23 (rc=0)
+O Rules updated
+## 167: --dry-run allow to any port 23 from any port daytime (rc=0)
+R ### tuple ### allow any 23 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
+R -A ufw-user-input -p udp --dport 23 --sport 13 -j ACCEPT
+O Rules updated
+## 168: --dry-run delete allow to any port 23 from any port daytime (rc=0)
+O Rules updated
+## 169: --dry-run allow to any port daytime from any port domain (rc=0)
+R ### tuple ### allow any 13 0.0.0.0/0 53 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
+R -A ufw-user-input -p udp --dport 13 --sport 53 -j ACCEPT
+O Rules updated
+## 170: --dry-run delete allow to any port daytime from any port domain (rc=0)
+O Rules updated
+## 171: --dry-run allow to any port smtp from any port smtp proto tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 25 -j ACCEPT
+O Rules updated
+## 172: --dry-run delete allow to any port smtp from any port smtp proto tcp (rc=0)
+O Rules updated
+## 173: --dry-run allow to any port smtp from any port daytime proto tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
+O Rules updated
+## 174: --dry-run delete allow to any port smtp from any port daytime proto tcp (rc=0)
+O Rules updated
+## 175: --dry-run allow to any port daytime from any port smtp proto tcp (rc=0)
+R ### tuple ### allow tcp 13 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
+O Rules updated
+## 176: --dry-run delete allow to any port daytime from any port smtp proto tcp (rc=0)
+O Rules updated
+## 177: --dry-run allow to any port smtp from any port 23 proto tcp (rc=0)
+R ### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 25 --sport 23 -j ACCEPT
+O Rules updated
+## 178: --dry-run delete allow to any port smtp from any port 23 proto tcp (rc=0)
+O Rules updated
+## 179: --dry-run allow to any port 23 from any port smtp proto tcp (rc=0)
+R ### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 23 --sport 25 -j ACCEPT
+O Rules updated
+## 180: --dry-run delete allow to any port 23 from any port smtp proto tcp (rc=0)
+O Rules updated
+## 181: --dry-run allow to any port tftp from any port tftp proto udp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 69 -j ACCEPT
+O Rules updated
+## 182: --dry-run delete allow to any port tftp from any port tftp proto udp (rc=0)
+O Rules updated
+## 183: --dry-run allow to any port tftp from any port daytime proto udp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 13 -j ACCEPT
+O Rules updated
+## 184: --dry-run delete allow to any port tftp from any port daytime proto udp (rc=0)
+O Rules updated
+## 185: --dry-run allow to any port daytime from any port tftp proto udp (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 13 --sport 69 -j ACCEPT
+O Rules updated
+## 186: --dry-run delete allow to any port daytime from any port tftp proto udp (rc=0)
+O Rules updated
+## 187: --dry-run allow to any port tftp from any port 23 proto udp (rc=0)
+R ### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 69 --sport 23 -j ACCEPT
+O Rules updated
+## 188: --dry-run delete allow to any port tftp from any port 23 proto udp (rc=0)
+O Rules updated
+## 189: --dry-run allow to any port 23 from any port tftp proto udp (rc=0)
+R ### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 23 --sport 69 -j ACCEPT
+O Rules updated
+## 190: --dry-run delete allow to any port 23 from any port tftp proto udp (rc=0)
+O Rules updated
+## 191: --dry-run allow to any port daytime from any port 23 proto tcp (rc=0)
+R ### tuple ### allow tcp 13 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
+O Rules updated
+## 192: --dry-run delete allow to any port daytime from any port 23 proto tcp (rc=0)
+O Rules updated
+## 193: --dry-run allow to any port 23 from any port daytime proto tcp (rc=0)
+R ### tuple ### allow tcp 23 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
+O Rules updated
+## 194: --dry-run delete allow to any port 23 from any port daytime proto tcp (rc=0)
+O Rules updated
+## 195: --dry-run allow to any port daytime from any port domain proto tcp (rc=0)
+R ### tuple ### allow tcp 13 0.0.0.0/0 53 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
+O Rules updated
+## 196: --dry-run delete allow to any port daytime from any port domain proto tcp (rc=0)
+O Rules updated
+## 197: --dry-run allow to any port daytime from any port 23 proto udp (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 23 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 13 --sport 23 -j ACCEPT
+O Rules updated
+## 198: --dry-run delete allow to any port daytime from any port 23 proto udp (rc=0)
+O Rules updated
+## 199: --dry-run allow to any port 23 from any port daytime proto udp (rc=0)
+R ### tuple ### allow udp 23 0.0.0.0/0 13 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 23 --sport 13 -j ACCEPT
+O Rules updated
+## 200: --dry-run delete allow to any port 23 from any port daytime proto udp (rc=0)
+O Rules updated
+## 201: --dry-run allow to any port daytime from any port domain proto udp (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 53 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 13 --sport 53 -j ACCEPT
+O Rules updated
+## 202: --dry-run delete allow to any port daytime from any port domain proto udp (rc=0)
+O Rules updated
+## 203: --dry-run allow to 192.168.0.0/0 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -j ACCEPT
+O WARN: Rule changed after normalization
+O Rules updated
+## 204: --dry-run allow to 192.168.0.0/16 (rc=0)
+R ### tuple ### allow any any 192.168.0.0/16 any 0.0.0.0/0 in
+R -A ufw-user-input -d 192.168.0.0/16 -j ACCEPT
+O Rules updated
+## 205: --dry-run allow to 192.168.0.1/32 (rc=0)
+R ### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -d 192.168.0.1 -j ACCEPT
+O Rules updated
+## 206: --dry-run allow from 192.168.0.0/0 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -j ACCEPT
+O WARN: Rule changed after normalization
+O Rules updated
+## 207: --dry-run allow from 192.168.0.0/16 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16 in
+R -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+O Rules updated
+## 208: --dry-run allow from 192.168.0.1/32 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1 in
+R -A ufw-user-input -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 209: --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32 (rc=0)
+R ### tuple ### allow any any 192.168.0.2 any 192.168.0.1 in
+R -A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 210: --dry-run allow from 192.168.0.2/255.255.0.2 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.2/255.255.0.2 in
+R -A ufw-user-input -s 192.168.0.2/255.255.0.2 -j ACCEPT
+O Rules updated
+## 211: --dry-run allow from 192.168.0.1 port 34,35 proto tcp (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 34,35 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --sports 34,35 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 212: --dry-run allow from 192.168.0.1 port 34,35:39 proto udp (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 34,35:39 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --sports 34,35:39 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 213: --dry-run allow from 192.168.0.1 port 35:39 proto tcp (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 35:39 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --sports 35:39 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 214: --dry-run allow from 192.168.0.1 port 221,23,21,15:19,13 proto udp (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 13,15:19,21,23,221 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --sports 13,15:19,21,23,221 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 215: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 24 192.168.0.2 34,35 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 216: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp (rc=0)
+R ### tuple ### allow udp 24 192.168.0.2 34,35:39 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 217: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 24 192.168.0.2 35:39 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 218: --dry-run allow from 192.168.0.1 port 23,21,15:19,13 to 192.168.0.2 port 24 proto udp (rc=0)
+R ### tuple ### allow udp 24 192.168.0.2 13,15:19,21,23 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 13,15:19,21,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 219: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 24:26 192.168.0.2 34,35 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 220: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 24:26 192.168.0.2 34,35:39 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 221: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 24:26 192.168.0.2 35:39 192.168.0.1 in
+R -A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 222: --dry-run allow from 192.168.0.1 port 23,21,15:19,13 to 192.168.0.2 port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 24:26 192.168.0.2 13,15:19,21,23 192.168.0.1 in
+R -A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 13,15:19,21,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+O Rules updated
+## 223: --dry-run allow to 192.168.0.1 port 34,35 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 192.168.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -d 192.168.0.1 -j ACCEPT
+O Rules updated
+## 224: --dry-run allow to 192.168.0.1 port 34,35:39 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 192.168.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -d 192.168.0.1 -j ACCEPT
+O Rules updated
+## 225: --dry-run allow to 192.168.0.1 port 35:39 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 192.168.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -d 192.168.0.1 -j ACCEPT
+O Rules updated
+## 226: --dry-run allow to 192.168.0.1 port 221,23,21,15:19,13 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23,221 192.168.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23,221 -d 192.168.0.1 -j ACCEPT
+O Rules updated
+## 227: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 192.168.0.1 24 192.168.0.2 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 228: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 192.168.0.1 24 192.168.0.2 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 229: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 192.168.0.1 24 192.168.0.2 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 230: --dry-run allow to 192.168.0.1 port 23,21,15:19,13 from 192.168.0.2 port 24 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23 192.168.0.1 24 192.168.0.2 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 231: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 192.168.0.1 24:26 192.168.0.2 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 232: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 192.168.0.1 24:26 192.168.0.2 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 233: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 192.168.0.1 24:26 192.168.0.2 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 234: --dry-run allow to 192.168.0.1 port 23,21,15:19,13 from 192.168.0.2 port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23 192.168.0.1 24:26 192.168.0.2 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+O Rules updated
+## 235: --dry-run allow from any port 34,35 proto tcp (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 34,35 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --sports 34,35 -j ACCEPT
+O Rules updated
+## 236: --dry-run allow from any port 34,35:39 proto udp (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 34,35:39 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --sports 34,35:39 -j ACCEPT
+O Rules updated
+## 237: --dry-run allow from any port 35:39 proto tcp (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 35:39 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --sports 35:39 -j ACCEPT
+O Rules updated
+## 238: --dry-run allow from any port 221,23,21,15:19,13 proto udp (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 13,15:19,21,23,221 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --sports 13,15:19,21,23,221 -j ACCEPT
+O Rules updated
+## 239: --dry-run allow from any port 34,35 to any port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 24 0.0.0.0/0 34,35 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -j ACCEPT
+O Rules updated
+## 240: --dry-run allow from any port 34,35:39 to any port 24 proto udp (rc=0)
+R ### tuple ### allow udp 24 0.0.0.0/0 34,35:39 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -j ACCEPT
+O Rules updated
+## 241: --dry-run allow from any port 35:39 to any port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 24 0.0.0.0/0 35:39 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -j ACCEPT
+O Rules updated
+## 242: --dry-run allow from any port 23,21,15:19,13 to any port 24 proto udp (rc=0)
+R ### tuple ### allow udp 24 0.0.0.0/0 13,15:19,21,23 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 13,15:19,21,23 -j ACCEPT
+O Rules updated
+## 243: --dry-run allow from any port 34,35 to any port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 24:26 0.0.0.0/0 34,35 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -j ACCEPT
+O Rules updated
+## 244: --dry-run allow from any port 34,35:39 to any port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 24:26 0.0.0.0/0 34,35:39 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -j ACCEPT
+O Rules updated
+## 245: --dry-run allow from any port 35:39 to any port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 24:26 0.0.0.0/0 35:39 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -j ACCEPT
+O Rules updated
+## 246: --dry-run allow from any port 23,21,15:19,13 to any port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 24:26 0.0.0.0/0 13,15:19,21,23 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 13,15:19,21,23 -j ACCEPT
+O Rules updated
+## 247: --dry-run allow to any port 34,35 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
+O Rules updated
+## 248: --dry-run allow to any port 34,35:39 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
+O Rules updated
+## 249: --dry-run allow to any port 35:39 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
+O Rules updated
+## 250: --dry-run allow to any port 221,23,21,15:19,13 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23,221 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23,221 -j ACCEPT
+O Rules updated
+## 251: --dry-run allow to any port 34,35 from any port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 0.0.0.0/0 24 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -j ACCEPT
+O Rules updated
+## 252: --dry-run allow to any port 34,35:39 from any port 24 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 0.0.0.0/0 24 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -j ACCEPT
+O Rules updated
+## 253: --dry-run allow to any port 35:39 from any port 24 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 0.0.0.0/0 24 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -j ACCEPT
+O Rules updated
+## 254: --dry-run allow to any port 23,21,15:19,13 from any port 24 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 24 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24 -j ACCEPT
+O Rules updated
+## 255: --dry-run allow to any port 34,35 from any port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 34,35 0.0.0.0/0 24:26 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -j ACCEPT
+O Rules updated
+## 256: --dry-run allow to any port 34,35:39 from any port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 34,35:39 0.0.0.0/0 24:26 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -j ACCEPT
+O Rules updated
+## 257: --dry-run allow to any port 35:39 from any port 24:26 proto tcp (rc=0)
+R ### tuple ### allow tcp 35:39 0.0.0.0/0 24:26 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -j ACCEPT
+O Rules updated
+## 258: --dry-run allow to any port 23,21,15:19,13 from any port 24:26 proto udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 24:26 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -j ACCEPT
+O Rules updated
+## 259: --dry-run allow 34,35/tcp (rc=0)
+R ### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
+O Rules updated
+## 260: --dry-run allow 34,35:39/tcp (rc=0)
+R ### tuple ### allow tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ACCEPT
+O Rules updated
+## 261: --dry-run allow 35:39/tcp (rc=0)
+R ### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
+O Rules updated
+## 262: --dry-run allow 23,21,15:19,13/tcp (rc=0)
+R ### tuple ### allow tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j ACCEPT
+O Rules updated
+## 263: --dry-run allow 1,9/tcp (rc=0)
+R ### tuple ### allow tcp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 1,9 -j ACCEPT
+O Rules updated
+## 264: --dry-run allow 34,35/udp (rc=0)
+R ### tuple ### allow udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35 -j ACCEPT
+O Rules updated
+## 265: --dry-run allow 34,35:39/udp (rc=0)
+R ### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
+O Rules updated
+## 266: --dry-run allow 35:39/udp (rc=0)
+R ### tuple ### allow udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 35:39 -j ACCEPT
+O Rules updated
+## 267: --dry-run allow 23,21,15:19,13/udp (rc=0)
+R ### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ACCEPT
+O Rules updated
+## 268: --dry-run allow 1,9/udp (rc=0)
+R ### tuple ### allow udp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 1,9 -j ACCEPT
+O Rules updated
+## 269: --dry-run deny 34,35/tcp (rc=0)
+R ### tuple ### deny tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -j DROP
+O Rules updated
+## 270: --dry-run deny 34,35:39/tcp (rc=0)
+R ### tuple ### deny tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j DROP
+O Rules updated
+## 271: --dry-run deny 35:39/tcp (rc=0)
+R ### tuple ### deny tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -j DROP
+O Rules updated
+## 272: --dry-run deny 23,21,15:19,13/tcp (rc=0)
+R ### tuple ### deny tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j DROP
+O Rules updated
+## 273: --dry-run deny 1,9/tcp (rc=0)
+R ### tuple ### deny tcp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 1,9 -j DROP
+O Rules updated
+## 274: --dry-run deny 34,35/udp (rc=0)
+R ### tuple ### deny udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35 -j DROP
+O Rules updated
+## 275: --dry-run deny 34,35:39/udp (rc=0)
+R ### tuple ### deny udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j DROP
+O Rules updated
+## 276: --dry-run deny 35:39/udp (rc=0)
+R ### tuple ### deny udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 35:39 -j DROP
+O Rules updated
+## 277: --dry-run deny 23,21,15:19,13/udp (rc=0)
+R ### tuple ### deny udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j DROP
+O Rules updated
+## 278: --dry-run deny 1,9/udp (rc=0)
+R ### tuple ### deny udp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 1,9 -j DROP
+O Rules updated
+## 279: --dry-run limit 34,35/tcp (rc=0)
+R ### tuple ### limit tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ufw-user-limit-accept
+O Rules updated
+## 280: --dry-run limit 34,35:39/tcp (rc=0)
+R ### tuple ### limit tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
+O Rules updated
+## 281: --dry-run limit 35:39/tcp (rc=0)
+R ### tuple ### limit tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ufw-user-limit-accept
+O Rules updated
+## 282: --dry-run limit 23,21,15:19,13/tcp (rc=0)
+R ### tuple ### limit tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j ufw-user-limit-accept
+O Rules updated
+## 283: --dry-run limit 1,9/tcp (rc=0)
+R ### tuple ### limit tcp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 1,9 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p tcp -m multiport --dports 1,9 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p tcp -m multiport --dports 1,9 -j ufw-user-limit-accept
+O Rules updated
+## 284: --dry-run limit 34,35/udp (rc=0)
+R ### tuple ### limit udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -m multiport --dports 34,35 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -m multiport --dports 34,35 -j ufw-user-limit-accept
+O Rules updated
+## 285: --dry-run limit 34,35:39/udp (rc=0)
+R ### tuple ### limit udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
+O Rules updated
+## 286: --dry-run limit 35:39/udp (rc=0)
+R ### tuple ### limit udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 35:39 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -m multiport --dports 35:39 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -m multiport --dports 35:39 -j ufw-user-limit-accept
+O Rules updated
+## 287: --dry-run limit 23,21,15:19,13/udp (rc=0)
+R ### tuple ### limit udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ufw-user-limit-accept
+O Rules updated
+## 288: --dry-run limit 1,9/udp (rc=0)
+R ### tuple ### limit udp 1,9 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 1,9 -m conntrack --ctstate NEW -m recent --set
+R -A ufw-user-input -p udp -m multiport --dports 1,9 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+R -A ufw-user-input -p udp -m multiport --dports 1,9 -j ufw-user-limit-accept
+O Rules updated
+## 289: --dry-run reject auth (rc=0)
+R ### tuple ### reject tcp 113 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
+O Rules updated
+## 290: --dry-run reject to any port auth from any port smtp (rc=0)
+R ### tuple ### reject tcp 113 0.0.0.0/0 25 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 113 --sport 25 -j REJECT --reject-with tcp-reset
+O Rules updated
+## 291: --dry-run delete reject to any port auth from any port smtp (rc=0)
+O Rules updated
+## 292: --dry-run reject to 10.0.0.1 port domain from 192.168.0.1 port auth (rc=0)
+R ### tuple ### reject tcp 53 10.0.0.1 113 192.168.0.1 in
+R -A ufw-user-input -p tcp -d 10.0.0.1 --dport 53 -s 192.168.0.1 --sport 113 -j REJECT --reject-with tcp-reset
+O Rules updated
+## 293: --dry-run delete reject to 10.0.0.1 port domain from 192.168.0.1 port auth (rc=0)
+O Rules updated
+## 294: --dry-run reject 116 (rc=0)
+R ### tuple ### reject any 116 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
+R -A ufw-user-input -p udp --dport 116 -j REJECT
+O Rules updated
+## 295: --dry-run reject 23,21,15:19,13/tcp (rc=0)
+R ### tuple ### reject tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j REJECT --reject-with tcp-reset
+O Rules updated
+## 296: --dry-run reject 116/tcp (rc=0)
+R ### tuple ### reject tcp 116 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
+O Rules updated
+## 297: --dry-run reject 23,21,15:19,13/udp (rc=0)
+R ### tuple ### reject udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j REJECT
+O Rules updated
+## 298: --dry-run reject 116/udp (rc=0)
+R ### tuple ### reject udp 116 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p udp --dport 116 -j REJECT
+O Rules updated
+## 299: allow 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
+## 300: allow 23 (rc=0)
+O Rules updated
++ ### tuple ### allow any 23 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 23 -j ACCEPT
++ -A ufw-user-input -p udp --dport 23 -j ACCEPT
++ 
+## 301: insert 1 allow 9999 (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow any 9999 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 9999 -j ACCEPT
++ -A ufw-user-input -p udp --dport 9999 -j ACCEPT
+## 302: insert 1 allow log 9998 (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow_log any 9998 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-logging-input -p tcp --dport 9998 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
++ -A ufw-user-logging-input -p tcp --dport 9998 -j RETURN
++ -A ufw-user-input -p tcp --dport 9998 -j ufw-user-logging-input
++ -A ufw-user-input -p tcp --dport 9998 -j ACCEPT
++ -A ufw-user-logging-input -p udp --dport 9998 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
++ -A ufw-user-logging-input -p udp --dport 9998 -j RETURN
++ -A ufw-user-input -p udp --dport 9998 -j ufw-user-logging-input
++ -A ufw-user-input -p udp --dport 9998 -j ACCEPT
+## 303: insert 2 reject to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 in
++ -A ufw-user-input -d 192.168.0.1 -s 10.0.0.1 -j REJECT
++ 
+## 304: delete allow 13 (rc=0)
+O Rules updated
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+## 305: delete allow 23 (rc=0)
+O Rules updated
+- ### tuple ### allow any 23 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 23 -j ACCEPT
+- -A ufw-user-input -p udp --dport 23 -j ACCEPT
+- 
+## 306: delete allow 9999 (rc=0)
+O Rules updated
+- ### tuple ### allow any 9999 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 9999 -j ACCEPT
+- -A ufw-user-input -p udp --dport 9999 -j ACCEPT
+- 
+## 307: delete allow log 9998 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow_log any 9998 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-logging-input -p tcp --dport 9998 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+- -A ufw-user-logging-input -p tcp --dport 9998 -j RETURN
+- -A ufw-user-input -p tcp --dport 9998 -j ufw-user-logging-input
+- -A ufw-user-input -p tcp --dport 9998 -j ACCEPT
+- -A ufw-user-logging-input -p udp --dport 9998 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+- -A ufw-user-logging-input -p udp --dport 9998 -j RETURN
+- -A ufw-user-input -p udp --dport 9998 -j ufw-user-logging-input
+- -A ufw-user-input -p udp --dport 9998 -j ACCEPT
+## 308: delete reject to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 in
+- -A ufw-user-input -d 192.168.0.1 -s 10.0.0.1 -j REJECT
+- 
+## 309: --dry-run allow in on eth0 to any port 80 proto tcp (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+R -A ufw-user-input -i eth0 -p tcp --dport 80 -j ACCEPT
+O Rules updated
+## 310: allow in on eth0 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j ACCEPT
++ 
+## 311: allow in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
++ 
+## 312: allow in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 313: allow in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
++ 
+## 314: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ 
+## 315: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 316: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 317: allow in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
++ 
+## 318: allow in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 319: allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
++ 
+## 320: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ 
+## 321: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 322: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 323: delete allow in on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j ACCEPT
+## 324: delete allow in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
+## 325: delete allow in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j ACCEPT
+## 326: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+## 327: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+## 328: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 329: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 330: delete allow in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+## 331: delete allow in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+## 332: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+## 333: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+## 334: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 335: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+- 
+## 336: deny in on eth0 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j DROP
++ 
+## 337: deny in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
++ 
+## 338: deny in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 339: deny in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
++ 
+## 340: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ 
+## 341: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 342: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 343: deny in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
++ 
+## 344: deny in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 345: deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
++ 
+## 346: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ 
+## 347: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 348: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 349: delete deny in on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j DROP
+## 350: delete deny in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
+## 351: delete deny in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j DROP
+## 352: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
+## 353: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+## 354: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+## 355: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+## 356: delete deny in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+## 357: delete deny in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+## 358: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
+## 359: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+## 360: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+## 361: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+- 
+## 362: limit in on eth0 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -j ufw-user-limit-accept
++ 
+## 363: limit in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ 
+## 364: limit in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 365: limit in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 366: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 367: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 368: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 369: limit in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ 
+## 370: limit in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 371: limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 372: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 373: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 374: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 375: delete limit in on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -j ufw-user-limit-accept
+## 376: delete limit in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+## 377: delete limit in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 378: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+## 379: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+## 380: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 381: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 382: delete limit in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+## 383: delete limit in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 384: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+## 385: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+## 386: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 387: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- 
+## 388: reject in on eth0 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j REJECT
++ 
+## 389: reject in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
++ 
+## 390: reject in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 391: reject in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
++ 
+## 392: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
++ 
+## 393: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 394: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 395: reject in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
++ 
+## 396: reject in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ 
+## 397: reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
++ 
+## 398: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
++ 
+## 399: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 400: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 401: delete reject in on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j REJECT
+## 402: delete reject in on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
+## 403: delete reject in on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-input -i eth0 -p udp -s 10.0.0.1 --sport 80 -j REJECT
+## 404: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
+## 405: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
+## 406: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+## 407: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
+## 408: delete reject in on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+## 409: delete reject in on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+## 410: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+## 411: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
+## 412: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+## 413: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
+- 
+## 414: allow in on eth0 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j ACCEPT
++ 
+## 415: deny in on eth0 (rc=0)
+O Rules updated
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j ACCEPT
++ ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j DROP
+## 416: delete deny in on eth0 (rc=0)
+O Rules updated
+- ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j DROP
+- 
+## 417: allow out on eth0 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -j ACCEPT
++ 
+## 418: allow out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
++ 
+## 419: allow out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 420: allow out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
++ 
+## 421: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ 
+## 422: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 423: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 424: allow out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
++ 
+## 425: allow out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 426: allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
++ 
+## 427: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
++ 
+## 428: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 429: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
++ 
+## 430: delete allow out on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -j ACCEPT
+## 431: delete allow out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
+## 432: delete allow out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ACCEPT
+## 433: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+## 434: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+## 435: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 436: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 437: delete allow out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+## 438: delete allow out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+## 439: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+## 440: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+## 441: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+## 442: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+- 
+## 443: deny out on eth0 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -j DROP
++ 
+## 444: deny out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
++ 
+## 445: deny out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 446: deny out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
++ 
+## 447: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ 
+## 448: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 449: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 450: deny out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
++ 
+## 451: deny out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 452: deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
++ 
+## 453: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
++ 
+## 454: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 455: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
++ 
+## 456: delete deny out on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -j DROP
+## 457: delete deny out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
+## 458: delete deny out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j DROP
+## 459: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
+## 460: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+## 461: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+## 462: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+## 463: delete deny out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+## 464: delete deny out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+## 465: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
+## 466: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+## 467: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+## 468: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+- 
+## 469: limit out on eth0 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -j ufw-user-limit-accept
++ 
+## 470: limit out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ 
+## 471: limit out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 472: limit out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 473: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 474: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 475: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 476: limit out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
++ 
+## 477: limit out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 478: limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### limit tcp any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 479: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
++ 
+## 480: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 481: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
++ 
+## 482: delete limit out on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -j ufw-user-limit-accept
+## 483: delete limit out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+## 484: delete limit out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 485: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+## 486: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+## 487: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 488: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 489: delete limit out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+## 490: delete limit out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 491: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+## 492: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+## 493: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+## 494: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+- 
+## 495: reject out on eth0 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -j REJECT
++ 
+## 496: reject out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
++ 
+## 497: reject out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 498: reject out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
++ 
+## 499: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
++ 
+## 500: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 501: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
++ ### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 502: reject out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
++ 
+## 503: reject out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
++ 
+## 504: reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
++ 
+## 505: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
++ 
+## 506: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 507: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
++ ### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 out_eth0
++ -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
++ 
+## 508: delete reject out on eth0 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -j REJECT
+## 509: delete reject out on eth0 to 192.168.0.1 port 13 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
+## 510: delete reject out on eth0 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j REJECT
+## 511: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
+## 512: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
+## 513: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+## 514: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
+## 515: delete reject out on eth0 to 192.168.0.1 port 13 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+## 516: delete reject out on eth0 from 10.0.0.1 port 80 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+## 517: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+## 518: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
+## 519: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+## 520: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp (rc=0)
+O Rules updated
+- ### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+- -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
+- 
+## 521: allow out on eth0 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -j ACCEPT
++ 
+## 522: deny out on eth0 (rc=0)
+O Rules updated
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -j ACCEPT
++ ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
++ -A ufw-user-output -o eth0 -j DROP
+## 523: delete deny out on eth0 (rc=0)
+O Rules updated
+- ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+- -A ufw-user-output -o eth0 -j DROP
+- 
+## 524: --dry-run allow to 10.0.0.1 proto ipv6 (rc=0)
+R ### tuple ### allow ipv6 any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p ipv6 -d 10.0.0.1 -j ACCEPT
+O Rules updated
+## 525: --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ipv6 (rc=0)
+R ### tuple ### allow ipv6 any 10.0.0.1 any 10.4.0.0/16 in
+R -A ufw-user-input -p ipv6 -d 10.0.0.1 -s 10.4.0.0/16 -j ACCEPT
+O Rules updated
+## 526: --dry-run allow to 10.0.0.1 proto esp (rc=0)
+R ### tuple ### allow esp any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p esp -d 10.0.0.1 -j ACCEPT
+O Rules updated
+## 527: --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto esp (rc=0)
+R ### tuple ### allow esp any 10.0.0.1 any 10.4.0.0/16 in
+R -A ufw-user-input -p esp -d 10.0.0.1 -s 10.4.0.0/16 -j ACCEPT
+O Rules updated
+## 528: --dry-run allow to 10.0.0.1 proto ah (rc=0)
+R ### tuple ### allow ah any 10.0.0.1 any 0.0.0.0/0 in
+R -A ufw-user-input -p ah -d 10.0.0.1 -j ACCEPT
+O Rules updated
+## 529: --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah (rc=0)
+R ### tuple ### allow ah any 10.0.0.1 any 10.4.0.0/16 in
+R -A ufw-user-input -p ah -d 10.0.0.1 -s 10.4.0.0/16 -j ACCEPT
+O Rules updated
+## 530: --dry-run allow in on eth+ to any port 80 proto tcp (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in_eth+
+R -A ufw-user-input -i eth+ -p tcp --dport 80 -j ACCEPT
+O Rules updated
+## 531: allow 2222/tcp comment "SSH port" (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 2222 0.0.0.0/0 any 0.0.0.0/0 in comment=2253534820706f727422
++ -A ufw-user-input -p tcp --dport 2222 -j ACCEPT
++ 
+## 532: deny out log-all to any port 53 from any proto udp comment "dns port" (rc=0)
+O Rules updated
++ ### tuple ### deny_log-all udp 53 0.0.0.0/0 any 0.0.0.0/0 out comment=22646e7320706f727422
++ -A ufw-user-logging-output -p udp --dport 53 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
++ -A ufw-user-logging-output -p udp --dport 53 -j RETURN
++ -A ufw-user-output -p udp --dport 53 -j ufw-user-logging-output
++ -A ufw-user-output -p udp --dport 53 -j DROP
++ 
+## 533: delete deny out log-all to any port 53 from any proto udp comment "dns port" (rc=0)
+O Rules updated
+- ### tuple ### deny_log-all udp 53 0.0.0.0/0 any 0.0.0.0/0 out comment=22646e7320706f727422
+- -A ufw-user-logging-output -p udp --dport 53 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+- -A ufw-user-logging-output -p udp --dport 53 -j RETURN
+- -A ufw-user-output -p udp --dport 53 -j ufw-user-logging-output
+- -A ufw-user-output -p udp --dport 53 -j DROP
+- 
+## 534: delete allow 2222/tcp (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 2222 0.0.0.0/0 any 0.0.0.0/0 in comment=2253534820706f727422
+- -A ufw-user-input -p tcp --dport 2222 -j ACCEPT
+- 
+## 535: allow 22/tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 22 -j ACCEPT
++ 
+## 536: allow from 1.2.3.4 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
++ -A ufw-user-input -s 1.2.3.4 -j ACCEPT
++ 
+## 537: prepend deny from 6.7.8.9 (rc=0)
+O Rules updated
++ 
++ ### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
++ -A ufw-user-input -s 6.7.8.9 -j DROP
+## 538: delete allow 22/tcp (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 22 -j ACCEPT
+- 
+## 539: delete allow from 1.2.3.4 (rc=0)
+O Rules updated
+- ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+- -A ufw-user-input -s 1.2.3.4 -j ACCEPT
+- 
+## 540: delete deny from 6.7.8.9 (rc=0)
+O Rules updated
+- ### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+- -A ufw-user-input -s 6.7.8.9 -j DROP
+- 
+## 541: prepend allow from 1.2.3.4 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
++ -A ufw-user-input -s 1.2.3.4 -j ACCEPT
++ 
+## 542: delete allow from 1.2.3.4 (rc=0)
+O Rules updated
+- ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+- -A ufw-user-input -s 1.2.3.4 -j ACCEPT
+- 
+## 543: allow from 1.2.3.4 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
++ -A ufw-user-input -s 1.2.3.4 -j ACCEPT
++ 
+## 544: prepend deny 23 (rc=0)
+O Rules updated
++ 
++ ### tuple ### deny any 23 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 23 -j DROP
++ -A ufw-user-input -p udp --dport 23 -j DROP
+## 545: delete allow from 1.2.3.4 (rc=0)
+O Rules updated
+- ### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+- -A ufw-user-input -s 1.2.3.4 -j ACCEPT
+- 
+## 546: delete deny 23 (rc=0)
+O Rules updated
+- ### tuple ### deny any 23 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 23 -j DROP
+- -A ufw-user-input -p udp --dport 23 -j DROP
+- 

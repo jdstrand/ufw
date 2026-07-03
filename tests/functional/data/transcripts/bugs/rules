@@ -1,0 +1,9 @@
+## 0: --dry-run allow to 111.12.34.2/4 (rc=0)
+R ### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0 in
+R -A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
+O WARN: Rule changed after normalization
+O Rules updated
+## 1: --dry-run allow to any proto ipv6 (rc=0)
+R ### tuple ### allow ipv6 any 0.0.0.0/0 any 0.0.0.0/0 in
+R -A ufw-user-input -p ipv6 -j ACCEPT
+O Rules updated

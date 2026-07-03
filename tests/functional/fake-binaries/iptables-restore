@@ -1,0 +1,5 @@
+#!/bin/sh
+# Fake iptables-restore for the functional test harness: drain stdin and
+# succeed. The suite runs dry-run / disabled, so rules are never applied.
+cat >/dev/null 2>&1
+exit 0

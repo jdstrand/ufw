@@ -573,6 +573,9 @@ ports=80/tcp
 
     def test_get_status(self):
         """Test get_status()"""
+        # get_status() reads the forwarding policy via sysctl; install the fake
+        # sysctl so this works without a real sysctl on the host.
+        self._update_sysctl()
         # build up some rules
         cmds_sim = tests.unit.support.get_sample_rule_commands_simple()
         cmds_ext = tests.unit.support.get_sample_rule_commands_extended()
@@ -618,6 +621,9 @@ ports=80/tcp
 
     def test_lp1838764(self):
         """Test get_status() - LP: #1838764"""
+        # get_status() reads the forwarding policy via sysctl; install the fake
+        # sysctl so this works without a real sysctl on the host.
+        self._update_sysctl()
         # build up some rules
         cmds = [
             [

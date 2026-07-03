@@ -1,0 +1,3288 @@
+## 0: app list (rc=0)
+O Available applications:
+O   0verkill
+O   A aZ9 _-.+
+O   AIM
+O   Apache
+O   Apache Full
+O   Apache Secure
+O   Bind9
+O   Bonjour
+O   CIFS
+O   Custom Web App
+O   Custom Web App2
+O   DNS
+O   Deluge
+O   Dovecot IMAP
+O   Dovecot POP3
+O   Dovecot Secure IMAP
+O   Dovecot Secure POP3
+O   IMAP
+O   IMAPS
+O   IPP
+O   KTorrent
+O   Kerberos Admin
+O   Kerberos Full
+O   Kerberos KDC
+O   Kerberos Password
+O   LDAP
+O   LDAPS
+O   LPD
+O   MSN
+O   MSN SSL
+O   Mail submission
+O   Multi TCP
+O   Multi UDP
+O   NFS
+O   No Protocol
+O   OpenNTPD
+O   POP3
+O   POP3S
+O   PeopleNearby
+O   SMTP
+O   SSH
+O   Samba
+O   Socks
+O   Telnet
+O   Transmission
+O   Transparent Proxy
+O   VNC
+O   WWW
+O   WWW Cache
+O   WWW Full
+O   WWW Secure
+O   XMPP
+O   Yahoo
+O   a aZ9 _-.+
+O   qBittorrent
+O   svnserve
+## 1: app info Apache (rc=0)
+O Profile: Apache
+O Title: Web Server
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Port:
+O   80/tcp
+## 2: app info Apache Secure (rc=0)
+O Profile: Apache Secure
+O Title: Web Server (HTTPS)
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Port:
+O   443/tcp
+## 3: app info Apache Full (rc=0)
+O Profile: Apache Full
+O Title: Web Server (HTTP,HTTPS)
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Ports:
+O   80,443/tcp
+## 4: app info Bind9 (rc=0)
+O Profile: Bind9
+O Title: Internet Domain Name Server
+O Description: The Berkeley Internet Name Domain (BIND) implements an
+O Internet domain name server.  BIND is the most widely-used name server
+O software on the Internet, and is supportsed by the Internet Software
+O Consortium, www.isc.org.
+O 
+O Port:
+O   53
+## 5: app info Samba (rc=0)
+O Profile: Samba
+O Title: LanManager-like file and printer server for Unix
+O Description: The Samba software suite is a collection of programs that
+O implements the SMB/CIFS protocol for unix systems, allowing you to serve
+O files and printers to Windows, NT, OS/2 and DOS clients. This protocol is
+O sometimes also referred to as the LanManager or NetBIOS protocol.
+O 
+O Ports:
+O   137,138/udp
+O   139,445/tcp
+## 6: app info Custom Web App (rc=0)
+O Profile: Custom Web App
+O Title: Example profile for a custom web application
+O Description: Some nice descriptive text here
+O 
+O Port:
+O   8080/tcp
+## 7: app info Custom Web App2 (rc=0)
+O Profile: Custom Web App2
+O Title: Example profile for a custom web application
+O Description: Some nice descriptive text here
+O 
+O Port:
+O   8080:8089/tcp
+## 8: app info all (rc=0)
+O Profile: 0verkill
+O Title: 0verkill
+O Description: A ASCII-art 2D deathmatch game
+O 
+O Ports:
+O   6666/udp
+O   6666/tcp
+O 
+O --
+O 
+O Profile: A aZ9 _-.+
+O Title: Example title
+O Description: Example description
+O 
+O Port:
+O   80
+O 
+O --
+O 
+O Profile: AIM
+O Title: AIM Talk
+O Description: AIM talk protocol
+O 
+O Port:
+O   5190/tcp
+O 
+O --
+O 
+O Profile: Apache
+O Title: Web Server
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Port:
+O   80/tcp
+O 
+O --
+O 
+O Profile: Apache Full
+O Title: Web Server (HTTP,HTTPS)
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Ports:
+O   80,443/tcp
+O 
+O --
+O 
+O Profile: Apache Secure
+O Title: Web Server (HTTPS)
+O Description: Apache v2 is the next generation of the omnipresent Apache web
+O server.
+O 
+O Port:
+O   443/tcp
+O 
+O --
+O 
+O Profile: Bind9
+O Title: Internet Domain Name Server
+O Description: The Berkeley Internet Name Domain (BIND) implements an
+O Internet domain name server.  BIND is the most widely-used name server
+O software on the Internet, and is supportsed by the Internet Software
+O Consortium, www.isc.org.
+O 
+O Port:
+O   53
+O 
+O --
+O 
+O Profile: Bonjour
+O Title: Bonjour
+O Description: Bonjour protocol
+O 
+O Ports:
+O   5353/udp
+O   5298
+O 
+O --
+O 
+O Profile: CIFS
+O Title: SMB/CIFS server
+O Description: SMB/CIFS server
+O 
+O Ports:
+O   137,138/udp
+O   139,445/tcp
+O 
+O --
+O 
+O Profile: Custom Web App
+O Title: Example profile for a custom web application
+O Description: Some nice descriptive text here
+O 
+O Port:
+O   8080/tcp
+O 
+O --
+O 
+O Profile: Custom Web App2
+O Title: Example profile for a custom web application
+O Description: Some nice descriptive text here
+O 
+O Port:
+O   8080:8089/tcp
+O 
+O --
+O 
+O Profile: DNS
+O Title: Internet Domain Name Server
+O Description: Internet Domain Name Server
+O 
+O Port:
+O   53
+O 
+O --
+O 
+O Profile: Deluge
+O Title: Deluge
+O Description: Deluge BitTorrent client
+O 
+O Port:
+O   6881:6891/tcp
+O 
+O --
+O 
+O Profile: Dovecot IMAP
+O Title: Secure mail server (IMAP)
+O Description: Dovecot is a mail server whose major goals are security and
+O extreme
+O reliability.
+O 
+O Port:
+O   143/tcp
+O 
+O --
+O 
+O Profile: Dovecot POP3
+O Title: Secure mail server (POP3)
+O Description: Dovecot is a mail server whose major goals are security and
+O extreme
+O reliability.
+O 
+O Port:
+O   110/tcp
+O 
+O --
+O 
+O Profile: Dovecot Secure IMAP
+O Title: Secure mail server (IMAPS)
+O Description: Dovecot is a mail server whose major goals are security and
+O extreme
+O reliability.
+O 
+O Port:
+O   993/tcp
+O 
+O --
+O 
+O Profile: Dovecot Secure POP3
+O Title: Secure mail server (POP3S)
+O Description: Dovecot is a mail server whose major goals are security and
+O extreme
+O reliability.
+O 
+O Port:
+O   995/tcp
+O 
+O --
+O 
+O Profile: IMAP
+O Title: Mail server (IMAP)
+O Description: Mail server (IMAP)
+O 
+O Port:
+O   143/tcp
+O 
+O --
+O 
+O Profile: IMAPS
+O Title: Secure mail server (IMAPS)
+O Description: Secure mail server (IMAPS)
+O 
+O Port:
+O   993/tcp
+O 
+O --
+O 
+O Profile: IPP
+O Title: Cups server (IPP)
+O Description: Cups server (IPP)
+O 
+O Port:
+O   631
+O 
+O --
+O 
+O Profile: KTorrent
+O Title: KTorrent
+O Description: KTorrent BitTorrent client
+O 
+O Ports:
+O   6881/tcp
+O   4444/udp
+O 
+O --
+O 
+O Profile: Kerberos Admin
+O Title: Kerberos v5 admin
+O Description: Kerberos v5 server
+O 
+O Port:
+O   749/tcp
+O 
+O --
+O 
+O Profile: Kerberos Full
+O Title: Kerberos v5 server
+O Description: Kerberos v5 server
+O 
+O Ports:
+O   88,749/tcp
+O   464/udp
+O 
+O --
+O 
+O Profile: Kerberos KDC
+O Title: Kerberos v5 KDC server
+O Description: Kerberos v5 KDC server
+O 
+O Port:
+O   88
+O 
+O --
+O 
+O Profile: Kerberos Password
+O Title: Kerberos v5 password
+O Description: Kerberos v5 password
+O 
+O Port:
+O   464/udp
+O 
+O --
+O 
+O Profile: LDAP
+O Title: LDAP server
+O Description: LDAP server
+O 
+O Port:
+O   389/tcp
+O 
+O --
+O 
+O Profile: LDAPS
+O Title: LDAP server (LDAPS)
+O Description: LDAP server (LDAPS)
+O 
+O Port:
+O   636/tcp
+O 
+O --
+O 
+O Profile: LPD
+O Title: LPD server
+O Description: LPD server
+O 
+O Port:
+O   515/tcp
+O 
+O --
+O 
+O Profile: MSN
+O Title: MSN Chat
+O Description: MSN chat protocol (with file transfer and voice)
+O 
+O Ports:
+O   1863
+O   6891:6900/tcp
+O   6901
+O 
+O --
+O 
+O Profile: MSN SSL
+O Title: MSN Chat (SSL)
+O Description: MSN chat protocol (SSL)
+O 
+O Port:
+O   443/tcp
+O 
+O --
+O 
+O Profile: Mail submission
+O Title: Mail server (Submission)
+O Description: Mail server (Submission)
+O 
+O Port:
+O   587/tcp
+O 
+O --
+O 
+O Profile: Multi TCP
+O Title: Mutli TCP
+O Description: Example description
+O 
+O Ports:
+O   1234,5678/tcp
+O 
+O --
+O 
+O Profile: Multi UDP
+O Title: Multi UDP
+O Description: Example description
+O 
+O Ports:
+O   1234,5678/udp
+O 
+O --
+O 
+O Profile: NFS
+O Title: NFS server
+O Description: NFS and portmap server. Will also need access to mountd, statd
+O and possibly others
+O 
+O Ports:
+O   2049,111/tcp
+O   2049,111/udp
+O 
+O --
+O 
+O Profile: No Protocol
+O Title: No Protocol
+O Description: Example description
+O 
+O Port:
+O   1234
+O 
+O --
+O 
+O Profile: OpenNTPD
+O Title: OpenBSD NTP daemon
+O Description: NTP, the Network Time Protocol, is used to keep the computer
+O clocks synchronized. It provides the ability to sync the local clock to
+O remote NTP servers and can act as NTP server itself, redistributing the
+O local clock.
+O 
+O Port:
+O   123/udp
+O 
+O --
+O 
+O Profile: POP3
+O Title: Mail server (POP3)
+O Description: Mail server (POP3)
+O 
+O Port:
+O   110/tcp
+O 
+O --
+O 
+O Profile: POP3S
+O Title: Secure mail server (POP3S)
+O Description: Secure mail server (POP3S)
+O 
+O Port:
+O   995/tcp
+O 
+O --
+O 
+O Profile: PeopleNearby
+O Title: People Nearby
+O Description: People Nearby (Bonjour/Salut) functionality in Empathy
+O 
+O Ports:
+O   5353/udp
+O   5298
+O 
+O --
+O 
+O Profile: SMTP
+O Title: Mail server (SMTP)
+O Description: Mail server (SMTP)
+O 
+O Port:
+O   25/tcp
+O 
+O --
+O 
+O Profile: SSH
+O Title: SSH server
+O Description: SSH server
+O 
+O Port:
+O   22/tcp
+O 
+O --
+O 
+O Profile: Samba
+O Title: LanManager-like file and printer server for Unix
+O Description: The Samba software suite is a collection of programs that
+O implements the SMB/CIFS protocol for unix systems, allowing you to serve
+O files and printers to Windows, NT, OS/2 and DOS clients. This protocol is
+O sometimes also referred to as the LanManager or NetBIOS protocol.
+O 
+O Ports:
+O   137,138/udp
+O   139,445/tcp
+O 
+O --
+O 
+O Profile: Socks
+O Title: Socks proxy
+O Description: Socks proxy
+O 
+O Port:
+O   1080/tcp
+O 
+O --
+O 
+O Profile: Telnet
+O Title: Telnet server (insecure)
+O Description: Telnet server (insecure)
+O 
+O Port:
+O   23/tcp
+O 
+O --
+O 
+O Profile: Transmission
+O Title: Transmission
+O Description: Transmission BitTorrent client
+O 
+O Port:
+O   51413
+O 
+O --
+O 
+O Profile: Transparent Proxy
+O Title: Transparent proxy
+O Description: Transparent proxy
+O 
+O Port:
+O   8081/tcp
+O 
+O --
+O 
+O Profile: VNC
+O Title: VNC server
+O Description: VNC server
+O 
+O Port:
+O   5900/tcp
+O 
+O --
+O 
+O Profile: WWW
+O Title: Web Server
+O Description: Web server
+O 
+O Port:
+O   80/tcp
+O 
+O --
+O 
+O Profile: WWW Cache
+O Title: Web Server (8080)
+O Description: Web Server (8080)
+O 
+O Port:
+O   8080/tcp
+O 
+O --
+O 
+O Profile: WWW Full
+O Title: Web Server (HTTP,HTTPS)
+O Description: Web Server (HTTP,HTTPS)
+O 
+O Ports:
+O   80,443/tcp
+O 
+O --
+O 
+O Profile: WWW Secure
+O Title: Web Server (HTTPS)
+O Description: Web Server (HTTPS)
+O 
+O Port:
+O   443/tcp
+O 
+O --
+O 
+O Profile: XMPP
+O Title: XMPP Chat
+O Description: XMPP protocol (Jabber and Google Talk)
+O 
+O Ports:
+O   5222/tcp
+O   5269/tcp
+O 
+O --
+O 
+O Profile: Yahoo
+O Title: Yahoo Chat
+O Description: Yahoo chat protocol
+O 
+O Port:
+O   5050
+O 
+O --
+O 
+O Profile: a aZ9 _-.+
+O Title: Example title
+O Description: Example description
+O 
+O Port:
+O   80/tcp
+O 
+O --
+O 
+O Profile: qBittorrent
+O Title: qBittorrent
+O Description: qBittorrent BitTorrent client
+O 
+O Port:
+O   6881/tcp
+O 
+O --
+O 
+O Profile: svnserve
+O Title: Subversion server
+O Description: Subversion server for access to Subversion repositories.
+O 
+O Port:
+O   3690/tcp
+## 9: app info 0verkill (rc=0)
+O Profile: 0verkill
+O Title: 0verkill
+O Description: A ASCII-art 2D deathmatch game
+O 
+O Ports:
+O   6666/udp
+O   6666/tcp
+## 10: --dry-run allow Apache (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 11: --dry-run allow Apache Secure (rc=0)
+R ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 12: --dry-run allow Apache Full (rc=0)
+R ### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 13: --dry-run allow Bind9 (rc=0)
+R ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 14: --dry-run allow Samba (rc=0)
+R ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+O Rules updated
+## 15: --dry-run allow OpenNTPD (rc=0)
+R ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 16: --dry-run allow Multi TCP (rc=0)
+R ### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 17: --dry-run allow Multi UDP (rc=0)
+R ### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 18: --dry-run allow Custom Web App2 (rc=0)
+R ### tuple ### allow tcp 8080:8089 0.0.0.0/0 any 0.0.0.0/0 Custom%20Web%20App2 - in
+R -A ufw-user-input -p tcp -m multiport --dports 8080:8089 -j ACCEPT -m comment --comment 'dapp_Custom%20Web%20App2'
+O Rules updated
+## 19: --dry-run deny Apache (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
+O Rules updated
+## 20: --dry-run deny Apache Secure (rc=0)
+R ### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 21: --dry-run deny Apache Full (rc=0)
+R ### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 22: --dry-run deny Bind9 (rc=0)
+R ### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 23: --dry-run deny Samba (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 24: --dry-run deny OpenNTPD (rc=0)
+R ### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 25: --dry-run deny Multi TCP (rc=0)
+R ### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 26: --dry-run deny Multi UDP (rc=0)
+R ### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 27: --dry-run deny Custom Web App2 (rc=0)
+R ### tuple ### deny tcp 8080:8089 0.0.0.0/0 any 0.0.0.0/0 Custom%20Web%20App2 - in
+R -A ufw-user-input -p tcp -m multiport --dports 8080:8089 -j DROP -m comment --comment 'dapp_Custom%20Web%20App2'
+O Rules updated
+## 28: --dry-run limit Apache (rc=0)
+R ### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
+O Rules updated
+## 29: --dry-run limit Apache Secure (rc=0)
+R ### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 30: --dry-run limit Apache Full (rc=0)
+R ### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 31: --dry-run limit Bind9 (rc=0)
+R ### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 32: --dry-run limit Samba (rc=0)
+R ### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+O Rules updated
+## 33: --dry-run limit OpenNTPD (rc=0)
+R ### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 34: --dry-run limit Multi TCP (rc=0)
+R ### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 35: --dry-run limit Multi UDP (rc=0)
+R ### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 36: --dry-run limit Custom Web App2 (rc=0)
+R ### tuple ### limit tcp 8080:8089 0.0.0.0/0 any 0.0.0.0/0 Custom%20Web%20App2 - in
+R -A ufw-user-input -p tcp -m multiport --dports 8080:8089 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Custom%20Web%20App2'
+R -A ufw-user-input -p tcp -m multiport --dports 8080:8089 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Custom%20Web%20App2'
+R -A ufw-user-input -p tcp -m multiport --dports 8080:8089 -j ufw-user-limit-accept -m comment --comment 'dapp_Custom%20Web%20App2'
+O Rules updated
+## 37: --dry-run allow to 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### allow tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 38: --dry-run allow to 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### allow tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 39: --dry-run allow to 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### allow tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 40: --dry-run allow to 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### allow any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 41: --dry-run allow to 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
+O Rules updated
+## 42: --dry-run allow to 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### allow udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 43: --dry-run allow to 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### allow tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 44: --dry-run allow to 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### allow udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 45: --dry-run allow to any app Apache (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 46: --dry-run allow to any app Apache Secure (rc=0)
+R ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 47: --dry-run allow to any app Apache Full (rc=0)
+R ### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 48: --dry-run allow to any app Bind9 (rc=0)
+R ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 49: --dry-run allow to any app Samba (rc=0)
+R ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+O Rules updated
+## 50: --dry-run allow to any app OpenNTPD (rc=0)
+R ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 51: --dry-run allow to any app Multi TCP (rc=0)
+R ### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 52: --dry-run allow to any app Multi UDP (rc=0)
+R ### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 53: --dry-run allow from 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
+O Rules updated
+## 54: --dry-run allow from 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 55: --dry-run allow from 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 56: --dry-run allow from 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 57: --dry-run allow from 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
+O Rules updated
+## 58: --dry-run allow from 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 59: --dry-run allow from 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 60: --dry-run allow from 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 61: --dry-run allow from any app Apache (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
+O Rules updated
+## 62: --dry-run allow from any app Apache Secure (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
+R -A ufw-user-input -p tcp --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 63: --dry-run allow from any app Apache Full (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 64: --dry-run allow from any app Bind9 (rc=0)
+R ### tuple ### allow any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
+R -A ufw-user-input -p tcp --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 65: --dry-run allow from any app Samba (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+O Rules updated
+## 66: --dry-run allow from any app OpenNTPD (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 67: --dry-run allow from any app Multi TCP (rc=0)
+R ### tuple ### allow tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 68: --dry-run allow from any app Multi UDP (rc=0)
+R ### tuple ### allow udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 69: --dry-run allow from 192.168.0.1 app Apache to 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### allow tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
+R -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
+O Rules updated
+## 70: --dry-run allow from 192.168.0.1 app OpenNTPD to 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### allow udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
+R -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 71: --dry-run allow from 192.168.0.1 app Samba to 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### allow tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 72: --dry-run allow from 192.168.0.1 app Samba to 192.168.0.2 port 13 (rc=0)
+R ### tuple ### allow udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+O Rules updated
+## 73: --dry-run allow from 192.168.0.1 app Apache to 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### allow tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 74: --dry-run allow to 192.168.0.1 app Apache from 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### allow tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 75: --dry-run allow to 192.168.0.1 app OpenNTPD from 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### allow udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 76: --dry-run allow to 192.168.0.1 app Samba from 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### allow tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 77: --dry-run allow to 192.168.0.1 app Samba from 192.168.0.2 port 13 (rc=0)
+R ### tuple ### allow udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+O Rules updated
+## 78: --dry-run allow to 192.168.0.1 app Apache from 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### allow tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 79: --dry-run allow to 192.168.0.1 app Samba from 192.168.0.1 app Samba (rc=0)
+R ### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### allow tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 80: --dry-run allow from any app Apache to any port 8080 (rc=0)
+R ### tuple ### allow tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
+O Rules updated
+## 81: --dry-run allow from any app OpenNTPD to any port 10123 (rc=0)
+R ### tuple ### allow udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --dport 10123 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 82: --dry-run allow from any app Samba to any app Bind9 (rc=0)
+R ### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### allow tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 83: --dry-run allow from any app Samba to any port 13 (rc=0)
+R ### tuple ### allow udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+R ### tuple ### allow tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+O Rules updated
+## 84: --dry-run allow from any app Apache to any app Apache Full (rc=0)
+R ### tuple ### allow tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 85: --dry-run allow to any app Apache from any port 8080 (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 86: --dry-run allow to any app OpenNTPD from any port 10123 (rc=0)
+R ### tuple ### allow udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 87: --dry-run allow to any app Samba from any app Bind9 (rc=0)
+R ### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### allow tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 88: --dry-run allow to any app Samba from any port 13 (rc=0)
+R ### tuple ### allow udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
+R ### tuple ### allow tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
+O Rules updated
+## 89: --dry-run allow to any app Apache from any app Apache Full (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 90: --dry-run allow to any app Samba from any app Samba (rc=0)
+R ### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### allow tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 91: --dry-run deny to 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### deny tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j DROP -m comment --comment 'dapp_Apache'
+O Rules updated
+## 92: --dry-run deny to 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### deny tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 93: --dry-run deny to 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### deny tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 94: --dry-run deny to 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### deny any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 95: --dry-run deny to 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 96: --dry-run deny to 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### deny udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 97: --dry-run deny to 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### deny tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 98: --dry-run deny to 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### deny udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 99: --dry-run deny to any app Apache (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
+O Rules updated
+## 100: --dry-run deny to any app Apache Secure (rc=0)
+R ### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 101: --dry-run deny to any app Apache Full (rc=0)
+R ### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 102: --dry-run deny to any app Bind9 (rc=0)
+R ### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 103: --dry-run deny to any app Samba (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 104: --dry-run deny to any app OpenNTPD (rc=0)
+R ### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 105: --dry-run deny to any app Multi TCP (rc=0)
+R ### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 106: --dry-run deny to any app Multi UDP (rc=0)
+R ### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 107: --dry-run deny from 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
+O Rules updated
+## 108: --dry-run deny from 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 109: --dry-run deny from 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 110: --dry-run deny from 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### deny any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 111: --dry-run deny from 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
+O Rules updated
+## 112: --dry-run deny from 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 113: --dry-run deny from 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 114: --dry-run deny from 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 115: --dry-run deny from any app Apache (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --sport 80 -j DROP -m comment --comment 'sapp_Apache'
+O Rules updated
+## 116: --dry-run deny from any app Apache Secure (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
+R -A ufw-user-input -p tcp --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 117: --dry-run deny from any app Apache Full (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -j DROP -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 118: --dry-run deny from any app Bind9 (rc=0)
+R ### tuple ### deny any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
+R -A ufw-user-input -p tcp --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 119: --dry-run deny from any app Samba (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
+O Rules updated
+## 120: --dry-run deny from any app OpenNTPD (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 121: --dry-run deny from any app Multi TCP (rc=0)
+R ### tuple ### deny tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 122: --dry-run deny from any app Multi UDP (rc=0)
+R ### tuple ### deny udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 123: --dry-run deny from 192.168.0.1 app Apache to 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### deny tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
+R -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
+O Rules updated
+## 124: --dry-run deny from 192.168.0.1 app OpenNTPD to 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### deny udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
+R -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 125: --dry-run deny from 192.168.0.1 app Samba to 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### deny tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 126: --dry-run deny from 192.168.0.1 app Samba to 192.168.0.2 port 13 (rc=0)
+R ### tuple ### deny udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+O Rules updated
+## 127: --dry-run deny from 192.168.0.1 app Apache to 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### deny tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 128: --dry-run deny to 192.168.0.1 app Apache from 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### deny tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
+O Rules updated
+## 129: --dry-run deny to 192.168.0.1 app OpenNTPD from 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### deny udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 130: --dry-run deny to 192.168.0.1 app Samba from 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### deny tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 131: --dry-run deny to 192.168.0.1 app Samba from 192.168.0.2 port 13 (rc=0)
+R ### tuple ### deny udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 132: --dry-run deny to 192.168.0.1 app Apache from 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### deny tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 133: --dry-run deny to 192.168.0.1 app Samba from 192.168.0.1 app Samba (rc=0)
+R ### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### deny tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 134: --dry-run deny from any app Apache to any port 8080 (rc=0)
+R ### tuple ### deny tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --dport 8080 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
+O Rules updated
+## 135: --dry-run deny from any app OpenNTPD to any port 10123 (rc=0)
+R ### tuple ### deny udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --dport 10123 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 136: --dry-run deny from any app Samba to any app Bind9 (rc=0)
+R ### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### deny tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 137: --dry-run deny from any app Samba to any port 13 (rc=0)
+R ### tuple ### deny udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+R ### tuple ### deny tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
+O Rules updated
+## 138: --dry-run deny from any app Apache to any app Apache Full (rc=0)
+R ### tuple ### deny tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 139: --dry-run deny to any app Apache from any port 8080 (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
+O Rules updated
+## 140: --dry-run deny to any app OpenNTPD from any port 10123 (rc=0)
+R ### tuple ### deny udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 141: --dry-run deny to any app Samba from any app Bind9 (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 142: --dry-run deny to any app Samba from any port 13 (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 143: --dry-run deny to any app Apache from any app Apache Full (rc=0)
+R ### tuple ### deny tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 144: --dry-run deny to any app Samba from any app Samba (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 145: --dry-run limit to 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### limit tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
+O Rules updated
+## 146: --dry-run limit to 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### limit tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 147: --dry-run limit to 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### limit tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 148: --dry-run limit to 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### limit any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 149: --dry-run limit to 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+O Rules updated
+## 150: --dry-run limit to 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### limit udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 151: --dry-run limit to 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### limit tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 152: --dry-run limit to 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### limit udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 153: --dry-run limit to any app Apache (rc=0)
+R ### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
+O Rules updated
+## 154: --dry-run limit to any app Apache Secure (rc=0)
+R ### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
+R -A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
+O Rules updated
+## 155: --dry-run limit to any app Apache Full (rc=0)
+R ### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
+O Rules updated
+## 156: --dry-run limit to any app Bind9 (rc=0)
+R ### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+R -A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p tcp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
+R -A ufw-user-input -p udp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
+O Rules updated
+## 157: --dry-run limit to any app Samba (rc=0)
+R ### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+O Rules updated
+## 158: --dry-run limit to any app OpenNTPD (rc=0)
+R ### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 159: --dry-run limit to any app Multi TCP (rc=0)
+R ### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
+O Rules updated
+## 160: --dry-run limit to any app Multi UDP (rc=0)
+R ### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
+O Rules updated
+## 161: --dry-run limit from 192.168.0.0/16 app Apache (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
+O Rules updated
+## 162: --dry-run limit from 192.168.0.0/16 app Apache Secure (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache%20Secure'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Secure'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 163: --dry-run limit from 192.168.0.0/16 app Apache Full (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 164: --dry-run limit from 192.168.0.0/16 app Bind9 (rc=0)
+R ### tuple ### limit any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 165: --dry-run limit from 192.168.0.0/16 app Samba (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+O Rules updated
+## 166: --dry-run limit from 192.168.0.0/16 app OpenNTPD (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 167: --dry-run limit from 192.168.0.0/16 app Multi TCP (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 168: --dry-run limit from 192.168.0.0/16 app Multi UDP (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 169: --dry-run limit from any app Apache (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --sport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
+O Rules updated
+## 170: --dry-run limit from any app Apache Secure (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
+R -A ufw-user-input -p tcp --sport 443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --sport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Secure'
+R -A ufw-user-input -p tcp --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
+O Rules updated
+## 171: --dry-run limit from any app Apache Full (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
+O Rules updated
+## 172: --dry-run limit from any app Bind9 (rc=0)
+R ### tuple ### limit any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
+R -A ufw-user-input -p tcp --sport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p tcp --sport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p tcp --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp --sport 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp --sport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
+R -A ufw-user-input -p udp --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
+O Rules updated
+## 173: --dry-run limit from any app Samba (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+O Rules updated
+## 174: --dry-run limit from any app OpenNTPD (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --sport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp --sport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 175: --dry-run limit from any app Multi TCP (rc=0)
+R ### tuple ### limit tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20TCP'
+R -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
+O Rules updated
+## 176: --dry-run limit from any app Multi UDP (rc=0)
+R ### tuple ### limit udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20UDP'
+R -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
+O Rules updated
+## 177: --dry-run limit from 192.168.0.1 app Apache to 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### limit tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
+R -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
+O Rules updated
+## 178: --dry-run limit from 192.168.0.1 app OpenNTPD to 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### limit udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
+R -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 179: --dry-run limit from 192.168.0.1 app Samba to 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### limit tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 180: --dry-run limit from 192.168.0.1 app Samba to 192.168.0.2 port 13 (rc=0)
+R ### tuple ### limit udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+O Rules updated
+## 181: --dry-run limit from 192.168.0.1 app Apache to 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### limit tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 182: --dry-run limit to 192.168.0.1 app Apache from 192.168.0.2 port 8080 (rc=0)
+R ### tuple ### limit tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
+O Rules updated
+## 183: --dry-run limit to 192.168.0.1 app OpenNTPD from 192.168.0.2 port 10123 (rc=0)
+R ### tuple ### limit udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
+R -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 184: --dry-run limit to 192.168.0.1 app Samba from 192.168.0.2 app Bind9 (rc=0)
+R ### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### limit tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 185: --dry-run limit to 192.168.0.1 app Samba from 192.168.0.2 port 13 (rc=0)
+R ### tuple ### limit udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+O Rules updated
+## 186: --dry-run limit to 192.168.0.1 app Apache from 192.168.0.2 app Apache Full (rc=0)
+R ### tuple ### limit tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 187: --dry-run limit to 192.168.0.1 app Samba from 192.168.0.1 app Samba (rc=0)
+R ### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### limit tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 188: --dry-run limit from any app Apache to any port 8080 (rc=0)
+R ### tuple ### limit tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
+R -A ufw-user-input -p tcp --dport 8080 --sport 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp --dport 8080 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
+R -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
+O Rules updated
+## 189: --dry-run limit from any app OpenNTPD to any port 10123 (rc=0)
+R ### tuple ### limit udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
+R -A ufw-user-input -p udp --dport 10123 --sport 123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 10123 --sport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 10123 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
+O Rules updated
+## 190: --dry-run limit from any app Samba to any app Bind9 (rc=0)
+R ### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+R ### tuple ### limit tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
+O Rules updated
+## 191: --dry-run limit from any app Samba to any port 13 (rc=0)
+R ### tuple ### limit udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+R ### tuple ### limit tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+O Rules updated
+## 192: --dry-run limit from any app Apache to any app Apache Full (rc=0)
+R ### tuple ### limit tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+R -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
+O Rules updated
+## 193: --dry-run limit to any app Apache from any port 8080 (rc=0)
+R ### tuple ### limit tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 --sport 8080 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 --sport 8080 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
+R -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
+O Rules updated
+## 194: --dry-run limit to any app OpenNTPD from any port 10123 (rc=0)
+R ### tuple ### limit udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
+R -A ufw-user-input -p udp --dport 123 --sport 10123 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 --sport 10123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
+R -A ufw-user-input -p udp --dport 123 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
+O Rules updated
+## 195: --dry-run limit to any app Samba from any app Bind9 (rc=0)
+R ### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+R ### tuple ### limit tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
+O Rules updated
+## 196: --dry-run limit to any app Samba from any port 13 (rc=0)
+R ### tuple ### limit udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+R ### tuple ### limit tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+O Rules updated
+## 197: --dry-run limit to any app Apache from any app Apache Full (rc=0)
+R ### tuple ### limit tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+R -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
+O Rules updated
+## 198: --dry-run limit to any app Samba from any app Samba (rc=0)
+R ### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+R ### tuple ### limit tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
+O Rules updated
+## 199: --dry-run allow runtest (rc=0)
+R ### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest - in
+R -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
+O Rules updated
+## 200: --dry-run allow RunTest (rc=0)
+R ### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest - in
+R -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
+O Rules updated
+## 201: app default allow (rc=0)
+O Default application policy changed to 'allow'
+## 202: --dry-run app update --add-new Apache (rc=0)
+R ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+R -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+O Rules updated
+## 203: app default deny (rc=0)
+O Default application policy changed to 'deny'
+## 204: --dry-run app update --add-new Samba (rc=0)
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+R ### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+O Rules updated
+## 205: app default skip (rc=0)
+O Default application policy changed to 'skip'
+## 206: --dry-run app update --add-new Bind9 (rc=0)
+## 207: app default reject (rc=0)
+O Default application policy changed to 'reject'
+## 208: --dry-run app update --add-new Samba (rc=0)
+R ### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+R ### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+R ### tuple ### reject tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+R -A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+O Rules updated
+## 209: --dry-run allow RunTest2 (rc=0)
+R ### tuple ### allow tcp 24 0.0.0.0/0 any 0.0.0.0/0 RunTest2 - in
+R -A ufw-user-input -p tcp --dport 24 -j ACCEPT -m comment --comment 'dapp_RunTest2'
+O Rules updated
+## 210: allow Apache (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
++ -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
++ 
+## 211: allow Bind9 (rc=0)
+O Rules updated
++ ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
++ -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
++ -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
++ 
+## 212: insert 1 allow Samba (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 213: insert 2 reject Dovecot POP3 (rc=0)
+O Rules updated
++ ### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
++ -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
++ 
+## 214: delete allow Apache (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
+- -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+- 
+## 215: delete allow Bind9 (rc=0)
+O Rules updated
+- ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
+- -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+- -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+- 
+## 216: delete allow Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 217: delete reject Dovecot POP3 (rc=0)
+O Rules updated
+- ### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
+- -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
+- 
+## 218: allow Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 219: allow 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -p udp --dport 13 -j ACCEPT
++ 
+## 220: insert 2 allow log-all from any to any app Samba (rc=0)
+O Skipping inserting existing rule
+## 221: insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 222: insert 2 allow from 192.168.0.1 to any app Samba (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 223: insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1 (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
++ -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
++ -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+## 224: insert 2 allow from any app Samba to 10.0.0.1 (rc=0)
+O Rules updated
++ 
++ ### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
++ -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
++ -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+## 225: delete allow Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 226: delete allow 13 (rc=0)
+O Rules updated
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -p udp --dport 13 -j ACCEPT
+- 
+## 227: delete allow log-all from any to any app Samba (rc=0)
+O Could not delete non-existent rule
+O Could not delete non-existent rule (v6)
+## 228: delete allow from 192.168.0.1 to 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 229: delete allow from 192.168.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 230: delete allow from 192.168.0.1 app Samba to 10.0.0.1 (rc=0)
+O Rules updated
+- ### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
+- -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
+- -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+## 231: delete allow from any app Samba to 10.0.0.1 (rc=0)
+O Rules updated
+- ### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
+- -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
+- -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+## 232: allow in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 233: allow in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
+## 234: allow in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 235: delete allow in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 236: delete allow in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+## 237: delete allow in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 238: deny in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
+## 239: deny in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
++ 
+## 240: deny in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
+## 241: delete deny in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+## 242: delete deny in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+## 243: delete deny in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+## 244: limit in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
+## 245: limit in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
++ 
+## 246: limit in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
+## 247: delete limit in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+## 248: delete limit in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+## 249: delete limit in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+## 250: reject in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
++ 
+## 251: reject in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
++ 
+## 252: reject in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
++ 
+## 253: delete reject in on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+## 254: delete reject in on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
+## 255: delete reject in on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+- 
+## 256: allow in on eth0 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth0
++ -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 257: allow in on eth1 to any port 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in_eth1
++ -A ufw-user-input -i eth1 -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-input -i eth1 -p udp --dport 13 -j ACCEPT
++ 
+## 258: insert 2 allow in on eth2 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
++ -A ufw-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
++ -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 259: delete allow in on eth0 to any app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth0
+- -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 260: delete allow in on eth1 to any port 13 (rc=0)
+O Rules updated
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in_eth1
+- -A ufw-user-input -i eth1 -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-input -i eth1 -p udp --dport 13 -j ACCEPT
+- 
+## 261: delete allow in on eth2 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
+- -A ufw-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
+- -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 262: allow out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 263: allow out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
++ 
+## 264: allow out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 265: delete allow out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 266: delete allow out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+## 267: delete allow out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 268: deny out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
+## 269: deny out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
++ 
+## 270: deny out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
+## 271: delete deny out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+## 272: delete deny out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+## 273: delete deny out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+## 274: limit out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
+## 275: limit out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
++ 
+## 276: limit out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
++ 
+## 277: delete limit out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+## 278: delete limit out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+## 279: delete limit out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+- 
+## 280: reject out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
++ 
+## 281: reject out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
++ 
++ ### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
++ 
+## 282: reject out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
++ 
+## 283: delete reject out on eth0 to 192.168.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+## 284: delete reject out on eth0 from 10.0.0.1 app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
+- 
+- ### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
+## 285: delete reject out on eth0 from 10.0.0.1 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+- 
+## 286: allow out on eth0 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
++ -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 287: allow out on eth1 to any port 13 (rc=0)
+O Rules updated
++ ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 out_eth1
++ -A ufw-user-output -o eth1 -p tcp --dport 13 -j ACCEPT
++ -A ufw-user-output -o eth1 -p udp --dport 13 -j ACCEPT
++ 
+## 288: insert 2 allow out on eth2 to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
++ -A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
++ -A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 289: delete allow out on eth0 to any app Samba (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+- -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+## 290: delete allow out on eth1 to any port 13 (rc=0)
+O Rules updated
+- ### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 out_eth1
+- -A ufw-user-output -o eth1 -p tcp --dport 13 -j ACCEPT
+- -A ufw-user-output -o eth1 -p udp --dport 13 -j ACCEPT
+- 
+## 291: delete allow out on eth2 to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+- -A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+- -A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 292: app info Transmission (rc=0)
+O Profile: Transmission
+O Title: Transmission
+O Description: Transmission BitTorrent client
+O 
+O Port:
+O   51413
+## 293: allow Transmission (rc=0)
+O Rules updated
++ ### tuple ### allow any 51413 0.0.0.0/0 any 0.0.0.0/0 Transmission - in
++ -A ufw-user-input -p tcp --dport 51413 -j ACCEPT -m comment --comment 'dapp_Transmission'
++ -A ufw-user-input -p udp --dport 51413 -j ACCEPT -m comment --comment 'dapp_Transmission'
++ 
+## 294: delete allow Transmission (rc=0)
+O Rules updated
+- ### tuple ### allow any 51413 0.0.0.0/0 any 0.0.0.0/0 Transmission - in
+- -A ufw-user-input -p tcp --dport 51413 -j ACCEPT -m comment --comment 'dapp_Transmission'
+- -A ufw-user-input -p udp --dport 51413 -j ACCEPT -m comment --comment 'dapp_Transmission'
+- 
+## 295: app info Deluge (rc=0)
+O Profile: Deluge
+O Title: Deluge
+O Description: Deluge BitTorrent client
+O 
+O Port:
+O   6881:6891/tcp
+## 296: allow Deluge (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 6881:6891 0.0.0.0/0 any 0.0.0.0/0 Deluge - in
++ -A ufw-user-input -p tcp -m multiport --dports 6881:6891 -j ACCEPT -m comment --comment 'dapp_Deluge'
++ 
+## 297: delete allow Deluge (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 6881:6891 0.0.0.0/0 any 0.0.0.0/0 Deluge - in
+- -A ufw-user-input -p tcp -m multiport --dports 6881:6891 -j ACCEPT -m comment --comment 'dapp_Deluge'
+- 
+## 298: app info KTorrent (rc=0)
+O Profile: KTorrent
+O Title: KTorrent
+O Description: KTorrent BitTorrent client
+O 
+O Ports:
+O   6881/tcp
+O   4444/udp
+## 299: allow KTorrent (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 6881 0.0.0.0/0 any 0.0.0.0/0 KTorrent - in
++ -A ufw-user-input -p tcp --dport 6881 -j ACCEPT -m comment --comment 'dapp_KTorrent'
++ 
++ ### tuple ### allow udp 4444 0.0.0.0/0 any 0.0.0.0/0 KTorrent - in
++ -A ufw-user-input -p udp --dport 4444 -j ACCEPT -m comment --comment 'dapp_KTorrent'
++ 
+## 300: delete allow KTorrent (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 6881 0.0.0.0/0 any 0.0.0.0/0 KTorrent - in
+- -A ufw-user-input -p tcp --dport 6881 -j ACCEPT -m comment --comment 'dapp_KTorrent'
+- 
+- ### tuple ### allow udp 4444 0.0.0.0/0 any 0.0.0.0/0 KTorrent - in
+- -A ufw-user-input -p udp --dport 4444 -j ACCEPT -m comment --comment 'dapp_KTorrent'
+- 
+## 301: app info qBittorrent (rc=0)
+O Profile: qBittorrent
+O Title: qBittorrent
+O Description: qBittorrent BitTorrent client
+O 
+O Port:
+O   6881/tcp
+## 302: allow qBittorrent (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 6881 0.0.0.0/0 any 0.0.0.0/0 qBittorrent - in
++ -A ufw-user-input -p tcp --dport 6881 -j ACCEPT -m comment --comment 'dapp_qBittorrent'
++ 
+## 303: delete allow qBittorrent (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 6881 0.0.0.0/0 any 0.0.0.0/0 qBittorrent - in
+- -A ufw-user-input -p tcp --dport 6881 -j ACCEPT -m comment --comment 'dapp_qBittorrent'
+- 
+## 304: app info PeopleNearby (rc=0)
+O Profile: PeopleNearby
+O Title: People Nearby
+O Description: People Nearby (Bonjour/Salut) functionality in Empathy
+O 
+O Ports:
+O   5353/udp
+O   5298
+## 305: allow PeopleNearby (rc=0)
+O Rules updated
++ ### tuple ### allow udp 5353 0.0.0.0/0 any 0.0.0.0/0 PeopleNearby - in
++ -A ufw-user-input -p udp --dport 5353 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
++ 
++ ### tuple ### allow any 5298 0.0.0.0/0 any 0.0.0.0/0 PeopleNearby - in
++ -A ufw-user-input -p tcp --dport 5298 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
++ -A ufw-user-input -p udp --dport 5298 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
++ 
+## 306: delete allow PeopleNearby (rc=0)
+O Rules updated
+- ### tuple ### allow udp 5353 0.0.0.0/0 any 0.0.0.0/0 PeopleNearby - in
+- -A ufw-user-input -p udp --dport 5353 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
+- 
+- ### tuple ### allow any 5298 0.0.0.0/0 any 0.0.0.0/0 PeopleNearby - in
+- -A ufw-user-input -p tcp --dport 5298 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
+- -A ufw-user-input -p udp --dport 5298 -j ACCEPT -m comment --comment 'dapp_PeopleNearby'
+- 
+## 307: app info Bonjour (rc=0)
+O Profile: Bonjour
+O Title: Bonjour
+O Description: Bonjour protocol
+O 
+O Ports:
+O   5353/udp
+O   5298
+## 308: allow Bonjour (rc=0)
+O Rules updated
++ ### tuple ### allow udp 5353 0.0.0.0/0 any 0.0.0.0/0 Bonjour - in
++ -A ufw-user-input -p udp --dport 5353 -j ACCEPT -m comment --comment 'dapp_Bonjour'
++ 
++ ### tuple ### allow any 5298 0.0.0.0/0 any 0.0.0.0/0 Bonjour - in
++ -A ufw-user-input -p tcp --dport 5298 -j ACCEPT -m comment --comment 'dapp_Bonjour'
++ -A ufw-user-input -p udp --dport 5298 -j ACCEPT -m comment --comment 'dapp_Bonjour'
++ 
+## 309: delete allow Bonjour (rc=0)
+O Rules updated
+- ### tuple ### allow udp 5353 0.0.0.0/0 any 0.0.0.0/0 Bonjour - in
+- -A ufw-user-input -p udp --dport 5353 -j ACCEPT -m comment --comment 'dapp_Bonjour'
+- 
+- ### tuple ### allow any 5298 0.0.0.0/0 any 0.0.0.0/0 Bonjour - in
+- -A ufw-user-input -p tcp --dport 5298 -j ACCEPT -m comment --comment 'dapp_Bonjour'
+- -A ufw-user-input -p udp --dport 5298 -j ACCEPT -m comment --comment 'dapp_Bonjour'
+- 
+## 310: app info MSN (rc=0)
+O Profile: MSN
+O Title: MSN Chat
+O Description: MSN chat protocol (with file transfer and voice)
+O 
+O Ports:
+O   1863
+O   6891:6900/tcp
+O   6901
+## 311: allow MSN (rc=0)
+O Rules updated
++ ### tuple ### allow any 1863 0.0.0.0/0 any 0.0.0.0/0 MSN - in
++ -A ufw-user-input -p tcp --dport 1863 -j ACCEPT -m comment --comment 'dapp_MSN'
++ -A ufw-user-input -p udp --dport 1863 -j ACCEPT -m comment --comment 'dapp_MSN'
++ 
++ ### tuple ### allow tcp 6891:6900 0.0.0.0/0 any 0.0.0.0/0 MSN - in
++ -A ufw-user-input -p tcp -m multiport --dports 6891:6900 -j ACCEPT -m comment --comment 'dapp_MSN'
++ 
++ ### tuple ### allow any 6901 0.0.0.0/0 any 0.0.0.0/0 MSN - in
++ -A ufw-user-input -p tcp --dport 6901 -j ACCEPT -m comment --comment 'dapp_MSN'
++ -A ufw-user-input -p udp --dport 6901 -j ACCEPT -m comment --comment 'dapp_MSN'
++ 
+## 312: delete allow MSN (rc=0)
+O Rules updated
+- ### tuple ### allow any 1863 0.0.0.0/0 any 0.0.0.0/0 MSN - in
+- -A ufw-user-input -p tcp --dport 1863 -j ACCEPT -m comment --comment 'dapp_MSN'
+- -A ufw-user-input -p udp --dport 1863 -j ACCEPT -m comment --comment 'dapp_MSN'
+- 
+- ### tuple ### allow tcp 6891:6900 0.0.0.0/0 any 0.0.0.0/0 MSN - in
+- -A ufw-user-input -p tcp -m multiport --dports 6891:6900 -j ACCEPT -m comment --comment 'dapp_MSN'
+- 
+- ### tuple ### allow any 6901 0.0.0.0/0 any 0.0.0.0/0 MSN - in
+- -A ufw-user-input -p tcp --dport 6901 -j ACCEPT -m comment --comment 'dapp_MSN'
+- -A ufw-user-input -p udp --dport 6901 -j ACCEPT -m comment --comment 'dapp_MSN'
+- 
+## 313: app info MSN SSL (rc=0)
+O Profile: MSN SSL
+O Title: MSN Chat (SSL)
+O Description: MSN chat protocol (SSL)
+O 
+O Port:
+O   443/tcp
+## 314: allow MSN SSL (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 MSN%20SSL - in
++ -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_MSN%20SSL'
++ 
+## 315: delete allow MSN SSL (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 MSN%20SSL - in
+- -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_MSN%20SSL'
+- 
+## 316: app info AIM (rc=0)
+O Profile: AIM
+O Title: AIM Talk
+O Description: AIM talk protocol
+O 
+O Port:
+O   5190/tcp
+## 317: allow AIM (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 5190 0.0.0.0/0 any 0.0.0.0/0 AIM - in
++ -A ufw-user-input -p tcp --dport 5190 -j ACCEPT -m comment --comment 'dapp_AIM'
++ 
+## 318: delete allow AIM (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 5190 0.0.0.0/0 any 0.0.0.0/0 AIM - in
+- -A ufw-user-input -p tcp --dport 5190 -j ACCEPT -m comment --comment 'dapp_AIM'
+- 
+## 319: app info Yahoo (rc=0)
+O Profile: Yahoo
+O Title: Yahoo Chat
+O Description: Yahoo chat protocol
+O 
+O Port:
+O   5050
+## 320: allow Yahoo (rc=0)
+O Rules updated
++ ### tuple ### allow any 5050 0.0.0.0/0 any 0.0.0.0/0 Yahoo - in
++ -A ufw-user-input -p tcp --dport 5050 -j ACCEPT -m comment --comment 'dapp_Yahoo'
++ -A ufw-user-input -p udp --dport 5050 -j ACCEPT -m comment --comment 'dapp_Yahoo'
++ 
+## 321: delete allow Yahoo (rc=0)
+O Rules updated
+- ### tuple ### allow any 5050 0.0.0.0/0 any 0.0.0.0/0 Yahoo - in
+- -A ufw-user-input -p tcp --dport 5050 -j ACCEPT -m comment --comment 'dapp_Yahoo'
+- -A ufw-user-input -p udp --dport 5050 -j ACCEPT -m comment --comment 'dapp_Yahoo'
+- 
+## 322: app info XMPP (rc=0)
+O Profile: XMPP
+O Title: XMPP Chat
+O Description: XMPP protocol (Jabber and Google Talk)
+O 
+O Ports:
+O   5222/tcp
+O   5269/tcp
+## 323: allow XMPP (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 5222 0.0.0.0/0 any 0.0.0.0/0 XMPP - in
++ -A ufw-user-input -p tcp --dport 5222 -j ACCEPT -m comment --comment 'dapp_XMPP'
++ 
++ ### tuple ### allow tcp 5269 0.0.0.0/0 any 0.0.0.0/0 XMPP - in
++ -A ufw-user-input -p tcp --dport 5269 -j ACCEPT -m comment --comment 'dapp_XMPP'
++ 
+## 324: delete allow XMPP (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 5222 0.0.0.0/0 any 0.0.0.0/0 XMPP - in
+- -A ufw-user-input -p tcp --dport 5222 -j ACCEPT -m comment --comment 'dapp_XMPP'
+- 
+- ### tuple ### allow tcp 5269 0.0.0.0/0 any 0.0.0.0/0 XMPP - in
+- -A ufw-user-input -p tcp --dport 5269 -j ACCEPT -m comment --comment 'dapp_XMPP'
+- 
+## 325: app info Kerberos KDC (rc=0)
+O Profile: Kerberos KDC
+O Title: Kerberos v5 KDC server
+O Description: Kerberos v5 KDC server
+O 
+O Port:
+O   88
+## 326: allow Kerberos KDC (rc=0)
+O Rules updated
++ ### tuple ### allow any 88 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20KDC - in
++ -A ufw-user-input -p tcp --dport 88 -j ACCEPT -m comment --comment 'dapp_Kerberos%20KDC'
++ -A ufw-user-input -p udp --dport 88 -j ACCEPT -m comment --comment 'dapp_Kerberos%20KDC'
++ 
+## 327: delete allow Kerberos KDC (rc=0)
+O Rules updated
+- ### tuple ### allow any 88 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20KDC - in
+- -A ufw-user-input -p tcp --dport 88 -j ACCEPT -m comment --comment 'dapp_Kerberos%20KDC'
+- -A ufw-user-input -p udp --dport 88 -j ACCEPT -m comment --comment 'dapp_Kerberos%20KDC'
+- 
+## 328: app info Kerberos Admin (rc=0)
+O Profile: Kerberos Admin
+O Title: Kerberos v5 admin
+O Description: Kerberos v5 server
+O 
+O Port:
+O   749/tcp
+## 329: allow Kerberos Admin (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 749 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Admin - in
++ -A ufw-user-input -p tcp --dport 749 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Admin'
++ 
+## 330: delete allow Kerberos Admin (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 749 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Admin - in
+- -A ufw-user-input -p tcp --dport 749 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Admin'
+- 
+## 331: app info Kerberos Password (rc=0)
+O Profile: Kerberos Password
+O Title: Kerberos v5 password
+O Description: Kerberos v5 password
+O 
+O Port:
+O   464/udp
+## 332: allow Kerberos Password (rc=0)
+O Rules updated
++ ### tuple ### allow udp 464 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Password - in
++ -A ufw-user-input -p udp --dport 464 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Password'
++ 
+## 333: delete allow Kerberos Password (rc=0)
+O Rules updated
+- ### tuple ### allow udp 464 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Password - in
+- -A ufw-user-input -p udp --dport 464 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Password'
+- 
+## 334: app info Kerberos Full (rc=0)
+O Profile: Kerberos Full
+O Title: Kerberos v5 server
+O Description: Kerberos v5 server
+O 
+O Ports:
+O   88,749/tcp
+O   464/udp
+## 335: allow Kerberos Full (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 88,749 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Full - in
++ -A ufw-user-input -p tcp -m multiport --dports 88,749 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Full'
++ 
++ ### tuple ### allow udp 464 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Full - in
++ -A ufw-user-input -p udp --dport 464 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Full'
++ 
+## 336: delete allow Kerberos Full (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 88,749 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Full - in
+- -A ufw-user-input -p tcp -m multiport --dports 88,749 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Full'
+- 
+- ### tuple ### allow udp 464 0.0.0.0/0 any 0.0.0.0/0 Kerberos%20Full - in
+- -A ufw-user-input -p udp --dport 464 -j ACCEPT -m comment --comment 'dapp_Kerberos%20Full'
+- 
+## 337: app info LDAP (rc=0)
+O Profile: LDAP
+O Title: LDAP server
+O Description: LDAP server
+O 
+O Port:
+O   389/tcp
+## 338: allow LDAP (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 389 0.0.0.0/0 any 0.0.0.0/0 LDAP - in
++ -A ufw-user-input -p tcp --dport 389 -j ACCEPT -m comment --comment 'dapp_LDAP'
++ 
+## 339: delete allow LDAP (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 389 0.0.0.0/0 any 0.0.0.0/0 LDAP - in
+- -A ufw-user-input -p tcp --dport 389 -j ACCEPT -m comment --comment 'dapp_LDAP'
+- 
+## 340: app info LDAPS (rc=0)
+O Profile: LDAPS
+O Title: LDAP server (LDAPS)
+O Description: LDAP server (LDAPS)
+O 
+O Port:
+O   636/tcp
+## 341: allow LDAPS (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 636 0.0.0.0/0 any 0.0.0.0/0 LDAPS - in
++ -A ufw-user-input -p tcp --dport 636 -j ACCEPT -m comment --comment 'dapp_LDAPS'
++ 
+## 342: delete allow LDAPS (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 636 0.0.0.0/0 any 0.0.0.0/0 LDAPS - in
+- -A ufw-user-input -p tcp --dport 636 -j ACCEPT -m comment --comment 'dapp_LDAPS'
+- 
+## 343: app info DNS (rc=0)
+O Profile: DNS
+O Title: Internet Domain Name Server
+O Description: Internet Domain Name Server
+O 
+O Port:
+O   53
+## 344: allow DNS (rc=0)
+O Rules updated
++ ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 DNS - in
++ -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_DNS'
++ -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_DNS'
++ 
+## 345: delete allow DNS (rc=0)
+O Rules updated
+- ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 DNS - in
+- -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_DNS'
+- -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_DNS'
+- 
+## 346: app info CIFS (rc=0)
+O Profile: CIFS
+O Title: SMB/CIFS server
+O Description: SMB/CIFS server
+O 
+O Ports:
+O   137,138/udp
+O   139,445/tcp
+## 347: allow CIFS (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 CIFS - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_CIFS'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 CIFS - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_CIFS'
++ 
+## 348: delete allow CIFS (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 CIFS - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_CIFS'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 CIFS - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_CIFS'
+- 
+## 349: app info NFS (rc=0)
+O Profile: NFS
+O Title: NFS server
+O Description: NFS and portmap server. Will also need access to mountd, statd
+O and possibly others
+O 
+O Ports:
+O   2049,111/tcp
+O   2049,111/udp
+## 350: allow NFS (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 111,2049 0.0.0.0/0 any 0.0.0.0/0 NFS - in
++ -A ufw-user-input -p tcp -m multiport --dports 111,2049 -j ACCEPT -m comment --comment 'dapp_NFS'
++ 
++ ### tuple ### allow udp 111,2049 0.0.0.0/0 any 0.0.0.0/0 NFS - in
++ -A ufw-user-input -p udp -m multiport --dports 111,2049 -j ACCEPT -m comment --comment 'dapp_NFS'
++ 
+## 351: delete allow NFS (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 111,2049 0.0.0.0/0 any 0.0.0.0/0 NFS - in
+- -A ufw-user-input -p tcp -m multiport --dports 111,2049 -j ACCEPT -m comment --comment 'dapp_NFS'
+- 
+- ### tuple ### allow udp 111,2049 0.0.0.0/0 any 0.0.0.0/0 NFS - in
+- -A ufw-user-input -p udp -m multiport --dports 111,2049 -j ACCEPT -m comment --comment 'dapp_NFS'
+- 
+## 352: app info svnserve (rc=0)
+O Profile: svnserve
+O Title: Subversion server
+O Description: Subversion server for access to Subversion repositories.
+O 
+O Port:
+O   3690/tcp
+## 353: allow svnserve (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 3690 0.0.0.0/0 any 0.0.0.0/0 svnserve - in
++ -A ufw-user-input -p tcp --dport 3690 -j ACCEPT -m comment --comment 'dapp_svnserve'
++ 
+## 354: delete allow svnserve (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 3690 0.0.0.0/0 any 0.0.0.0/0 svnserve - in
+- -A ufw-user-input -p tcp --dport 3690 -j ACCEPT -m comment --comment 'dapp_svnserve'
+- 
+## 355: app info Telnet (rc=0)
+O Profile: Telnet
+O Title: Telnet server (insecure)
+O Description: Telnet server (insecure)
+O 
+O Port:
+O   23/tcp
+## 356: allow Telnet (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 Telnet - in
++ -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_Telnet'
++ 
+## 357: delete allow Telnet (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 Telnet - in
+- -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_Telnet'
+- 
+## 358: app info SSH (rc=0)
+O Profile: SSH
+O Title: SSH server
+O Description: SSH server
+O 
+O Port:
+O   22/tcp
+## 359: allow SSH (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 SSH - in
++ -A ufw-user-input -p tcp --dport 22 -j ACCEPT -m comment --comment 'dapp_SSH'
++ 
+## 360: delete allow SSH (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 SSH - in
+- -A ufw-user-input -p tcp --dport 22 -j ACCEPT -m comment --comment 'dapp_SSH'
+- 
+## 361: app info VNC (rc=0)
+O Profile: VNC
+O Title: VNC server
+O Description: VNC server
+O 
+O Port:
+O   5900/tcp
+## 362: allow VNC (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 5900 0.0.0.0/0 any 0.0.0.0/0 VNC - in
++ -A ufw-user-input -p tcp --dport 5900 -j ACCEPT -m comment --comment 'dapp_VNC'
++ 
+## 363: delete allow VNC (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 5900 0.0.0.0/0 any 0.0.0.0/0 VNC - in
+- -A ufw-user-input -p tcp --dport 5900 -j ACCEPT -m comment --comment 'dapp_VNC'
+- 
+## 364: app info POP3 (rc=0)
+O Profile: POP3
+O Title: Mail server (POP3)
+O Description: Mail server (POP3)
+O 
+O Port:
+O   110/tcp
+## 365: allow POP3 (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 110 0.0.0.0/0 any 0.0.0.0/0 POP3 - in
++ -A ufw-user-input -p tcp --dport 110 -j ACCEPT -m comment --comment 'dapp_POP3'
++ 
+## 366: delete allow POP3 (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 110 0.0.0.0/0 any 0.0.0.0/0 POP3 - in
+- -A ufw-user-input -p tcp --dport 110 -j ACCEPT -m comment --comment 'dapp_POP3'
+- 
+## 367: app info POP3S (rc=0)
+O Profile: POP3S
+O Title: Secure mail server (POP3S)
+O Description: Secure mail server (POP3S)
+O 
+O Port:
+O   995/tcp
+## 368: allow POP3S (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 995 0.0.0.0/0 any 0.0.0.0/0 POP3S - in
++ -A ufw-user-input -p tcp --dport 995 -j ACCEPT -m comment --comment 'dapp_POP3S'
++ 
+## 369: delete allow POP3S (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 995 0.0.0.0/0 any 0.0.0.0/0 POP3S - in
+- -A ufw-user-input -p tcp --dport 995 -j ACCEPT -m comment --comment 'dapp_POP3S'
+- 
+## 370: app info IMAP (rc=0)
+O Profile: IMAP
+O Title: Mail server (IMAP)
+O Description: Mail server (IMAP)
+O 
+O Port:
+O   143/tcp
+## 371: allow IMAP (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 143 0.0.0.0/0 any 0.0.0.0/0 IMAP - in
++ -A ufw-user-input -p tcp --dport 143 -j ACCEPT -m comment --comment 'dapp_IMAP'
++ 
+## 372: delete allow IMAP (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 143 0.0.0.0/0 any 0.0.0.0/0 IMAP - in
+- -A ufw-user-input -p tcp --dport 143 -j ACCEPT -m comment --comment 'dapp_IMAP'
+- 
+## 373: app info IMAPS (rc=0)
+O Profile: IMAPS
+O Title: Secure mail server (IMAPS)
+O Description: Secure mail server (IMAPS)
+O 
+O Port:
+O   993/tcp
+## 374: allow IMAPS (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 993 0.0.0.0/0 any 0.0.0.0/0 IMAPS - in
++ -A ufw-user-input -p tcp --dport 993 -j ACCEPT -m comment --comment 'dapp_IMAPS'
++ 
+## 375: delete allow IMAPS (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 993 0.0.0.0/0 any 0.0.0.0/0 IMAPS - in
+- -A ufw-user-input -p tcp --dport 993 -j ACCEPT -m comment --comment 'dapp_IMAPS'
+- 
+## 376: app info SMTP (rc=0)
+O Profile: SMTP
+O Title: Mail server (SMTP)
+O Description: Mail server (SMTP)
+O 
+O Port:
+O   25/tcp
+## 377: allow SMTP (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 SMTP - in
++ -A ufw-user-input -p tcp --dport 25 -j ACCEPT -m comment --comment 'dapp_SMTP'
++ 
+## 378: delete allow SMTP (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 SMTP - in
+- -A ufw-user-input -p tcp --dport 25 -j ACCEPT -m comment --comment 'dapp_SMTP'
+- 
+## 379: app info Mail submission (rc=0)
+O Profile: Mail submission
+O Title: Mail server (Submission)
+O Description: Mail server (Submission)
+O 
+O Port:
+O   587/tcp
+## 380: allow Mail submission (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 587 0.0.0.0/0 any 0.0.0.0/0 Mail%20submission - in
++ -A ufw-user-input -p tcp --dport 587 -j ACCEPT -m comment --comment 'dapp_Mail%20submission'
++ 
+## 381: delete allow Mail submission (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 587 0.0.0.0/0 any 0.0.0.0/0 Mail%20submission - in
+- -A ufw-user-input -p tcp --dport 587 -j ACCEPT -m comment --comment 'dapp_Mail%20submission'
+- 
+## 382: app info IPP (rc=0)
+O Profile: IPP
+O Title: Cups server (IPP)
+O Description: Cups server (IPP)
+O 
+O Port:
+O   631
+## 383: allow IPP (rc=0)
+O Rules updated
++ ### tuple ### allow any 631 0.0.0.0/0 any 0.0.0.0/0 IPP - in
++ -A ufw-user-input -p tcp --dport 631 -j ACCEPT -m comment --comment 'dapp_IPP'
++ -A ufw-user-input -p udp --dport 631 -j ACCEPT -m comment --comment 'dapp_IPP'
++ 
+## 384: delete allow IPP (rc=0)
+O Rules updated
+- ### tuple ### allow any 631 0.0.0.0/0 any 0.0.0.0/0 IPP - in
+- -A ufw-user-input -p tcp --dport 631 -j ACCEPT -m comment --comment 'dapp_IPP'
+- -A ufw-user-input -p udp --dport 631 -j ACCEPT -m comment --comment 'dapp_IPP'
+- 
+## 385: app info LPD (rc=0)
+O Profile: LPD
+O Title: LPD server
+O Description: LPD server
+O 
+O Port:
+O   515/tcp
+## 386: allow LPD (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 515 0.0.0.0/0 any 0.0.0.0/0 LPD - in
++ -A ufw-user-input -p tcp --dport 515 -j ACCEPT -m comment --comment 'dapp_LPD'
++ 
+## 387: delete allow LPD (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 515 0.0.0.0/0 any 0.0.0.0/0 LPD - in
+- -A ufw-user-input -p tcp --dport 515 -j ACCEPT -m comment --comment 'dapp_LPD'
+- 
+## 388: app info Socks (rc=0)
+O Profile: Socks
+O Title: Socks proxy
+O Description: Socks proxy
+O 
+O Port:
+O   1080/tcp
+## 389: allow Socks (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 1080 0.0.0.0/0 any 0.0.0.0/0 Socks - in
++ -A ufw-user-input -p tcp --dport 1080 -j ACCEPT -m comment --comment 'dapp_Socks'
++ 
+## 390: delete allow Socks (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 1080 0.0.0.0/0 any 0.0.0.0/0 Socks - in
+- -A ufw-user-input -p tcp --dport 1080 -j ACCEPT -m comment --comment 'dapp_Socks'
+- 
+## 391: app info Transparent Proxy (rc=0)
+O Profile: Transparent Proxy
+O Title: Transparent proxy
+O Description: Transparent proxy
+O 
+O Port:
+O   8081/tcp
+## 392: allow Transparent Proxy (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 8081 0.0.0.0/0 any 0.0.0.0/0 Transparent%20Proxy - in
++ -A ufw-user-input -p tcp --dport 8081 -j ACCEPT -m comment --comment 'dapp_Transparent%20Proxy'
++ 
+## 393: delete allow Transparent Proxy (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 8081 0.0.0.0/0 any 0.0.0.0/0 Transparent%20Proxy - in
+- -A ufw-user-input -p tcp --dport 8081 -j ACCEPT -m comment --comment 'dapp_Transparent%20Proxy'
+- 
+## 394: app info WWW (rc=0)
+O Profile: WWW
+O Title: Web Server
+O Description: Web server
+O 
+O Port:
+O   80/tcp
+## 395: allow WWW (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 WWW - in
++ -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_WWW'
++ 
+## 396: delete allow WWW (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 WWW - in
+- -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_WWW'
+- 
+## 397: app info WWW Secure (rc=0)
+O Profile: WWW Secure
+O Title: Web Server (HTTPS)
+O Description: Web Server (HTTPS)
+O 
+O Port:
+O   443/tcp
+## 398: allow WWW Secure (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 WWW%20Secure - in
++ -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_WWW%20Secure'
++ 
+## 399: delete allow WWW Secure (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 WWW%20Secure - in
+- -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_WWW%20Secure'
+- 
+## 400: app info WWW Full (rc=0)
+O Profile: WWW Full
+O Title: Web Server (HTTP,HTTPS)
+O Description: Web Server (HTTP,HTTPS)
+O 
+O Ports:
+O   80,443/tcp
+## 401: allow WWW Full (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 WWW%20Full - in
++ -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_WWW%20Full'
++ 
+## 402: delete allow WWW Full (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 WWW%20Full - in
+- -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_WWW%20Full'
+- 
+## 403: app info WWW Cache (rc=0)
+O Profile: WWW Cache
+O Title: Web Server (8080)
+O Description: Web Server (8080)
+O 
+O Port:
+O   8080/tcp
+## 404: allow WWW Cache (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 8080 0.0.0.0/0 any 0.0.0.0/0 WWW%20Cache - in
++ -A ufw-user-input -p tcp --dport 8080 -j ACCEPT -m comment --comment 'dapp_WWW%20Cache'
++ 
+## 405: delete allow WWW Cache (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 8080 0.0.0.0/0 any 0.0.0.0/0 WWW%20Cache - in
+- -A ufw-user-input -p tcp --dport 8080 -j ACCEPT -m comment --comment 'dapp_WWW%20Cache'
+- 
+## 406: allow to any app Samba (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 407: prepend deny to any app Samba from 10.0.0.1 (rc=0)
+O Rules updated
++ 
++ ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+## 408: delete allow to any app Samba (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+## 409: delete deny to any app Samba from 10.0.0.1 (rc=0)
+O Rules updated
+- ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+- 
+## 410: prepend allow to any app Samba from 10.0.0.1 (rc=0)
+O Rules updated
++ ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
++ 
+## 411: delete allow to any app Samba from 10.0.0.1 (rc=0)
+O Rules updated
+- ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+- 

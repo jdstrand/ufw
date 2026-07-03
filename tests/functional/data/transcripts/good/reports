@@ -1,0 +1,1098 @@
+## 0: show listening (rc=0)
+O tcp:
+O   13 * (daytime)
+O tcp6:
+O   13 * (daytime)
+O udp:
+O   123 10.0.2.101 (ntpd)
+O   123 10.0.2.9 (ntpd)
+O   123 * (ntpd)
+O   33257 * (avahi-daemon)
+O   5353 * (avahi-daemon)
+O   68 * (dhclient3)
+O   68 * (dhclient3)
+O udp6:
+O   123 2001::212:cccc:dddd:e243 (ntpd)
+O   123 2001::211:aaaa:bbbb:d54c (ntpd)
+O   123 * (ntpd)
+O 
+## 1: allow in 123 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 123 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 123 -j ACCEPT
++ -A ufw-user-input -p udp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow any 123 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 123 -j ACCEPT
++6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT
++6 
+## 2: allow in OpenNTPD (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
++ -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
++ 
++6 ### tuple ### allow udp 123 ::/0 any ::/0 OpenNTPD - in
++6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
++6 
+## 3: allow in 123/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow tcp 123 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow tcp 123 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 123 -j ACCEPT
++6 
+## 4: allow to any (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -j ACCEPT
++ 
++6 ### tuple ### allow any any ::/0 any ::/0 in
++6 -A ufw6-user-input -j ACCEPT
++6 
+## 5: allow to any proto udp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow udp any 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p udp -j ACCEPT
++ 
++6 ### tuple ### allow udp any ::/0 any ::/0 in
++6 -A ufw6-user-input -p udp -j ACCEPT
++6 
+## 6: allow to any proto tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow tcp any 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -j ACCEPT
++ 
++6 ### tuple ### allow tcp any ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp -j ACCEPT
++6 
+## 7: allow to 10.0.2.101 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.101 any 0.0.0.0/0 in
++ -A ufw-user-input -d 10.0.2.101 -j ACCEPT
++ 
+## 8: allow to 10.0.2.9 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.9 any 0.0.0.0/0 in
++ -A ufw-user-input -d 10.0.2.9 -j ACCEPT
++ 
+## 9: allow to 10.0.0.0/16 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.0.0/16 any 0.0.0.0/0 in
++ -A ufw-user-input -d 10.0.0.0/16 -j ACCEPT
++ 
+## 10: allow to 10.0.2.0/24 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -d 10.0.2.0/24 -j ACCEPT
++ 
+## 11: allow to 10.0.3.0/24 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.3.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -d 10.0.3.0/24 -j ACCEPT
++ 
+## 12: allow to 2001::211:aaaa:bbbb:d54c (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c any ::/0 in
++6 -A ufw6-user-input -d 2001::211:aaaa:bbbb:d54c -j ACCEPT
++6 
+## 13: allow to 2001::211:aaaa:bbbb:d54c/112 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
++6 -A ufw6-user-input -d 2001::211:aaaa:bbbb:d54c/112 -j ACCEPT
++6 
+## 14: allow to 10.0.2.101 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.2.101 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
++ -A ufw-user-input -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 15: allow to 10.0.0.0/16 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.0.0/16 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ -A ufw-user-input -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ 
+## 16: allow to 10.0.2.0/24 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.2.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ -A ufw-user-input -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 17: allow to 10.0.3.0/24 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.3.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ -A ufw-user-input -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 18: allow to 2001::211:aaaa:bbbb:d54c port 123 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c any ::/0 in
++6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 19: allow to 2001::211:aaaa:bbbb:d54c/112 port 123 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
++6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 20: allow to 10.0.2.101 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.2.101 any 0.0.0.0/0 in
++ -A ufw-user-input -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 21: allow to 10.0.0.0/16 app OpenNTPD (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.0.0/16 any 0.0.0.0/0 OpenNTPD - in
++ -A ufw-user-input -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
++ 
+## 22: allow to 10.0.2.0/24 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.2.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 23: allow to 10.0.3.0/24 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.3.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 24: allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c any ::/0 in
++6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 25: allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
++6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 26: allow to 10.0.2.101 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.2.101 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 27: allow to 10.0.0.0/16 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.0.0/16 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ 
+## 28: allow to 10.0.2.0/24 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.2.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 29: allow to 10.0.3.0/24 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.3.0/24 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 30: allow to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in
++6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 31: allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
++6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 32: allow out 123 (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any 123 0.0.0.0/0 any 0.0.0.0/0 out
++ -A ufw-user-output -p tcp --dport 123 -j ACCEPT
++ -A ufw-user-output -p udp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow any 123 ::/0 any ::/0 out
++6 -A ufw6-user-output -p tcp --dport 123 -j ACCEPT
++6 -A ufw6-user-output -p udp --dport 123 -j ACCEPT
++6 
+## 33: allow out 123/udp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 out
++ -A ufw-user-output -p udp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow udp 123 ::/0 any ::/0 out
++6 -A ufw6-user-output -p udp --dport 123 -j ACCEPT
++6 
+## 34: allow out 123/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow tcp 123 0.0.0.0/0 any 0.0.0.0/0 out
++ -A ufw-user-output -p tcp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow tcp 123 ::/0 any ::/0 out
++6 -A ufw6-user-output -p tcp --dport 123 -j ACCEPT
++6 
+## 35: allow in on eth0 to any (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -j ACCEPT
++ 
++6 ### tuple ### allow any any ::/0 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -j ACCEPT
++6 
+## 36: allow in on eth0 to any proto udp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow udp any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p udp -j ACCEPT
++ 
++6 ### tuple ### allow udp any ::/0 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p udp -j ACCEPT
++6 
+## 37: allow in on eth0 to any proto tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow tcp any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -j ACCEPT
++ 
++6 ### tuple ### allow tcp any ::/0 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -j ACCEPT
++6 
+## 38: allow in on eth0 to 10.0.2.101 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.101 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -d 10.0.2.101 -j ACCEPT
++ 
+## 39: allow in on eth0 to 10.0.2.9 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.9 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -d 10.0.2.9 -j ACCEPT
++ 
+## 40: allow in on eth0 to 10.0.0.0/16 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.0.0/16 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -d 10.0.0.0/16 -j ACCEPT
++ 
+## 41: allow in on eth0 to 10.0.2.0/24 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.2.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -d 10.0.2.0/24 -j ACCEPT
++ 
+## 42: allow in on eth0 to 10.0.3.0/24 (rc=0)
+O Rules updated
++ ### tuple ### allow any any 10.0.3.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -d 10.0.3.0/24 -j ACCEPT
++ 
+## 43: allow in on eth0 to 2001::211:aaaa:bbbb:d54c (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -d 2001::211:aaaa:bbbb:d54c -j ACCEPT
++6 
+## 44: allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -d 2001::211:aaaa:bbbb:d54c/112 -j ACCEPT
++6 
+## 45: allow in on eth0 to 10.0.2.101 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.2.101 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 46: allow in on eth0 to 10.0.0.0/16 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.0.0/16 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ 
+## 47: allow in on eth0 to 10.0.2.0/24 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 48: allow in on eth0 to 10.0.3.0/24 port 123 (rc=0)
+O Rules updated
++ ### tuple ### allow any 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ -A ufw-user-input -i eth0 -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 49: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 50: allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 51: allow in on eth0 to 10.0.2.101 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.2.101 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 52: allow in on eth0 to 10.0.0.0/16 app OpenNTPD (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.0.0/16 any 0.0.0.0/0 OpenNTPD - in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
++ 
+## 53: allow in on eth0 to 10.0.2.0/24 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 54: allow in on eth0 to 10.0.3.0/24 port 123 proto udp (rc=0)
+O Rules updated
++ ### tuple ### allow udp 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 55: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 56: allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 57: allow in on eth0 to 10.0.2.101 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.2.101 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
++ 
+## 58: allow in on eth0 to 10.0.0.0/16 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.0.0/16 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
++ 
+## 59: allow in on eth0 to 10.0.2.0/24 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
++ 
+## 60: allow in on eth0 to 10.0.3.0/24 port 123 proto tcp (rc=0)
+O Rules updated
++ ### tuple ### allow tcp 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
++ -A ufw-user-input -i eth0 -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
++ 
+## 61: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 62: allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
++6 
+## 63: show listening (rc=0)
+O tcp:
+O   13 * (daytime)
+O    [ 4] allow to any
+O    [ 6] allow to any proto tcp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [27] allow in on eth0
+O    [29] allow in on eth0 proto tcp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O 
+O tcp6:
+O   13 * (daytime)
+O    [50] allow to any
+O    [52] allow to any proto tcp
+O    [53] allow to 2001::211:aaaa:bbbb:d54c
+O    [54] allow to 2001::211:aaaa:bbbb:d54c/112
+O    [64] allow in on eth0
+O    [66] allow in on eth0 proto tcp
+O    [68] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112
+O 
+O udp:
+O   123 10.0.2.101 (ntpd)
+O    [ 1] allow 123
+O    [ 2] allow OpenNTPD
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [12] allow to 10.0.2.101 port 123
+O    [13] allow to 10.0.0.0/16 port 123
+O    [14] allow to 10.0.2.0/24 port 123
+O    [16] allow to 10.0.2.101 port 123 proto udp
+O    [17] allow to 10.0.0.0/16 app OpenNTPD
+O    [18] allow to 10.0.2.0/24 port 123 proto udp
+O 
+O   123 10.0.2.9 (ntpd)
+O    [ 1] allow 123
+O    [ 2] allow OpenNTPD
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [13] allow to 10.0.0.0/16 port 123
+O    [14] allow to 10.0.2.0/24 port 123
+O    [17] allow to 10.0.0.0/16 app OpenNTPD
+O    [18] allow to 10.0.2.0/24 port 123 proto udp
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O    [36] allow in on eth0 to 10.0.0.0/16 port 123
+O    [37] allow in on eth0 to 10.0.2.0/24 port 123
+O    [40] allow in on eth0 to 10.0.0.0/16 app OpenNTPD
+O    [41] allow in on eth0 to 10.0.2.0/24 port 123 proto udp
+O 
+O   123 * (ntpd)
+O    [ 1] allow 123
+O    [ 2] allow OpenNTPD
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [12] allow to 10.0.2.101 port 123
+O    [13] allow to 10.0.0.0/16 port 123
+O    [14] allow to 10.0.2.0/24 port 123
+O    [15] allow to 10.0.3.0/24 port 123
+O    [16] allow to 10.0.2.101 port 123 proto udp
+O    [17] allow to 10.0.0.0/16 app OpenNTPD
+O    [18] allow to 10.0.2.0/24 port 123 proto udp
+O    [19] allow to 10.0.3.0/24 port 123 proto udp
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O    [36] allow in on eth0 to 10.0.0.0/16 port 123
+O    [37] allow in on eth0 to 10.0.2.0/24 port 123
+O    [40] allow in on eth0 to 10.0.0.0/16 app OpenNTPD
+O    [41] allow in on eth0 to 10.0.2.0/24 port 123 proto udp
+O 
+O   33257 * (avahi-daemon)
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O 
+O   5353 * (avahi-daemon)
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O 
+O   68 * (dhclient3)
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O 
+O   68 * (dhclient3)
+O    [ 4] allow to any
+O    [ 5] allow to any proto udp
+O    [ 7] allow to 10.0.2.101
+O    [ 8] allow to 10.0.2.9
+O    [ 9] allow to 10.0.0.0/16
+O    [10] allow to 10.0.2.0/24
+O    [11] allow to 10.0.3.0/24
+O    [27] allow in on eth0
+O    [28] allow in on eth0 proto udp
+O    [31] allow in on eth0 to 10.0.2.9
+O    [32] allow in on eth0 to 10.0.0.0/16
+O    [33] allow in on eth0 to 10.0.2.0/24
+O 
+O udp6:
+O   123 2001::212:cccc:dddd:e243 (ntpd)
+O    [47] allow 123
+O    [48] allow OpenNTPD
+O    [50] allow to any
+O    [51] allow to any proto udp
+O 
+O   123 2001::211:aaaa:bbbb:d54c (ntpd)
+O    [47] allow 123
+O    [48] allow OpenNTPD
+O    [50] allow to any
+O    [51] allow to any proto udp
+O    [53] allow to 2001::211:aaaa:bbbb:d54c
+O    [54] allow to 2001::211:aaaa:bbbb:d54c/112
+O    [55] allow to 2001::211:aaaa:bbbb:d54c port 123
+O    [56] allow to 2001::211:aaaa:bbbb:d54c/112 port 123
+O    [57] allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp
+O    [58] allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+O    [64] allow in on eth0
+O    [65] allow in on eth0 proto udp
+O    [68] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112
+O    [70] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123
+O    [71] allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp
+O    [72] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+O 
+O   123 * (ntpd)
+O    [47] allow 123
+O    [48] allow OpenNTPD
+O    [50] allow to any
+O    [51] allow to any proto udp
+O    [53] allow to 2001::211:aaaa:bbbb:d54c
+O    [54] allow to 2001::211:aaaa:bbbb:d54c/112
+O    [55] allow to 2001::211:aaaa:bbbb:d54c port 123
+O    [56] allow to 2001::211:aaaa:bbbb:d54c/112 port 123
+O    [57] allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp
+O    [58] allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+O    [64] allow in on eth0
+O    [65] allow in on eth0 proto udp
+O    [68] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112
+O    [70] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123
+O    [72] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+O 
+O 
+## 64: delete allow in 123 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow any 123 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 123 -j ACCEPT
+- -A ufw-user-input -p udp --dport 123 -j ACCEPT
+-6 
+-6 ### tuple ### allow any 123 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 123 -j ACCEPT
+-6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT
+## 65: delete allow in OpenNTPD (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
+- -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+-6 
+-6 ### tuple ### allow udp 123 ::/0 any ::/0 OpenNTPD - in
+-6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+## 66: delete allow in 123/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow tcp 123 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 123 -j ACCEPT
+-6 
+-6 ### tuple ### allow tcp 123 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 123 -j ACCEPT
+## 67: delete allow to any (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -j ACCEPT
+-6 
+-6 ### tuple ### allow any any ::/0 any ::/0 in
+-6 -A ufw6-user-input -j ACCEPT
+## 68: delete allow to any proto udp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow udp any 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p udp -j ACCEPT
+-6 
+-6 ### tuple ### allow udp any ::/0 any ::/0 in
+-6 -A ufw6-user-input -p udp -j ACCEPT
+## 69: delete allow to any proto tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -j ACCEPT
+-6 
+-6 ### tuple ### allow tcp any ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp -j ACCEPT
+## 70: delete allow to 10.0.2.101 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.101 any 0.0.0.0/0 in
+- -A ufw-user-input -d 10.0.2.101 -j ACCEPT
+## 71: delete allow to 10.0.2.9 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.9 any 0.0.0.0/0 in
+- -A ufw-user-input -d 10.0.2.9 -j ACCEPT
+## 72: delete allow to 10.0.0.0/16 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.0.0/16 any 0.0.0.0/0 in
+- -A ufw-user-input -d 10.0.0.0/16 -j ACCEPT
+## 73: delete allow to 10.0.2.0/24 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -d 10.0.2.0/24 -j ACCEPT
+## 74: delete allow to 10.0.3.0/24 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.3.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -d 10.0.3.0/24 -j ACCEPT
+## 75: delete allow to 2001::211:aaaa:bbbb:d54c (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c any ::/0 in
+-6 -A ufw6-user-input -d 2001::211:aaaa:bbbb:d54c -j ACCEPT
+## 76: delete allow to 2001::211:aaaa:bbbb:d54c/112 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
+-6 -A ufw6-user-input -d 2001::211:aaaa:bbbb:d54c/112 -j ACCEPT
+## 77: delete allow to 10.0.2.101 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.2.101 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
+- -A ufw-user-input -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 78: delete allow to 10.0.0.0/16 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.0.0/16 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+- -A ufw-user-input -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+## 79: delete allow to 10.0.2.0/24 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.2.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+- -A ufw-user-input -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 80: delete allow to 10.0.3.0/24 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.3.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+- -A ufw-user-input -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+## 81: delete allow to 2001::211:aaaa:bbbb:d54c port 123 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c any ::/0 in
+-6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+-6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+## 82: delete allow to 2001::211:aaaa:bbbb:d54c/112 port 123 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
+-6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+-6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+## 83: delete allow to 10.0.2.101 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.2.101 any 0.0.0.0/0 in
+- -A ufw-user-input -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 84: delete allow to 10.0.0.0/16 app OpenNTPD (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.0.0/16 any 0.0.0.0/0 OpenNTPD - in
+- -A ufw-user-input -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+## 85: delete allow to 10.0.2.0/24 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.2.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 86: delete allow to 10.0.3.0/24 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.3.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+## 87: delete allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c any ::/0 in
+-6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+## 88: delete allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
+-6 -A ufw6-user-input -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+## 89: delete allow to 10.0.2.101 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.2.101 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 90: delete allow to 10.0.0.0/16 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.0.0/16 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+## 91: delete allow to 10.0.2.0/24 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.2.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 92: delete allow to 10.0.3.0/24 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.3.0/24 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+## 93: delete allow to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in
+-6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+## 94: delete allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in
+-6 -A ufw6-user-input -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+## 95: delete allow out 123 (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow any 123 0.0.0.0/0 any 0.0.0.0/0 out
+- -A ufw-user-output -p tcp --dport 123 -j ACCEPT
+- -A ufw-user-output -p udp --dport 123 -j ACCEPT
+-6 
+-6 ### tuple ### allow any 123 ::/0 any ::/0 out
+-6 -A ufw6-user-output -p tcp --dport 123 -j ACCEPT
+-6 -A ufw6-user-output -p udp --dport 123 -j ACCEPT
+## 96: delete allow out 123/udp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 out
+- -A ufw-user-output -p udp --dport 123 -j ACCEPT
+-6 
+-6 ### tuple ### allow udp 123 ::/0 any ::/0 out
+-6 -A ufw6-user-output -p udp --dport 123 -j ACCEPT
+## 97: delete allow out 123/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow tcp 123 0.0.0.0/0 any 0.0.0.0/0 out
+- -A ufw-user-output -p tcp --dport 123 -j ACCEPT
+-6 
+-6 ### tuple ### allow tcp 123 ::/0 any ::/0 out
+-6 -A ufw6-user-output -p tcp --dport 123 -j ACCEPT
+## 98: delete allow in on eth0 to any (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -j ACCEPT
+-6 
+-6 ### tuple ### allow any any ::/0 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -j ACCEPT
+## 99: delete allow in on eth0 to any proto udp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow udp any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p udp -j ACCEPT
+-6 
+-6 ### tuple ### allow udp any ::/0 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p udp -j ACCEPT
+## 100: delete allow in on eth0 to any proto tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow tcp any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -j ACCEPT
+-6 
+-6 ### tuple ### allow tcp any ::/0 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -j ACCEPT
+## 101: delete allow in on eth0 to 10.0.2.101 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.101 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -d 10.0.2.101 -j ACCEPT
+## 102: delete allow in on eth0 to 10.0.2.9 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.9 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -d 10.0.2.9 -j ACCEPT
+## 103: delete allow in on eth0 to 10.0.0.0/16 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.0.0/16 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -d 10.0.0.0/16 -j ACCEPT
+## 104: delete allow in on eth0 to 10.0.2.0/24 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.2.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -d 10.0.2.0/24 -j ACCEPT
+## 105: delete allow in on eth0 to 10.0.3.0/24 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any any 10.0.3.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -d 10.0.3.0/24 -j ACCEPT
+## 106: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -d 2001::211:aaaa:bbbb:d54c -j ACCEPT
+## 107: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any any 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -d 2001::211:aaaa:bbbb:d54c/112 -j ACCEPT
+## 108: delete allow in on eth0 to 10.0.2.101 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.2.101 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 109: delete allow in on eth0 to 10.0.0.0/16 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.0.0/16 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+## 110: delete allow in on eth0 to 10.0.2.0/24 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 111: delete allow in on eth0 to 10.0.3.0/24 port 123 (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow any 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+- -A ufw-user-input -i eth0 -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+## 112: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+-6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+## 113: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow any 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+-6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+## 114: delete allow in on eth0 to 10.0.2.101 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.2.101 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 115: delete allow in on eth0 to 10.0.0.0/16 app OpenNTPD (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.0.0/16 any 0.0.0.0/0 OpenNTPD - in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 10.0.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
+## 116: delete allow in on eth0 to 10.0.2.0/24 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 117: delete allow in on eth0 to 10.0.3.0/24 port 123 proto udp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow udp 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p udp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+## 118: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp (rc=0)
+O Rules updated (v6)
+-6 
+-6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+## 119: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp (rc=0)
+O Rules updated (v6)
+-6 ### tuple ### allow udp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p udp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+-6 
+## 120: delete allow in on eth0 to 10.0.2.101 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.2.101 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.2.101 --dport 123 -j ACCEPT
+## 121: delete allow in on eth0 to 10.0.0.0/16 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.0.0/16 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.0.0/16 --dport 123 -j ACCEPT
+## 122: delete allow in on eth0 to 10.0.2.0/24 port 123 proto tcp (rc=0)
+O Rules updated
+- 
+- ### tuple ### allow tcp 123 10.0.2.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.2.0/24 --dport 123 -j ACCEPT
+## 123: delete allow in on eth0 to 10.0.3.0/24 port 123 proto tcp (rc=0)
+O Rules updated
+- ### tuple ### allow tcp 123 10.0.3.0/24 any 0.0.0.0/0 in_eth0
+- -A ufw-user-input -i eth0 -p tcp -d 10.0.3.0/24 --dport 123 -j ACCEPT
+- 
+## 124: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
+-6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+-6 
+## 125: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp (rc=0)
+O Rules updated (v6)
+-6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c/112 any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c/112 --dport 123 -j ACCEPT
+-6 
+## 126: allow 13/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -j ACCEPT
++ 
++6 ### tuple ### allow tcp 13 ::/0 any ::/0 in
++6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
++6 
+## 127: allow 123/udp (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p udp --dport 123 -j ACCEPT
++ 
++6 ### tuple ### allow udp 123 ::/0 any ::/0 in
++6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT
++6 
+## 128: show listening (rc=0)
+O tcp:
+O   13 * (daytime)
+O    [ 1] allow 13/tcp
+O 
+O tcp6:
+O   13 * (daytime)
+O    [ 3] allow 13/tcp
+O 
+O udp:
+O   123 10.0.2.101 (ntpd)
+O    [ 2] allow 123/udp
+O 
+O   123 10.0.2.9 (ntpd)
+O    [ 2] allow 123/udp
+O 
+O   123 * (ntpd)
+O    [ 2] allow 123/udp
+O 
+O   33257 * (avahi-daemon)
+O   5353 * (avahi-daemon)
+O   68 * (dhclient3)
+O   68 * (dhclient3)
+O udp6:
+O   123 2001::212:cccc:dddd:e243 (ntpd)
+O    [ 4] allow 123/udp
+O 
+O   123 2001::211:aaaa:bbbb:d54c (ntpd)
+O    [ 4] allow 123/udp
+O 
+O   123 * (ntpd)
+O    [ 4] allow 123/udp
+O 
+O 
+## 129: delete allow 13/tcp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- 
+- ### tuple ### allow tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-6 ### tuple ### allow tcp 13 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p tcp --dport 13 -j ACCEPT
+-6 
+## 130: delete allow 123/udp (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p udp --dport 123 -j ACCEPT
+- 
+-6 ### tuple ### allow udp 123 ::/0 any ::/0 in
+-6 -A ufw6-user-input -p udp --dport 123 -j ACCEPT
+-6 
+## 131: limit 13/tcp (rc=0)
+O Rules updated
+O Skipping unsupported IPv6 'limit' rule
++ ### tuple ### limit tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
++ -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
++ -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
++ -A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
++ 
+## 132: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
++6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
++6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
++6 
+## 133: deny Samba (rc=0)
+O Rules updated
+O Rules updated (v6)
++ ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
++ 
++ ### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
++ -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
++ 
++6 ### tuple ### deny udp 137,138 ::/0 any ::/0 Samba - in
++6 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
++6 
++6 ### tuple ### deny tcp 139,445 ::/0 any ::/0 Samba - in
++6 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
++6 
+## 134: show added (rc=0)
+O Added user rules (see 'ufw status' for running firewall):
+O ufw limit 13/tcp
+O ufw deny Samba
+O ufw allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+## 135: delete limit 13/tcp (rc=0)
+O Rules updated
+O Skipping unsupported IPv6 'limit' rule
+- 
+- ### tuple ### limit tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+- -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
+- -A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+- -A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
+## 136: show added (rc=0)
+O Added user rules (see 'ufw status' for running firewall):
+O ufw deny Samba
+O ufw allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+## 137: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp (rc=0)
+O Rules updated (v6)
+-6 ### tuple ### allow tcp 123 2001::211:aaaa:bbbb:d54c any ::/0 in_eth0
+-6 -A ufw6-user-input -i eth0 -p tcp -d 2001::211:aaaa:bbbb:d54c --dport 123 -j ACCEPT
+-6 
+## 138: show added (rc=0)
+O Added user rules (see 'ufw status' for running firewall):
+O ufw deny Samba
+## 139: delete deny Samba (rc=0)
+O Rules updated
+O Rules updated (v6)
+- ### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+- 
+- ### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+- -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+- 
+-6 ### tuple ### deny udp 137,138 ::/0 any ::/0 Samba - in
+-6 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-6 
+-6 ### tuple ### deny tcp 139,445 ::/0 any ::/0 Samba - in
+-6 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-6 
+## 140: show added (rc=0)
+O Added user rules (see 'ufw status' for running firewall):
+O (None)

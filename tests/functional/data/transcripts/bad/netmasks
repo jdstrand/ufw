@@ -1,0 +1,86 @@
+## 0: --dry-run allow to 10.0.0.1/16a (rc=1)
+O ERROR: Bad destination address
+## 1: --dry-run allow from 10.0.0.1/16a (rc=1)
+O ERROR: Bad source address
+## 2: --dry-run allow to 10.0.0.1/33 (rc=1)
+O ERROR: Bad destination address
+## 3: --dry-run allow from 10.0.0.1/33 (rc=1)
+O ERROR: Bad source address
+## 4: --dry-run allow to 10.0.0.1/-1 (rc=1)
+O ERROR: Bad destination address
+## 5: --dry-run allow from 10.0.0.1/-1 (rc=1)
+O ERROR: Bad source address
+## 6: --dry-run allow to 192.168.0.0/256.255.255.255 (rc=1)
+O ERROR: Bad destination address
+## 7: --dry-run allow to 192.168.0.0/255.256.255.255 (rc=1)
+O ERROR: Bad destination address
+## 8: --dry-run allow to 192.168.0.0/255.256.256.255 (rc=1)
+O ERROR: Bad destination address
+## 9: --dry-run allow to 192.168.0.0/255.255.255.256 (rc=1)
+O ERROR: Bad destination address
+## 10: --dry-run allow to 192.168.0.0/256.256.256.256 (rc=1)
+O ERROR: Bad destination address
+## 11: --dry-run allow from 192.168.0.0/256.255.255.255 (rc=1)
+O ERROR: Bad source address
+## 12: --dry-run allow from 192.168.0.0/255.256.255.255 (rc=1)
+O ERROR: Bad source address
+## 13: --dry-run allow from 192.168.0.0/255.256.256.255 (rc=1)
+O ERROR: Bad source address
+## 14: --dry-run allow from 192.168.0.0/255.255.255.256 (rc=1)
+O ERROR: Bad source address
+## 15: --dry-run allow from 192.168.0.0/256.256.256.256 (rc=1)
+O ERROR: Bad source address
+## 16: --dry-run allow from 192.168.0.0/33 to 192.168.0.0/256.256.256.256 (rc=1)
+O ERROR: Bad source address
+## 17: --dry-run allow to 192.168.0.0/.255.255.255 (rc=1)
+O ERROR: Bad destination address
+## 18: --dry-run allow to 192.168.0.0/255.255.255. (rc=1)
+O ERROR: Bad destination address
+## 19: --dry-run allow to 192.168.0.0/255.255.255 (rc=1)
+O ERROR: Bad destination address
+## 20: --dry-run allow to 192.168.0.0/s55.255.255.255 (rc=1)
+O ERROR: Bad destination address
+## 21: --dry-run allow to 192.168.0.0/255.2s5.255.255 (rc=1)
+O ERROR: Bad destination address
+## 22: --dry-run allow to 192.168.0.0/255.255.25s.255 (rc=1)
+O ERROR: Bad destination address
+## 23: --dry-run allow to 192.168.0.0/255.255.255.s55 (rc=1)
+O ERROR: Bad destination address
+## 24: --dry-run allow to 192.168.0.0/s55.s55.s55.s55 (rc=1)
+O ERROR: Bad destination address
+## 25: --dry-run allow to 192.168.0.0/-1.255.255.255 (rc=1)
+O ERROR: Bad destination address
+## 26: --dry-run allow to 192.168.0.0/255.-1.255.255 (rc=1)
+O ERROR: Bad destination address
+## 27: --dry-run allow to 192.168.0.0/255.255.-1.255 (rc=1)
+O ERROR: Bad destination address
+## 28: --dry-run allow to 192.168.0.0/255.255.255.-1 (rc=1)
+O ERROR: Bad destination address
+## 29: --dry-run allow to 192.168.0.0/-1.-1.-1.-1 (rc=1)
+O ERROR: Bad destination address
+## 30: --dry-run allow from 192.168.0.0/.255.255.255 (rc=1)
+O ERROR: Bad source address
+## 31: --dry-run allow from 192.168.0.0/255.255.255. (rc=1)
+O ERROR: Bad source address
+## 32: --dry-run allow from 192.168.0.0/255.255.255 (rc=1)
+O ERROR: Bad source address
+## 33: --dry-run allow from 192.168.0.0/s55.255.255.255 (rc=1)
+O ERROR: Bad source address
+## 34: --dry-run allow from 192.168.0.0/255.2s5.255.255 (rc=1)
+O ERROR: Bad source address
+## 35: --dry-run allow from 192.168.0.0/255.255.25s.255 (rc=1)
+O ERROR: Bad source address
+## 36: --dry-run allow from 192.168.0.0/255.255.255.s55 (rc=1)
+O ERROR: Bad source address
+## 37: --dry-run allow from 192.168.0.0/s55.s55.s55.s55 (rc=1)
+O ERROR: Bad source address
+## 38: --dry-run allow from 192.168.0.0/-1.255.255.255 (rc=1)
+O ERROR: Bad source address
+## 39: --dry-run allow from 192.168.0.0/255.-1.255.255 (rc=1)
+O ERROR: Bad source address
+## 40: --dry-run allow from 192.168.0.0/255.255.-1.255 (rc=1)
+O ERROR: Bad source address
+## 41: --dry-run allow from 192.168.0.0/255.255.255.-1 (rc=1)
+O ERROR: Bad source address
+## 42: --dry-run allow from 192.168.0.0/-1.-1.-1.-1 (rc=1)
+O ERROR: Bad source address

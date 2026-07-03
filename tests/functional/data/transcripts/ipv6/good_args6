@@ -1,0 +1,42 @@
+## 0: --dry-run logging on (rc=0)
+O Logging enabled
+## 1: --dry-run logging off (rc=0)
+O Logging disabled
+## 2: --dry-run LOGGING ON (rc=0)
+O Logging enabled
+## 3: --dry-run LOGGING OFF (rc=0)
+O Logging disabled
+## 4: --dry-run default allow (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 5: --dry-run default deny (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 6: --dry-run default reject (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 7: --dry-run DEFAULT ALLOW (rc=0)
+O Default incoming policy changed to 'allow'
+O (be sure to update your rules accordingly)
+## 8: --dry-run DEFAULT DENY (rc=0)
+O Default incoming policy changed to 'deny'
+O (be sure to update your rules accordingly)
+## 9: --dry-run DEFAULT REJECT (rc=0)
+O Default incoming policy changed to 'reject'
+O (be sure to update your rules accordingly)
+## 10: --dry-run enable (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 11: --dry-run disable (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup
+## 12: --dry-run ENABLE (rc=0)
+O > running ufw-init
+O Firewall is active and enabled on system startup
+## 13: --dry-run DISABLE (rc=0)
+O > running ufw-init
+O Firewall stopped and disabled on system startup
+## 14: --dry-run status (rc=0)
+O > Checking iptables
+O > Checking ip6tables
+O 

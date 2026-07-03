@@ -8,3 +8,13 @@ include = ["src", "tests/unit"]
 exclude = ["**/__pycache__"]
 venvPath = "./"
 venv = ".venv"
+# The package is imported as `ufw` but its sources live flat in src/ (setup.cfg
+# maps package_dir ufw=src). pyright can't follow that remap statically -- and
+# editable installs use an import-hook finder it won't read -- so resolve
+# `import ufw.*` via a committed .pyright/ufw -> ../src symlink on the import
+# path. This works on a fresh checkout in an editor, with no build/install and
+# no runtime tmp/ufw symlink.
+# TODO: restructure src/ -> src/ufw/ so the dir name matches the package; then
+# extraPaths=["src"] suffices and both this symlink and the runtime tmp/ufw one
+# can be dropped.
+extraPaths = [".pyright"]

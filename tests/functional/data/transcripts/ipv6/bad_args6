@@ -1,0 +1,697 @@
+## 0: --dry-run logging (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 1: --dry-run logging foo (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 2: --dry-run loggin on (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 3: --dry-run default (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 4: --dry-run default foo (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 5: --dry-run default accept (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 6: --dry-run defaul allow (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 7: --dry-run default limit (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 8: --dry-run enabled (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 9: --dry-run disabled (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 10: --dry-run allow (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 11: --dry-run deny (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 12: --dry-run limit (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 13: --dry-run alow 25 (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 14: --dry-run dny 25 (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 15: --dry-run limt 25 (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 16: --dry-run allow 25a (rc=1)
+O ERROR: Could not find a profile matching '25a'
+## 17: --dry-run deny 25a (rc=1)
+O ERROR: Could not find a profile matching '25a'
+## 18: --dry-run limit 25a (rc=1)
+O ERROR: Could not find a profile matching '25a'
+## 19: --dry-run allow 65536 (rc=1)
+O ERROR: Bad port
+## 20: --dry-run deny 65536 (rc=1)
+O ERROR: Bad port
+## 21: --dry-run limit 65536 (rc=1)
+O ERROR: Bad port
+## 22: --dry-run allow 0 (rc=1)
+O ERROR: Bad port
+## 23: --dry-run deny 0 (rc=1)
+O ERROR: Bad port
+## 24: --dry-run limit 0 (rc=1)
+O ERROR: Bad port
+## 25: --dry-run deny XXX (rc=1)
+O ERROR: Could not find a profile matching 'XXX'
+## 26: --dry-run deny foobar (rc=1)
+O ERROR: Could not find a profile matching 'foobar'
+## 27: --dry-run allow prot tcp from any (rc=1)
+O ERROR: Invalid token 'prot'
+## 28: --dry-run allow proto tcp fro any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 29: --dry-run allow proto tcp top any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 30: --dry-run allow proto tcp to any por 25 (rc=1)
+O ERROR: Invalid token 'por'
+## 31: --dry-run allow port 25 (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 32: --dry-run allow to anu (rc=1)
+O ERROR: Bad destination address
+## 33: --dry-run allow proto tcq to any port 25 (rc=1)
+O ERROR: Unsupported protocol 'tcq'
+## 34: --dry-run allow proto tcp proto udp to any port 25 (rc=1)
+O ERROR: Improper rule syntax
+## 35: --dry-run allow to (rc=1)
+O ERROR: Could not find a profile matching 'to'
+## 36: --dry-run allow to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 37: --dry-run allow from (rc=1)
+O ERROR: Could not find a profile matching 'from'
+## 38: --dry-run allow from port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 39: --dry-run allow to any port (rc=1)
+O ERROR: Wrong number of arguments
+## 40: --dry-run allow to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 41: --dry-run allow from 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 42: --dry-run allow from 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 43: --dry-run allow from 2001:db8:3:4:5:6:7:8 port 25 to (rc=1)
+O ERROR: Wrong number of arguments
+## 44: --dry-run allow from 2001:db8:3:4:5:6:7:8 port 25 from (rc=1)
+O ERROR: Wrong number of arguments
+## 45: --dry-run allow to 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 46: --dry-run allow to 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 47: --dry-run allow to 2001:db8:3:4:5:6:7:8 port smtp from (rc=1)
+O ERROR: Wrong number of arguments
+## 48: --dry-run allow to 2001:db8:3:4:5:6:7:8 port smtp to (rc=1)
+O ERROR: Wrong number of arguments
+## 49: --dry-run allow to from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 50: --dry-run allow from to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 51: --dry-run allow to from 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 52: --dry-run allow from to 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 53: --dry-run allow from from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 54: --dry-run allow to to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 55: --dry-run allow from from 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 56: --dry-run allow to to 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 57: --dry-run deny prot tcp from any (rc=1)
+O ERROR: Invalid token 'prot'
+## 58: --dry-run deny proto tcp fro any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 59: --dry-run deny proto tcp top any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 60: --dry-run deny proto tcp to any por 25 (rc=1)
+O ERROR: Invalid token 'por'
+## 61: --dry-run deny port 25 (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 62: --dry-run deny to anu (rc=1)
+O ERROR: Bad destination address
+## 63: --dry-run deny proto tcq to any port 25 (rc=1)
+O ERROR: Unsupported protocol 'tcq'
+## 64: --dry-run deny proto tcp proto udp to any port 25 (rc=1)
+O ERROR: Improper rule syntax
+## 65: --dry-run deny to (rc=1)
+O ERROR: Could not find a profile matching 'to'
+## 66: --dry-run deny to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 67: --dry-run deny from (rc=1)
+O ERROR: Could not find a profile matching 'from'
+## 68: --dry-run deny from port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 69: --dry-run deny to any port (rc=1)
+O ERROR: Wrong number of arguments
+## 70: --dry-run deny to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 71: --dry-run deny from 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 72: --dry-run deny from 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 73: --dry-run deny from 2001:db8:3:4:5:6:7:8 port 25 to (rc=1)
+O ERROR: Wrong number of arguments
+## 74: --dry-run deny from 2001:db8:3:4:5:6:7:8 port 25 from (rc=1)
+O ERROR: Wrong number of arguments
+## 75: --dry-run deny to 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 76: --dry-run deny to 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 77: --dry-run deny to 2001:db8:3:4:5:6:7:8 port smtp from (rc=1)
+O ERROR: Wrong number of arguments
+## 78: --dry-run deny to 2001:db8:3:4:5:6:7:8 port smtp to (rc=1)
+O ERROR: Wrong number of arguments
+## 79: --dry-run deny to from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 80: --dry-run deny from to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 81: --dry-run deny to from 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 82: --dry-run deny from to 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 83: --dry-run deny from from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 84: --dry-run deny to to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 85: --dry-run deny from from 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 86: --dry-run deny to to 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 87: --dry-run limit prot tcp from any (rc=1)
+O ERROR: Invalid token 'prot'
+## 88: --dry-run limit proto tcp fro any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 89: --dry-run limit proto tcp top any (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 90: --dry-run limit proto tcp to any por 25 (rc=1)
+O ERROR: Invalid token 'por'
+## 91: --dry-run limit port 25 (rc=1)
+O ERROR: Need 'to' or 'from' clause
+## 92: --dry-run limit to anu (rc=1)
+O ERROR: Bad destination address
+## 93: --dry-run limit proto tcq to any port 25 (rc=1)
+O ERROR: Unsupported protocol 'tcq'
+## 94: --dry-run limit proto tcp proto udp to any port 25 (rc=1)
+O ERROR: Improper rule syntax
+## 95: --dry-run limit to (rc=1)
+O ERROR: Could not find a profile matching 'to'
+## 96: --dry-run limit to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 97: --dry-run limit from (rc=1)
+O ERROR: Could not find a profile matching 'from'
+## 98: --dry-run limit from port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 99: --dry-run limit to any port (rc=1)
+O ERROR: Wrong number of arguments
+## 100: --dry-run limit to port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 101: --dry-run limit from 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 102: --dry-run limit from 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 103: --dry-run limit from 2001:db8:3:4:5:6:7:8 port 25 to (rc=1)
+O ERROR: Wrong number of arguments
+## 104: --dry-run limit from 2001:db8:3:4:5:6:7:8 port 25 from (rc=1)
+O ERROR: Wrong number of arguments
+## 105: --dry-run limit to 2001:db8:3:4:5:6:7:8 from (rc=1)
+O ERROR: Wrong number of arguments
+## 106: --dry-run limit to 2001:db8:3:4:5:6:7:8 to (rc=1)
+O ERROR: Wrong number of arguments
+## 107: --dry-run limit to 2001:db8:3:4:5:6:7:8 port smtp from (rc=1)
+O ERROR: Wrong number of arguments
+## 108: --dry-run limit to 2001:db8:3:4:5:6:7:8 port smtp to (rc=1)
+O ERROR: Wrong number of arguments
+## 109: --dry-run limit to from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 110: --dry-run limit from to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 111: --dry-run limit to from 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 112: --dry-run limit from to 2001:db8:3:4:5:6:7:8 port 25 (rc=1)
+O ERROR: Wrong number of arguments
+## 113: --dry-run limit from from 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 114: --dry-run limit to to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 115: --dry-run limit from from 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 116: --dry-run limit to to 2001:db8:3:4:5:6:7:8 port smtp (rc=1)
+O ERROR: Wrong number of arguments
+## 117: --dry-run allow to 2001:db8:::/32 (rc=1)
+O ERROR: Bad destination address
+## 118: --dry-run allow to 2001:db8::/129 (rc=1)
+O ERROR: Bad destination address
+## 119: --dry-run allow to 2001:gb8::/32 (rc=1)
+O ERROR: Bad destination address
+## 120: --dry-run allow to 2001:db8:3:4:5:6:7:8:9 (rc=1)
+O ERROR: Bad destination address
+## 121: --dry-run allow to foo (rc=1)
+O ERROR: Bad destination address
+## 122: --dry-run allow to xxx:xxx:xxx:xx:xxx:xxx:xxx:xxx (rc=1)
+O ERROR: Bad destination address
+## 123: --dry-run allow to g001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad destination address
+## 124: --dry-run allow to 2001:gb8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad destination address
+## 125: --dry-run allow to 2001:db8:g:4:5:6:7:8 (rc=1)
+O ERROR: Bad destination address
+## 126: --dry-run allow to 2001:db8:3:g:5:6:7:8 (rc=1)
+O ERROR: Bad destination address
+## 127: --dry-run allow to 2001:db8:3:4:g:6:7:8 (rc=1)
+O ERROR: Bad destination address
+## 128: --dry-run allow to 2001:db8:3:4:5:g:7:8 (rc=1)
+O ERROR: Bad destination address
+## 129: --dry-run allow to 2001:db8:3:4:5:6:g:8 (rc=1)
+O ERROR: Bad destination address
+## 130: --dry-run allow to 2001:db8:3:4:5:6:7:g (rc=1)
+O ERROR: Bad destination address
+## 131: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0000/129 (rc=1)
+O ERROR: Bad destination address
+## 132: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/128 (rc=1)
+O ERROR: Bad destination address
+## 133: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/12a (rc=1)
+O ERROR: Bad destination address
+## 134: --dry-run delete (rc=1)
+O ERROR: Invalid syntax
+O 
+O <<command help>>
+O 
+## 135: --dry-run allow to 10.0.0.1 from 2001:db8::/32 (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 136: --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 137: --dry-run limit to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 138: --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 139: --dry-run deny to 2001:db8::/32 from 10.0.0.1 (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 140: --dry-run limit to 2001:db8::/32 from 10.0.0.1 (rc=1)
+O ERROR: Mixed IP versions for 'from' and 'to'
+## 141: --dry-run allow smtp/esp (rc=1)
+O ERROR: Invalid port with protocol 'esp'
+## 142: --dry-run allow tftp/tcp (rc=1)
+O ERROR: Protocol mismatch with specified protocol tcp
+## 143: --dry-run allow to any port smtp from any port tftp (rc=1)
+O ERROR: Protocol mismatch (from/to)
+## 144: --dry-run allow to any port tftp from any port smtp (rc=1)
+O ERROR: Protocol mismatch (from/to)
+## 145: --dry-run allow to any port smtp from any port 23 proto esp (rc=1)
+O ERROR: Protocol mismatch with specified protocol esp
+## 146: --dry-run allow to any port 23 from any port smtp proto esp (rc=1)
+O ERROR: Protocol mismatch with specified protocol esp
+## 147: --dry-run allow to any port tftp from any port 23 proto tcp (rc=1)
+O ERROR: Protocol mismatch with specified protocol tcp
+## 148: --dry-run allow to any port 23 from any port tftp proto tcp (rc=1)
+O ERROR: Protocol mismatch with specified protocol tcp
+## 149: --dry-run allow to any port smtp from any port ssh proto esp (rc=1)
+O ERROR: Protocol mismatch with specified protocol esp
+## 150: --dry-run allow to any port tftp from any port ssh proto tcp (rc=1)
+O ERROR: Protocol mismatch (from/to)
+## 151: --dry-run allow from any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 152: --dry-run allow from any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 153: --dry-run allow from any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 154: --dry-run allow from any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 155: --dry-run allow from any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 156: --dry-run allow from any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 157: --dry-run allow from any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 158: --dry-run allow from any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 159: --dry-run allow from any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 160: --dry-run allow from any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 161: --dry-run allow from any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 162: --dry-run allow from any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 163: --dry-run allow from any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 164: --dry-run allow from any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 165: --dry-run allow from any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 166: --dry-run allow from any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 167: --dry-run allow from any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 168: --dry-run allow from any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 169: --dry-run allow from any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 170: --dry-run allow from any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 171: --dry-run allow to any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 172: --dry-run allow to any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 173: --dry-run allow to any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 174: --dry-run allow to any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 175: --dry-run allow to any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 176: --dry-run allow to any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 177: --dry-run allow to any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 178: --dry-run allow to any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 179: --dry-run allow to any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 180: --dry-run allow to any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 181: --dry-run allow to any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 182: --dry-run allow to any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 183: --dry-run allow to any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 184: --dry-run allow to any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 185: --dry-run allow to any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 186: --dry-run allow to any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 187: --dry-run allow to any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 188: --dry-run allow to any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 189: --dry-run allow to any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 190: --dry-run allow to any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 191: --dry-run allow to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 192: --dry-run allow to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 193: --dry-run allow from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 194: --dry-run allow from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 195: --dry-run deny from any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 196: --dry-run deny from any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 197: --dry-run deny from any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 198: --dry-run deny from any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 199: --dry-run deny from any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 200: --dry-run deny from any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 201: --dry-run deny from any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 202: --dry-run deny from any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 203: --dry-run deny from any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 204: --dry-run deny from any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 205: --dry-run deny from any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 206: --dry-run deny from any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 207: --dry-run deny from any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 208: --dry-run deny from any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 209: --dry-run deny from any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 210: --dry-run deny from any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 211: --dry-run deny from any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 212: --dry-run deny from any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 213: --dry-run deny from any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 214: --dry-run deny from any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 215: --dry-run deny to any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 216: --dry-run deny to any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 217: --dry-run deny to any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 218: --dry-run deny to any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 219: --dry-run deny to any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 220: --dry-run deny to any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 221: --dry-run deny to any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 222: --dry-run deny to any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 223: --dry-run deny to any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 224: --dry-run deny to any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 225: --dry-run deny to any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 226: --dry-run deny to any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 227: --dry-run deny to any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 228: --dry-run deny to any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 229: --dry-run deny to any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 230: --dry-run deny to any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 231: --dry-run deny to any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 232: --dry-run deny to any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 233: --dry-run deny to any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 234: --dry-run deny to any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 235: --dry-run deny to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 236: --dry-run deny to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 237: --dry-run deny from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 238: --dry-run deny from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 239: --dry-run limit from any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 240: --dry-run limit from any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 241: --dry-run limit from any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 242: --dry-run limit from any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 243: --dry-run limit from any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 244: --dry-run limit from any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 245: --dry-run limit from any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 246: --dry-run limit from any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 247: --dry-run limit from any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 248: --dry-run limit from any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 249: --dry-run limit from any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 250: --dry-run limit from any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 251: --dry-run limit from any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 252: --dry-run limit from any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 253: --dry-run limit from any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 254: --dry-run limit from any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 255: --dry-run limit from any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 256: --dry-run limit from any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 257: --dry-run limit from any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 258: --dry-run limit from any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 259: --dry-run limit to any port 20,21 (rc=1)
+O ERROR: Must specify 'tcp' or 'udp' with multiple ports
+## 260: --dry-run limit to any port 20,2L proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 261: --dry-run limit to any port 2o,21 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 262: --dry-run limit to any port 20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 263: --dry-run limit to any port ,20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 264: --dry-run limit to any port ,20, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 265: --dry-run limit to any port 20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 266: --dry-run limit to any port :20 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 267: --dry-run limit to any port :20: proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 268: --dry-run limit to any port 20:65536 proto udp (rc=1)
+O ERROR: Bad port '20:65536'
+## 269: --dry-run limit to any port 0:65 proto tcp (rc=1)
+O ERROR: Bad port '0:65'
+## 270: --dry-run limit to any port ,20:24 proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 271: --dry-run limit to any port 20:24, proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 272: --dry-run limit to any port ,20:24, proto udp (rc=1)
+O ERROR: Port ranges must be numeric
+## 273: --dry-run limit to any port 24:20 proto tcp (rc=1)
+O ERROR: Bad port '24:20'
+## 274: --dry-run limit to any port 2A:20 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 275: --dry-run limit to any port 24:2o proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 276: --dry-run limit to any port http,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 277: --dry-run limit to any port 80,smtp proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 278: --dry-run limit to any port http,25 proto tcp (rc=1)
+O ERROR: Port ranges must be numeric
+## 279: --dry-run limit to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 280: --dry-run limit to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35'
+## 281: --dry-run limit from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 282: --dry-run limit from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp (rc=1)
+O ERROR: Bad port '20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39'
+## 283: --dry-run allow in on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 284: --dry-run allow in eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 285: --dry-run allow ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 286: --dry-run allow on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 287: --dry-run allow log in on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 288: --dry-run deny in on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 289: --dry-run deny in eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 290: --dry-run deny ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 291: --dry-run deny on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 292: --dry-run deny log in on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 293: --dry-run limit in on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 294: --dry-run limit in eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 295: --dry-run limit ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 296: --dry-run limit on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 297: --dry-run limit log in on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 298: --dry-run reject in on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 299: --dry-run reject in eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 300: --dry-run reject ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 301: --dry-run reject on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 302: --dry-run reject log in on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 303: --dry-run allow out on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 304: --dry-run allow out eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 305: --dry-run allow ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 306: --dry-run allow on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 307: --dry-run allow log out on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 308: --dry-run deny out on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 309: --dry-run deny out eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 310: --dry-run deny ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 311: --dry-run deny on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 312: --dry-run deny log out on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 313: --dry-run limit out on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 314: --dry-run limit out eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 315: --dry-run limit ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 316: --dry-run limit on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 317: --dry-run limit log out on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause
+## 318: --dry-run reject out on e?th0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Bad interface name
+## 319: --dry-run reject out eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Wrong number of arguments
+## 320: --dry-run reject ina eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'ina'
+## 321: --dry-run reject on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid token 'on'
+## 322: --dry-run reject log out on eth0 to 2001:db8:3:4:5:6:7:8 (rc=1)
+O ERROR: Invalid interface clause

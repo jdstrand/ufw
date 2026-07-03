@@ -371,6 +371,11 @@ $ sudo ufw disable
 $ sudo ufw enable
 ```
 
+Note that with `IPV6=no`, enabling or reloading ufw replaces the IPv6
+firewall with a deny-all policy that accepts only loopback traffic -- any
+IPv6 rules added outside of ufw are removed. See `man ufw-framework` for
+details.
+
 
 ## Application Integration
 
@@ -415,29 +420,54 @@ number.
 
 ## Testing
 
-To run the test suite:
+The quickest way to run the test suite is:
 
 ```bash
-$ ./run_tests.sh -s
+$ make test
 ```
 
-You may also specify an interpreter for the tests:
+This runs the in-process functional suite (`make functest`, in
+`tests/functional/`) and the unit suite. The functional tests drive `ufw`
+in-process against a fake `iptables` backend, so they are fast and MUST NOT be
+run as root (the runner refuses to).
+
+The legacy shell-driven harness has been archived under `tests.old/` -- its
+command sequences are now covered by `make functest` (and the real-`iptables`
+checks by `make e2e`). It can still be run from the repo root if needed, and
+lets you specify an interpreter:
 
 ```bash
-$ ./run_tests.sh -s -i /usr/local/bin/python3.13
+$ ./tests.old/run_tests.sh -s
+$ ./tests.old/run_tests.sh -s -i /usr/local/bin/python3.13
 ```
 
-For the root tests (these are `iptables` version dependent, will modify your
+For its root tests (these are `iptables` version dependent, will modify your
 existing firewall and insert kernel modules, so they require root privileges
 and aren't run by default):
 
 ```bash
-$ sudo ./run_tests.sh -s root
+$ sudo ./tests.old/run_tests.sh -s root
 ```
 
 Finally, `ufw`'s behavior may differ based on available kernel features. The
 `root_kern` tests assume all kernel features supported by `check-requirements`
 are enabled. They behave just like the root tests.
+
+### End-to-End Tests
+
+The `tests/e2e` suite drives the installed `ufw` binary as a subprocess against
+the REAL `iptables` backend (it is agnostic to `iptables-legacy` vs
+`iptables-nft`, using whichever is on `PATH`). Unlike the functional suite it
+applies rules to the kernel, so it verifies that `iptables`/`ip6tables-restore`
+accept what `ufw` generates and that the boot path (`ufw-init`), chain skeleton,
+reset, and default policy behave correctly against a live firewall.
+
+Because it modifies the running firewall, it is NOT part of `make test` and is
+gated behind `UFW_E2E=1` and root. Run it only in a disposable VM:
+
+```bash
+$ sudo UFW_E2E=1 make e2e
+```
 
 ### Manual Testing
 
@@ -461,7 +491,8 @@ $ sudo sh -c "PYTHONPATH=/tmp/ufw/usr/lib/python3/dist-packages /tmp/ufw/usr/sbi
 
 ## Unit Tests
 
-`ufw` unit tests are in `tests/unit` and are run as part of `./run_tests.sh`.
+`ufw` unit tests are in `tests/unit` and are run by `make unittest` (and as
+part of `make test`, which also runs the functional suite).
 
 To run individual unit tests directly:
 
@@ -486,8 +517,8 @@ $ pip install -r ./requirements.txt -e .
 ```
 
 This creates an editable installation where changes to the source code are
-immediately reflected without reinstalling. The test suite (`./run_tests.sh`)
-automatically uses the venv Python if `VIRTUAL_ENV` is set.
+immediately reflected without reinstalling. Pass `PYTHON=` to the `make` test
+targets (e.g. `make test PYTHON=python3.13`) to choose the interpreter.
 
 Within this environment, you can run various linters and coverage. Eg:
 

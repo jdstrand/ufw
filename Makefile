@@ -48,7 +48,7 @@ else
 PYFLAKES_EXE = pyflakes
 endif
 
-.PHONY: all build install clean translations mo test unittest coverage coverage-report man-check check syntax-check tarball
+.PHONY: all build install clean translations mo test unittest functest e2e old-test coverage coverage-report man-check snap-test check syntax-check tarball
 
 all: build
 
@@ -188,10 +188,29 @@ mo:
 	make -C locales all
 
 test:
-	./run_tests.sh -s -i $(PYTHON)
+	$(MAKE) unittest PYTHON=$(PYTHON)
+	$(MAKE) functest PYTHON=$(PYTHON)
 
 unittest:
-	./run_tests.sh -s -i $(PYTHON) unit
+	$(PYTHON) ./tests/unit/runner.py
+
+functest:
+	$(PYTHON) ./tests/functional/runner.py
+
+# End-to-end tests: drive the installed ufw against the REAL iptables backend.
+# These modify the firewall, so they are NOT part of 'make test' -- run them
+# only in a disposable VM with UFW_E2E=1, as root.
+e2e:
+	@if [ "$$UFW_E2E" != "1" ]; then echo "ERROR: e2e requires UFW_E2E=1 (modifies the real firewall; run in a disposable VM)" >&2; exit 1; fi
+	@if [ "`id -u`" != "0" ]; then echo "ERROR: e2e must run as root" >&2; exit 1; fi
+	$(PYTHON) ./tests/e2e/runner.py
+
+# Legacy shell test harness, archived under tests.old/. Kept runnable as a
+# transitional safety net (superseded by 'make test'/functest for command
+# coverage and 'make e2e' for real-iptables checks). Non-root, like 'make test';
+# needs an iptables binary present. Runs installation/bad/bugs/good/ipv6.
+old-test:
+	./tests.old/run_tests.sh -s -i $(PYTHON)
 
 coverage:
 	$(PYTHON) -m coverage run ./tests/unit/runner.py
@@ -211,7 +230,15 @@ man-check:
 		echo "PASS"; \
 	done
 
-check: man-check test unittest
+# Snap config-merge test: exercises snap-files/bin/srv (the snap's upgrade
+# wrapper) over a simulated revision upgrade. Self-contained (no root/iptables).
+# Standalone (not in 'check') -- wire into CI explicitly, like the e2e target.
+snap-test:
+	$(shell mkdir -p $(TMPDIR) 2>/dev/null)
+	@./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && \
+		diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
+
+check: man-check test
 
 syntax-check: clean
 	./tests/run-flake8

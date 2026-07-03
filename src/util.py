@@ -423,7 +423,8 @@ def get_ppid(mypid: int = os.getpid()) -> int:
     # 9983 (cmd with spaces) S 923 ...
     # LP: #2015645
     # 229 (cmd(withparen)) S 228 ...
-    ppid = open(name).readlines()[0].rsplit(")", 1)[1].split()[1]
+    with open(name) as fh:
+        ppid = fh.readlines()[0].rsplit(")", 1)[1].split()[1]
 
     return int(ppid)
 
@@ -451,7 +452,8 @@ def under_ssh(pid: int = os.getpid()) -> bool:
         raise ValueError(err_msg)
 
     try:
-        exe = open(path).readlines()[0].split()[1]
+        with open(path) as fh:
+            exe = fh.readlines()[0].split()[1]
     except Exception:  # pragma: no cover
         err_msg = tr("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
@@ -861,7 +863,9 @@ def get_ip_from_if(ifname: str, v6: bool = False) -> str:
         if not os.path.exists(proc):
             raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
 
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             tmp = line.split()
             if ifname == tmp[5]:
                 addr = ":".join([tmp[0][i : i + 4] for i in range(0, len(tmp[0]), 4)])
@@ -899,7 +903,9 @@ def get_if_from_ip(addr: str) -> str:
     matched = ""
     # we may not have an IPv6 address, so no coverage
     if v6:  # pragma: no cover
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             tmp = line.split()
             ifname = tmp[5].strip()
 
@@ -913,7 +919,9 @@ def get_if_from_ip(addr: str) -> str:
                 matched = ifname
                 break
     else:
-        for line in open(proc).readlines():
+        with open(proc) as fh:
+            proc_lines = fh.readlines()
+        for line in proc_lines:
             if ":" not in line:
                 continue
             ifname = line.split(":")[0].strip()
@@ -992,7 +1000,8 @@ def _read_proc_net_protocol(protocol: str) -> List[Tuple[str, int, str, str, str
 
     lst = []
     skipped_first = False
-    lines = open(fn).readlines()
+    with open(fn) as fh:
+        lines = fh.readlines()
     for line in lines:
         fields = line.split()
         if not skipped_first:

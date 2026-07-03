@@ -1,0 +1,42 @@
+## 0: --dry-run status (rc=1)
+O ERROR: Missing policy for 'input'
+## 1: --dry-run status (rc=1)
+O ERROR: Invalid policy 'accep' for 'input'
+## 2: --dry-run status (rc=1)
+O ERROR: Invalid policy 'drp' for 'input'
+## 3: --dry-run status (rc=1)
+O ERROR: Invalid policy 'rejct' for 'input'
+## 4: --dry-run status (rc=1)
+O ERROR: Invalid policy 'allow' for 'input'
+## 5: --dry-run status (rc=1)
+O ERROR: Invalid policy 'deny' for 'input'
+## 6: --dry-run status (rc=1)
+O ERROR: Invalid policy 'limit' for 'input'
+## 7: --dry-run status (rc=1)
+O ERROR: Missing policy for 'output'
+## 8: --dry-run status (rc=1)
+O ERROR: Invalid policy 'accep' for 'output'
+## 9: --dry-run status (rc=1)
+O ERROR: Invalid policy 'drp' for 'output'
+## 10: --dry-run status (rc=1)
+O ERROR: Invalid policy 'rejct' for 'output'
+## 11: --dry-run status (rc=1)
+O ERROR: Invalid policy 'allow' for 'output'
+## 12: --dry-run status (rc=1)
+O ERROR: Invalid policy 'deny' for 'output'
+## 13: --dry-run status (rc=1)
+O ERROR: Invalid policy 'limit' for 'output'
+## 14: --dry-run status (rc=1)
+O ERROR: Missing policy for 'forward'
+## 15: --dry-run status (rc=1)
+O ERROR: Invalid policy 'accep' for 'forward'
+## 16: --dry-run status (rc=1)
+O ERROR: Invalid policy 'drp' for 'forward'
+## 17: --dry-run status (rc=1)
+O ERROR: Invalid policy 'rejct' for 'forward'
+## 18: --dry-run status (rc=1)
+O ERROR: Invalid policy 'allow' for 'forward'
+## 19: --dry-run status (rc=1)
+O ERROR: Invalid policy 'deny' for 'forward'
+## 20: --dry-run status (rc=1)
+O ERROR: Invalid policy 'limit' for 'forward'

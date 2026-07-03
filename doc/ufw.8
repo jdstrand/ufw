@@ -545,7 +545,10 @@ added outside of the ufw framework. See README for details.
 .PP
 IPV6 is allowed by default. To change this behavior to only accept IPv6 traffic
 on the loopback interface, set IPV6 to 'no' in #CONFIG_PREFIX#/default/ufw and
-reload \fBufw\fR. When IPv6 is enabled, you may specify rules in the same way
+reload \fBufw\fR. Note that when IPV6 is set to 'no', enabling or reloading
+\fBufw\fR replaces the IPv6 firewall, removing any IPv6 rules added outside
+of the ufw framework (see the \fBufw\-framework\fR manual page for
+details). When IPv6 is enabled, you may specify rules in the same way
 as for IPv4 rules, and they will be displayed with \fBufw status\fR. Rules that
 match both IPv4 and IPv6 addresses apply to both IP versions. For example, when
 IPv6 is enabled, the following rule will allow access to port 22 for both IPv4

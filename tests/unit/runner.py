@@ -28,16 +28,24 @@ import sys
 def find_tests(testdir=None, testscripts=[]):
     """Find tests"""
     if not testdir:
-        if __name__ == "__main__":
-            fn = sys.argv[0]
-        else:
-            print("TODO: find_tests() when imported")
-            sys.exit(1)
-
-        testdir = os.path.dirname(fn)
+        testdir = os.path.dirname(os.path.abspath(__file__))
 
     if len(testscripts) > 1:
         names = testscripts[1:]
+        # An explicitly named test that doesn't resolve is a typo'd
+        # invocation (e.g. a missing .py); error out rather than select
+        # zero tests and exit green having run nothing.
+        for name in names:
+            if name[:5] != "test_" or name[-3:] != ".py":
+                sys.stderr.write(
+                    "ERROR: unknown test '%s' (expected test_<name>.py)\n" % name
+                )
+                sys.exit(1)
+            if not os.path.exists(os.path.join(testdir, name)):
+                sys.stderr.write(
+                    "ERROR: no such test: %s\n" % os.path.join(testdir, name)
+                )
+                sys.exit(1)
     else:
         names = os.listdir(testdir)
     tests = []
@@ -58,54 +66,77 @@ def runtest(test):
 
 
 if __name__ == "__main__":
-    # Create the unittest symlink so imports work
-    if not os.path.islink("./ufw"):
-        os.symlink("./src", "./ufw")
+    # The unit suite is non-root by design. Refuse to run as root so it is never
+    # confused with the e2e suite (the only one that touches the real firewall).
+    if os.getuid() == 0:
+        sys.stderr.write("ERROR: tests/unit must not run as root\n")
+        sys.exit(1)
+
+    # Resolve the repo root from runner.py's location.
+    d = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
+    testdir = os.path.dirname(os.path.dirname(d))
+
+    # Create the ufw -> src symlink under ./tmp (git-ignored) so 'import ufw.*'
+    # resolves to src/ without cluttering the repo root, and put ./tmp on
+    # sys.path. Relative target, so the link stays valid if the checkout
+    # moves; recreate it when dangling or pointing elsewhere (islink() is
+    # true for a dangling link, and following a stale one would import some
+    # other tree's src/).
+    tmpdir = os.path.join(testdir, "tmp")
+    ufwlink = os.path.join(tmpdir, "ufw")
+    linktarget = os.path.join("..", "src")
+    if not os.path.isdir(tmpdir):
+        os.mkdir(tmpdir)
+    if os.path.islink(ufwlink) and os.readlink(ufwlink) != linktarget:
+        os.unlink(ufwlink)
+    if os.path.exists(ufwlink) and not os.path.islink(ufwlink):
+        # A real file/dir in the link's place would silently shadow src/.
+        sys.stderr.write("ERROR: %s exists and is not a symlink; remove it\n" % ufwlink)
+        sys.exit(1)
+    if not os.path.islink(ufwlink):
+        os.symlink(linktarget, ufwlink)
+    sys.path.insert(0, tmpdir)
 
     # Replace runner.py's directory from the search path, and add our own
     # so we can properly namespace our modules
-    d = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
-    testdir = os.path.dirname(d)
-    testdir = os.path.dirname(os.path.dirname(d))
     i = len(sys.path)
     while i >= 0:
         i -= 1
         if os.path.abspath(os.path.normpath(sys.path[i])) == d:
             sys.path[i] = testdir
 
-    print("DEBUG: sys.path=%s" % sys.path)
     tests = find_tests(testscripts=sys.argv)
-    print("DEBUG: test=%s" % str(tests))
 
     # Import this here, so we are guaranteed to get ours from topdir
     from tests.unit.support import TestFailed
 
     passed = []
     failed = []
-    skipped = []
-    for test in tests:
-        try:
-            runtest(test)
-            passed.append(test)
-        except KeyboardInterrupt:  # kill this test, but still do others
-            print("")
-            break
-        except TestFailed:
-            failed.append(test)
-        except Exception:
-            raise
+    try:
+        for test in tests:
+            try:
+                runtest(test)
+                passed.append(test)
+            except KeyboardInterrupt:  # kill this test, but still do others
+                print("")
+                break
+            except TestFailed:
+                failed.append(test)
+            except Exception:
+                raise
 
-        # cleanup
-        for m in list(sys.modules.keys()):
-            if m.startswith("tests.unit.") and m != "tests.unit.support":
-                try:
-                    del sys.modules[m]
-                except KeyError:
-                    pass
-
-    # Cleanup our symlink
-    if os.path.islink("./ufw"):
-        os.unlink("./ufw")
+            # cleanup
+            for m in list(sys.modules.keys()):
+                if m.startswith("tests.unit.") and m != "tests.unit.support":
+                    try:
+                        del sys.modules[m]
+                    except KeyError:
+                        pass
+    finally:
+        # Cleanup our symlink, also when a test module dies on an unexpected
+        # exception (a stale leftover link shadows the next run's recreate).
+        if os.path.islink(ufwlink):
+            os.unlink(ufwlink)
 
     print("")
     print("------------------")

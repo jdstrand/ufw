@@ -3,8 +3,32 @@ ufw (0.36.3) UNRELEASED; urgency=medium
   * tests/unit: update to use assertEqual for python 3.12 (LP: #2051540,
     Closes: 1061763)
   * fix: update 're' invocations for 3.12 syntax warnings
+  * rewrite the functional testsuite in Python (tests/functional/): drive
+    the real ufw entry point in-process against fake iptables binaries,
+    verifying each command's output and the rules files it writes. Runs
+    unprivileged via 'make functest' (part of 'make test')
+  * add an end-to-end testsuite (tests/e2e/) that exercises the installed
+    ufw against the real kernel netfilter: init script equivalence, reapply
+    idempotency, the chain skeleton across log levels, default policies,
+    MANAGE_BUILTINS, xtables lock contention, and route/application/IPv6
+    rules. Destructive and root-only, so it is a separate 'make e2e' gated
+    behind UFW_E2E=1 for use in a disposable VM; also run in CI
+  * archive the previous shell-based test harness to tests.old/, still
+    runnable via 'make old-test' as a transitional safety net, and restore
+    'make snap-test' as a standalone target
+  * tests/unit: run the iptables-dependent tests against the bundled fake
+    binaries so no system iptables is needed, and error out when an
+    explicitly named test does not exist
+  * src/main.py: main_ufw() now takes an optional argv (defaulting to
+    sys.argv) so the testsuite can drive the real entry point in-process;
+    no command line behavior change
+  * src/util.py: close leaked file handles when reading /proc
+  * doc/ufw.8, doc/ufw-framework.8: document that with IPV6=no, enabling or
+    reloading ufw replaces the IPv6 firewall in its entirety, removing any
+    IPv6 rules maintained outside the ufw framework
+  * README.md: document the 'make functest' and 'make e2e' targets
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 08:15:44 -0600
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 02 Jul 2026 11:31:11 -0500
 
 ufw (0.36.2) RELEASED; urgency=medium
 
