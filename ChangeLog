@@ -1,4 +1,4 @@
-ufw (0.36.3) UNRELEASED; urgency=medium
+ufw (0.37.0) UNRELEASED; urgency=medium
 
   * tests/unit: update to use assertEqual for python 3.12 (LP: #2051540,
     Closes: 1061763)
