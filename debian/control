@@ -20,6 +20,7 @@ Vcs-Git: https://git.launchpad.net/ufw -b debian/main
 Package: ufw
 Architecture: all
 Suggests: rsyslog
+Pre-Depends: debconf (>= 0.5) | debconf-2.0
 Depends:
  iptables,
  procps,

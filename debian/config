@@ -31,9 +31,13 @@ has_existing() {
     fi
 }
 
-# If ufw is enabled (eg during an upgrade), then update debconf
-if [ -f "$CONFFILE" ]; then
-    if egrep -q '^ENABLED=yes$' "$CONFFILE" ; then
+# On reconfigure, sync the debconf database with the state on disk so the
+# dialog reflects reality (the admin may have used 'ufw enable/disable').
+# Upgrades are synced in preinst instead. Do NOT sync on install: a
+# leftover ufw.conf (it is created by postinst and survives remove) would
+# overwrite preseeded answers (LP: #2129024).
+if [ "$1" = "reconfigure" ] && [ -f "$CONFFILE" ]; then
+    if grep -qE '^ENABLED=yes$' "$CONFFILE" ; then
         db_set ufw/enable true || true
     else
         db_set ufw/enable false || true
