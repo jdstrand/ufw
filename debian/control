@@ -1,6 +1,5 @@
 Source: ufw
 Section: admin
-Priority: optional
 Maintainer: Jamie Strandboge <jdstrand@ubuntu.com>
 Build-Depends-Indep:
  iptables,
@@ -13,7 +12,7 @@ Build-Depends:
  po-debconf,
  python3 (>= 3.2),
  python3-setuptools
-Standards-Version: 4.7.0
+Standards-Version: 4.7.4
 Homepage: https://launchpad.net/ufw
 Vcs-Browser: https://git.launchpad.net/ufw?h=debian/main
 Vcs-Git: https://git.launchpad.net/ufw -b debian/main
@@ -28,7 +27,6 @@ Depends:
  ${python3:Depends},
  ${misc:Depends}
 Breaks: iptables-persistent, netfilter-persistent
-Python-Version: ${python3:Versions}
 Description: program for managing a Netfilter firewall
  The Uncomplicated FireWall is a front-end for iptables, to make managing a
  Netfilter firewall easier. It provides a command line interface with syntax

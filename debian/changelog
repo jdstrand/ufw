@@ -6,6 +6,9 @@ ufw (0.36.2-10) UNRELEASED; urgency=medium
   * debian/watch: update to version=5 and verify upstream OpenPGP
     signatures
   * debian/upstream/signing-key.asc: add upstream signing key
+  * debian/control: update Standards-Version to 4.7.4 and drop the
+    source Priority field; per 5.6.6, binary packages inherit 'optional'
+  * debian/control: drop obsolete Python-Version field
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 04 Jul 2026 15:19:53 +0000
 
