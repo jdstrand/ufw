@@ -1,6 +1,16 @@
 #!/bin/sh
 set -e
 
+# These are the non-root unit tests: parts of the suite assert on
+# unprivileged behavior (eg get_netfilter_capabilities() raising OSError),
+# so when the testbed runs tests as root (eg the null or lxc runners;
+# ci.debian.net uses a non-root user), drop privileges first.
+if [ "$(id -u)" = "0" ]; then
+    chown -R nobody .
+    exec runuser -u nobody -- env HOME="${AUTOPKGTEST_TMP:-/tmp}" \
+        sh debian/tests/unittest
+fi
+
 if ! ./run_tests.sh -i python3 ; then
     set
     exit 1
