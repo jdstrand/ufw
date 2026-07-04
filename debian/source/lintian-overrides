@@ -1,2 +1,6 @@
 # We are using the old system for now so the packaging can build anywhere
 ufw source: no-dh-sequencer
+# debian/changelog.Debian.pre-0.27.1 is an old Debian changelog kept for
+# history; lintian pattern-matches the trailing .1 as a manual page
+# section, but it is not a manual page
+ufw source: maintainer-manual-page [debian/changelog.Debian.pre-0.27.1]
