@@ -19,6 +19,15 @@ ufw (0.36.2-10) UNRELEASED; urgency=medium
   * Add debian/po/ca.po. Thanks poc senderi (Closes: 1117114)
   * Add debian/po/zh_CN.po and debian/po/zh_TW.po. Thanks Yangfl
     (Closes: 1124732)
+  * Honor debconf preseeding when installing (LP: #2129024):
+    - debian/config: only sync the enabled state from /etc/ufw/ufw.conf
+      into debconf on reconfigure. ufw.conf is created by postinst and
+      survives remove, so syncing on install overwrote preseeded answers
+    - debian/ufw.preinst: sync the enabled state on upgrade instead, and
+      reset the ufw/existing_configuration seen flag on install so the
+      allowed ports answers are processed again on reinstall
+    - debian/control: Pre-Depends on debconf for the preinst debconf use
+      (per lintian missing-debconf-dependency-for-preinst)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 04 Jul 2026 15:19:53 +0000
 

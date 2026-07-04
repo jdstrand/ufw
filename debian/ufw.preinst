@@ -2,6 +2,29 @@
 
 set -e
 
+# Manage debconf state before the config script re-runs and postinst
+# consumes the answers (LP: #2129024)
+if [ -e /usr/share/debconf/confmodule ]; then
+    . /usr/share/debconf/confmodule
+
+    if [ "$1" = "install" ]; then
+        # New install, or reinstall after remove: any debconf answers
+        # present were provided by the admin (eg preseeding). Let them win
+        # over leftover state and let postinst process the allowed ports
+        # questions again.
+        db_fset ufw/existing_configuration seen false 2>/dev/null || true
+    elif [ "$1" = "upgrade" ] && [ -f /etc/ufw/ufw.conf ]; then
+        # Keep the debconf database in sync with the state on disk (the
+        # admin may have run 'ufw enable/disable' since the last install)
+        # so postinst does not flip the firewall state on upgrade.
+        if grep -qE '^ENABLED=yes$' /etc/ufw/ufw.conf ; then
+            db_set ufw/enable true || true
+        else
+            db_set ufw/enable false || true
+        fi
+    fi
+fi
+
 if [ "$1" = "upgrade" ] && [ -f /etc/ufw/ufw.conf ]; then
     if dpkg --compare-versions "$2" lt 0.29.1-1 ; then
         level=`grep '^LOGLEVEL=.*' /etc/ufw/ufw.conf | cut -f 2 -d '=' | tr A-Z a-z`
