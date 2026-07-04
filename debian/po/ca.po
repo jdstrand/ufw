@@ -1,0 +1,114 @@
+# Catalan translation of ufw's debconf messages
+# Copyright © 2025 poc senderi <pocsenderi@protonmail.com>
+# This file is distributed under the same license as the ufw package.
+# poc senderi <pocsenderi@protonmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
+"POT-Creation-Date: 2009-06-16 23:11+0100\n"
+"PO-Revision-Date: 2025-10-02 21:29+0200\n"
+"Last-Translator: poc senderi <pocsenderi@protonmail.com>\n"
+"Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "Existing configuration found"
+msgstr "S'ha trobat una configuració ja existent"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid ""
+"An existing configuration for ufw has been found. Existing rules must be "
+"managed manually."
+msgstr ""
+"S'ha trobat una configuració de l'«ufw» ja existent. Les regles existents "
+"s'han de gestionar manualment."
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "You should read the ufw(8) manpage for details about ufw configuration."
+msgstr ""
+"S'hauria de llegir la plana del manual «ufw(8)» per als detalls de la "
+"configuració de l'«ufw»."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "Start ufw automatically?"
+msgstr "Voleu engegar automàticament l'«ufw»?"
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid ""
+"If you choose this option, the rules you are about to set will be enabled "
+"during system startup so that this host is protected as early as possible."
+msgstr ""
+"Si es tria aquesta opció, les regles que estan a punt d'establir-se seran "
+"activades durant l'inici del sistema de manera que aquest amfitrió estigui "
+"protegit al més aviat possible."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "To protect this host immediately, you must start ufw manually."
+msgstr ""
+"Per protegir aquest amfitrió immediatament, cal iniciar l'«ufw» manualment."
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid "Authorized services:"
+msgstr "Serveis autoritzats:"
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid ""
+"Please choose the services that should be available for incoming connections."
+msgstr ""
+"Trieu els serveis que han d'estar disponibles per a connexions entrants."
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid "Other services may be specified in the next configuration step."
+msgstr "Es poden especificar altres serveis al següent pas de la configuració."
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid "Additional authorized services:"
+msgstr "Serveis autoritzats addicionals:"
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid ""
+"Please enter a space separated list of any additional ports you would like "
+"to open. You may use a service name (as found in /etc/services), a port "
+"number, or a port number with protocol."
+msgstr ""
+"Introduïu una llista separada per espais dels ports addicionals que voleu "
+"obrir. Es pot usar un nom de servei (tal i com apareix a «/etc/services»), "
+"un número de port o un número de port amb protocol."
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid ""
+"Example: to allow a web server, port 53 and tcp port 22, you should enter "
+"\"www 53 22/tcp\"."
+msgstr ""
+"Per exemple: per permetre un servidor web, el port 53 i el port tcp 22, "
+"caldria especificar «www 53 22/tcp»."
