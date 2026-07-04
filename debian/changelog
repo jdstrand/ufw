@@ -3,6 +3,9 @@ ufw (0.36.2-10) UNRELEASED; urgency=medium
   * debian/ufw.postinst, debian/ufw.postrm, debian/ufw.preinst,
     debian/ufw.prerm: use 'set -e' in the script body rather than passing
     -e on the shebang line (thanks, Debian Janitor)
+  * debian/watch: update to version=5 and verify upstream OpenPGP
+    signatures
+  * debian/upstream/signing-key.asc: add upstream signing key
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 04 Jul 2026 15:19:53 +0000
 
