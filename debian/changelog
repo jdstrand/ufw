@@ -1,3 +1,11 @@
+ufw (0.36.2-10) UNRELEASED; urgency=medium
+
+  * debian/ufw.postinst, debian/ufw.postrm, debian/ufw.preinst,
+    debian/ufw.prerm: use 'set -e' in the script body rather than passing
+    -e on the shebang line (thanks, Debian Janitor)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 04 Jul 2026 15:19:53 +0000
+
 ufw (0.36.2-9) unstable; urgency=medium
 
   * 0008-fix-tests-with-python313.path: (Closes: 1092511)

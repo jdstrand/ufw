@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 # Only source /usr/share/debconf/confmodule when not called with 'triggered'
 # to avoid LP: #618410.
