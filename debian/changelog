@@ -16,6 +16,7 @@ ufw (0.36.2-10) UNRELEASED; urgency=medium
     override typo-in-manual-page (the ufw(8) examples show literal rule
     syntax) and maintainer-manual-page (changelog.Debian.pre-0.27.1 is not
     a man page)
+  * Add debian/po/ca.po. Thanks poc senderi (Closes: 1117114)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 04 Jul 2026 15:19:53 +0000
 
