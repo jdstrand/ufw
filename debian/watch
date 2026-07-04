@@ -1,2 +1,5 @@
-version=4
-https://launchpad.net/ufw/+download/ https://launchpad.net/ufw/.*/ufw-(.*)\.tar\.gz
+Version: 5
+
+Source: https://launchpad.net/ufw/+download/
+Matching-Pattern: https://launchpad.net/ufw/.*/ufw-(.*)\.tar\.gz
+Pgp-Sig-Url-Mangle: s/$/.asc/
