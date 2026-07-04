@@ -1,11 +1,8 @@
 # These are intentionally not executable
 ufw: script-not-executable [usr/share/ufw/after.init]
 ufw: script-not-executable [usr/share/ufw/before.init]
-# Don't complain about 'ufw allow' rules
-ufw: spelling-error-in-changelog "allow to" "allow one to"
-ufw: mismatched-override typo-in-manual-page usr/share/man/man8/ufw.8.gz "allow to" "allow one to" [usr/share/lintian/overrides/ufw:5]
-# Don't complain about the ufw-framework man page, it gives additional details
-ufw: spare-manual-page usr/share/man/man8/ufw-framework.8.gz
+# The manual page examples show literal ufw rule syntax, not a typo
+ufw: typo-in-manual-page "allow to" "allow one to" *
 # Don't complain about breaks-without-version since we want to break on all
 ufw: breaks-without-version iptables-persistent
 ufw: breaks-without-version netfilter-persistent
