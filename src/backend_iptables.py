@@ -24,7 +24,8 @@ import stat
 import sys
 import time
 import gettext
-from typing import Optional, List, Any
+from tempfile import mkstemp
+from typing import Optional, List, Any, Set
 
 from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
@@ -173,11 +174,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     raise
                 fd = fns["tmp"]
 
-                for line in fns["orig"]:
-                    if pat.search(line):
-                        ufw.util.write_to_file(fd, pat.sub(new_log_str, line))
-                    else:
-                        ufw.util.write_to_file(fd, line)
+                try:
+                    for line in fns["orig"]:
+                        if pat.search(line):
+                            ufw.util.write_to_file(fd, pat.sub(new_log_str, line))
+                        else:
+                            ufw.util.write_to_file(fd, line)
+                except Exception:
+                    # don't leave the staging tempfile behind
+                    ufw.util.close_files(fns, False)
+                    raise
 
                 try:
                     ufw.util.close_files(fns)
@@ -750,6 +756,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.use_ipv6():
             rfns.append(self.files["rules6"])
 
+        # A complete rules file ends with iptables-restore's 'COMMIT' line;
+        # a file without one was cut short and the rules after the cut are
+        # gone. Track such files so _write_rules() can refuse to make the
+        # loss permanent. Unlike iptables-restore input in general, these
+        # files are single-table by construction (one *filter, COMMIT
+        # last), so 'has a COMMIT line' means 'not a truncated prefix'; a
+        # hand-added extra table is treated as complete since rewrites drop
+        # unmanaged content anyway.
+        self.rules_files_truncated: Set[str] = set()
+
         for f in rfns:
             try:
                 orig = ufw.util.open_file_read(f)
@@ -757,10 +773,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = tr("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
 
+            complete = False
             pat_tuple = re.compile(r"^### tuple ###\s*")
             pat_iface_in = re.compile(r"in_\w+")
             pat_iface_out = re.compile(r"out_\w+")
             for orig_line in orig:
+                if orig_line.strip() == "COMMIT":
+                    complete = True
                 line = orig_line
 
                 comment = ""
@@ -862,11 +881,43 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             orig.close()
 
+            if not complete:
+                self._flag_truncated(f)
+
+        # user6.rules is parsed only when IPv6 is enabled, but
+        # update_logging() and update_app_rule() rewrite it regardless, so
+        # its completeness matters regardless
+        if self.files["rules6"] not in rfns:
+            f = self.files["rules6"]
+            try:
+                orig = ufw.util.open_file_read(f)
+            except Exception:
+                err_msg = tr("Couldn't open '%s' for reading") % (f)
+                raise UFWError(err_msg)
+            complete = False
+            for line in orig:
+                if line.strip() == "COMMIT":
+                    complete = True
+            orig.close()
+            if not complete:
+                self._flag_truncated(f)
+
+    def _flag_truncated(self, fn: str) -> None:
+        """Record fn as truncated so _write_rules() refuses to rewrite it"""
+        self.rules_files_truncated.add(fn)
+        warn(tr("'%s' looks truncated (missing COMMIT)") % (fn))
+
     def _write_rules(self, v6: bool = False) -> None:
         """Write out new rules to file to user chain file"""
         rules_file = self.files["rules"]
         if v6:
             rules_file = self.files["rules6"]
+
+        # rewriting a truncated file from the partial in-memory list would
+        # make its rule loss permanent
+        if rules_file in self.rules_files_truncated:
+            err_msg = tr("Refusing to rewrite truncated '%s'") % (rules_file)
+            raise UFWError(err_msg)
 
         # Perform this here so we can present a nice error to the user rather
         # than a traceback
@@ -879,179 +930,196 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise
 
-        # Initialize the capabilities database
-        self.initcaps()
-
-        chain_prefix = "ufw"
-        rules = self.rules
-        if v6:
-            chain_prefix = "ufw6"
-            rules = self.rules6
-
-        if self.dryrun:
-            fd = sys.stdout.fileno()
-        else:
-            fd = fns["tmp"]
-
-        # Write header
-        ufw.util.write_to_file(fd, "*filter\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
-
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n")
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n"
-        )
-        ufw.util.write_to_file(
-            fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n"
-        )
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
-        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
-
-        # Rate limiting is runtime supported
-        if (
-            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
-        ) or (
-            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
-        ):
-            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
-            ufw.util.write_to_file(
-                fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n"
-            )
-
-        ufw.util.write_to_file(fd, "### RULES ###\n")
-
-        # Write rules
-        for r in rules:
-            action = r.action
-            # route rules use 'route:<action> ...'
-            if r.forward:
-                action = "route:" + r.action
-            if r.logtype != "":
-                action += "_" + r.logtype
-
-            ifaces = ""
-            if r.interface_in == "" and r.interface_out == "":
-                ifaces = r.direction
-            elif r.interface_in != "" and r.interface_out != "":
-                ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
-            else:
-                if r.interface_in != "":
-                    ifaces += "%s_%s" % (r.direction, r.interface_in)
-                else:
-                    ifaces += "%s_%s" % (r.direction, r.interface_out)
-
-            if r.dapp == "" and r.sapp == "":
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s" % (
-                    action,
-                    r.protocol,
-                    r.dport,
-                    r.dst,
-                    r.sport,
-                    r.src,
-                    ifaces,
-                )
-                if r.comment != "":
-                    tstr += " comment=%s" % r.comment
-                ufw.util.write_to_file(fd, tstr + "\n")
-            else:
-                pat_space = re.compile(" ")
-                dapp = "-"
-                if r.dapp:
-                    dapp = pat_space.sub("%20", r.dapp)
-                sapp = "-"
-                if r.sapp:
-                    sapp = pat_space.sub("%20", r.sapp)
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % (
-                    action,
-                    r.protocol,
-                    r.dport,
-                    r.dst,
-                    r.sport,
-                    r.src,
-                    dapp,
-                    sapp,
-                    ifaces,
-                )
-                if r.comment != "":
-                    tstr += " comment=%s" % r.comment
-                ufw.util.write_to_file(fd, tstr + "\n")
-
-            chain_suffix = "input"
-            if r.forward:
-                chain_suffix = "forward"
-            elif r.direction == "out":
-                chain_suffix = "output"
-            chain = "%s-user-%s" % (chain_prefix, chain_suffix)
-            rule_str = "-A %s %s\n" % (chain, r.format_rule())
-
-            for s in self._get_rules_from_formatted(
-                rule_str, chain_prefix, chain_suffix
-            ):
-                ufw.util.write_to_file(fd, s)
-
-        # Write footer
-        ufw.util.write_to_file(fd, "\n### END RULES ###\n")
-
-        # Add logging rules, skipping any delete ('-D') rules
-        ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
         try:
-            lrules_t = self._get_logging_rules(self.defaults["loglevel"])
-        except Exception:
-            raise
-        for c, r, _ in lrules_t:
-            if len(r) > 0 and r[0] == "-D":
-                continue
-            if c.startswith(chain_prefix + "-"):
-                ufw.util.write_to_file(
-                    fd, " ".join(r).replace("[", '"[').replace("] ", '] "') + "\n"
-                )
-        ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+            # Initialize the capabilities database
+            self.initcaps()
 
-        # Rate limiting is runtime supported
-        if (
-            chain_prefix == "ufw" and self.caps is not None and self.caps["limit"]["4"]
-        ) or (
-            chain_prefix == "ufw6" and self.caps is not None and self.caps["limit"]["6"]
-        ):
-            ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
-            if self.defaults["loglevel"] != "off":
-                ufw.util.write_to_file(
-                    fd,
-                    "-A "
-                    + chain_prefix
-                    + "-user-limit "
-                    + " ".join(self.ufw_user_limit_log)
-                    + ' "'
-                    + self.ufw_user_limit_log_text
-                    + ' "\n',
-                )
-            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
+            chain_prefix = "ufw"
+            rules = self.rules
+            if v6:
+                chain_prefix = "ufw6"
+                rules = self.rules6
+
+            if self.dryrun:
+                fd = sys.stdout.fileno()
+            else:
+                fd = fns["tmp"]
+
+            # Write header
+            ufw.util.write_to_file(fd, "*filter\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
+
             ufw.util.write_to_file(
-                fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n"
+                fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n"
             )
-            ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n"
+            )
+            ufw.util.write_to_file(
+                fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n"
+            )
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
 
-        ufw.util.write_to_file(fd, "COMMIT\n")
+            # Rate limiting is runtime supported
+            if (
+                chain_prefix == "ufw"
+                and self.caps is not None
+                and self.caps["limit"]["4"]
+            ) or (
+                chain_prefix == "ufw6"
+                and self.caps is not None
+                and self.caps["limit"]["6"]
+            ):
+                ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
+                ufw.util.write_to_file(
+                    fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n"
+                )
+
+            ufw.util.write_to_file(fd, "### RULES ###\n")
+
+            # Write rules
+            for r in rules:
+                action = r.action
+                # route rules use 'route:<action> ...'
+                if r.forward:
+                    action = "route:" + r.action
+                if r.logtype != "":
+                    action += "_" + r.logtype
+
+                ifaces = ""
+                if r.interface_in == "" and r.interface_out == "":
+                    ifaces = r.direction
+                elif r.interface_in != "" and r.interface_out != "":
+                    ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
+                else:
+                    if r.interface_in != "":
+                        ifaces += "%s_%s" % (r.direction, r.interface_in)
+                    else:
+                        ifaces += "%s_%s" % (r.direction, r.interface_out)
+
+                if r.dapp == "" and r.sapp == "":
+                    tstr = "\n### tuple ### %s %s %s %s %s %s %s" % (
+                        action,
+                        r.protocol,
+                        r.dport,
+                        r.dst,
+                        r.sport,
+                        r.src,
+                        ifaces,
+                    )
+                    if r.comment != "":
+                        tstr += " comment=%s" % r.comment
+                    ufw.util.write_to_file(fd, tstr + "\n")
+                else:
+                    pat_space = re.compile(" ")
+                    dapp = "-"
+                    if r.dapp:
+                        dapp = pat_space.sub("%20", r.dapp)
+                    sapp = "-"
+                    if r.sapp:
+                        sapp = pat_space.sub("%20", r.sapp)
+                    tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % (
+                        action,
+                        r.protocol,
+                        r.dport,
+                        r.dst,
+                        r.sport,
+                        r.src,
+                        dapp,
+                        sapp,
+                        ifaces,
+                    )
+                    if r.comment != "":
+                        tstr += " comment=%s" % r.comment
+                    ufw.util.write_to_file(fd, tstr + "\n")
+
+                chain_suffix = "input"
+                if r.forward:
+                    chain_suffix = "forward"
+                elif r.direction == "out":
+                    chain_suffix = "output"
+                chain = "%s-user-%s" % (chain_prefix, chain_suffix)
+                rule_str = "-A %s %s\n" % (chain, r.format_rule())
+
+                for s in self._get_rules_from_formatted(
+                    rule_str, chain_prefix, chain_suffix
+                ):
+                    ufw.util.write_to_file(fd, s)
+
+            # Write footer
+            ufw.util.write_to_file(fd, "\n### END RULES ###\n")
+
+            # Add logging rules, skipping any delete ('-D') rules
+            ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
+            try:
+                lrules_t = self._get_logging_rules(self.defaults["loglevel"])
+            except Exception:
+                raise
+            for c, r, _ in lrules_t:
+                if len(r) > 0 and r[0] == "-D":
+                    continue
+                if c.startswith(chain_prefix + "-"):
+                    ufw.util.write_to_file(
+                        fd, " ".join(r).replace("[", '"[').replace("] ", '] "') + "\n"
+                    )
+            ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+
+            # Rate limiting is runtime supported
+            if (
+                chain_prefix == "ufw"
+                and self.caps is not None
+                and self.caps["limit"]["4"]
+            ) or (
+                chain_prefix == "ufw6"
+                and self.caps is not None
+                and self.caps["limit"]["6"]
+            ):
+                ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
+                if self.defaults["loglevel"] != "off":
+                    ufw.util.write_to_file(
+                        fd,
+                        "-A "
+                        + chain_prefix
+                        + "-user-limit "
+                        + " ".join(self.ufw_user_limit_log)
+                        + ' "'
+                        + self.ufw_user_limit_log_text
+                        + ' "\n',
+                    )
+                ufw.util.write_to_file(
+                    fd, "-A " + chain_prefix + "-user-limit -j REJECT\n"
+                )
+                ufw.util.write_to_file(
+                    fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n"
+                )
+                ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
+
+            ufw.util.write_to_file(fd, "COMMIT\n")
+        except Exception:
+            # don't leave the staging tempfile behind
+            ufw.util.close_files(fns, False)
+            raise
 
         try:
             if self.dryrun:
@@ -1585,22 +1653,34 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = tr("'%s' already exists. Aborting") % (fn)
                 raise UFWError(err_msg)
 
-        # Move the old to the new
+        # Back up via hard links (not renames) so the live paths stay in
+        # place until the pristine copies are renamed over them below: a
+        # crash between the two loops cannot leave a rules file missing
         for i in allfiles:
             fn = "%s.%s" % (i, ext)
             res += tr("Backing up '%(old)s' to '%(new)s'\n") % (
                 {"old": os.path.basename(i), "new": fn}
             )
-            os.rename(i, fn)
+            os.link(i, fn)
 
-        # Copy files into place
+        # Copy files into place via stage + fsync + rename, so an
+        # interrupted reset cannot leave a truncated rules file
         for i in allfiles:
             old = "%s.%s" % (i, ext)
-            shutil.copy(
-                os.path.join(share_dir, "iptables", os.path.basename(i)),
-                os.path.dirname(i),
+            src = os.path.join(share_dir, "iptables", os.path.basename(i))
+            (tmp, tmpname) = mkstemp(
+                prefix=".%s." % (os.path.basename(i)),
+                dir=os.path.dirname(i),
             )
-            shutil.copymode(old, i)
+            try:
+                with open(src) as origfd:
+                    ufw.util.write_to_file(tmp, origfd.read())
+                shutil.copymode(old, tmpname)
+            except Exception:
+                os.close(tmp)
+                os.unlink(tmpname)
+                raise
+            ufw.util.fsync_rename(tmp, tmpname, i)
 
             try:
                 statinfo = os.stat(i)

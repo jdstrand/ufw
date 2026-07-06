@@ -537,6 +537,17 @@ ports=80/tcp
         )
         self.assertEqual(self.backend.defaults["new_input_policy"], "accept")
 
+    def test_set_default_write_failure_cleans_up(self):
+        """Test set_default() - a failed write leaves no tempfile behind"""
+        f = self.backend.files["defaults"]
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=OSError("boom")):
+            self.assertRaises(
+                OSError, self.backend.set_default, f, "NEW_INPUT_POLICY", "accept"
+            )
+        d = os.path.dirname(f)
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
     def test_set_bad_default(self):
         """Test bad set_default_policy()"""
         tests.unit.support.check_for_exception(
@@ -933,6 +944,28 @@ class StatusAndPolicyTestCase(BackendIptablesTestBase):
                 Exception, self.backend.set_default_policy, "allow", "incoming"
             )
 
+    def test_set_default_policy_write_failure_cleans_up(self):
+        """Test set_default_policy() - a failed after_rules rewrite leaves
+        no tempfile behind"""
+        self.backend.dryrun = False
+        real_write = ufw.util.write_to_file
+
+        # only the after_rules files contain COMMIT; set_default()'s writes
+        # to the defaults file pass through untouched
+        def fake_write(fd, out):
+            if "COMMIT" in out:
+                raise OSError("boom")
+            real_write(fd, out)
+
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=fake_write):
+            self.assertRaises(
+                OSError, self.backend.set_default_policy, "deny", "incoming"
+            )
+        for f in [self.backend.files["after_rules"], self.backend.files["defaults"]]:
+            d = os.path.dirname(f)
+            leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+            self.assertEqual(leaks, [], "leaked tempfile in %s" % d)
+
     def test_set_default_policy_swaps_log_lines(self):
         """Test set_default_policy() - catch-all log rules are swapped"""
         self.backend.dryrun = False
@@ -1168,6 +1201,128 @@ class RulesFileIOTestCase(BackendIptablesTestBase):
                 search in err, "Could not find '%s' in:\n%s" % (search, err)
             )
 
+    def _truncate_rules_file(self):
+        """Cut user.rules short: a parseable prefix, a rule cut mid-comment,
+        and no COMMIT trailer."""
+        f = self.backend.files["rules"]
+        with open(f) as fd:
+            content = fd.read()
+        with open(f, "w") as fd:
+            fd.write(content[: content.index("COMMIT")])
+            fd.write("### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in\n")
+            # cut mid-comment: odd-length hex, no trailing newline
+            fd.write(
+                "### tuple ### reject any any 0.0.0.0/0 any 10.0.9.104 in"
+                " comment=627920466169"
+            )
+
+    def test__read_rules_truncated_file_warns(self):
+        """Test _read_rules() - truncated file warns, prefix still loads"""
+        import io
+        import sys
+
+        self._truncate_rules_file()
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        self.assertTrue(
+            "looks truncated" in err, "Could not find 'looks truncated' in:\n%s" % err
+        )
+        # the rules before (and at) the cut still load ...
+        self.assertEqual(len(backend.rules), 2)
+        # ... and only the cut file is flagged
+        self.assertEqual(backend.rules_files_truncated, set([backend.files["rules"]]))
+
+    def test__write_rules_truncated_file_refused(self):
+        """Test _write_rules() - refuses to rewrite a truncated file"""
+        import io
+        import sys
+
+        self._truncate_rules_file()
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+        finally:
+            sys.stderr = old_stderr
+
+        try:
+            backend._write_rules(False)
+        except ufw.common.UFWError as e:
+            self.assertTrue(
+                "Refusing to rewrite truncated" in e.value,
+                "Could not find 'Refusing to rewrite truncated' in:\n%s" % e.value,
+            )
+        else:
+            self.fail("UFWError not raised")
+
+        # user6.rules was not damaged, so v6 writes still work (dryrun)
+        ufw.util.msg_output = self.msg_output = StringIO()
+        backend._write_rules(True)
+        self.assertTrue("*filter" in self.msg_output.getvalue())
+
+    def _set_ipv6(self, value):
+        """Flip IPV6 in the defaults file (a fresh backend re-reads it)"""
+        f = self.backend.files["defaults"]
+        with open(f) as fd:
+            content = fd.read()
+        with open(f, "w") as fd:
+            fd.write(re.sub(r"IPV6=\w+", "IPV6=%s" % (value), content))
+
+    def test__read_rules_truncated_v6_flagged_when_ipv6_off(self):
+        """Test _read_rules() - user6.rules is scanned even with IPv6 off
+        (update_logging()/update_app_rule() rewrite it regardless)"""
+        import io
+        import sys
+
+        self._set_ipv6("no")
+        f6 = self.backend.files["rules6"]
+        with open(f6) as fd:
+            content = fd.read()
+        with open(f6, "w") as fd:
+            fd.write(content[: content.index("COMMIT")])
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        self.assertFalse(backend.use_ipv6())
+        self.assertEqual(backend.rules_files_truncated, set([f6]))
+        self.assertTrue(
+            "looks truncated" in err, "Could not find 'looks truncated' in:\n%s" % err
+        )
+        # ... and the flagged file is still refused
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, backend._write_rules, True
+        )
+
+    def test__read_rules_unreadable_v6_when_ipv6_off(self):
+        """Test _read_rules() - unreadable user6.rules errors with IPv6 off
+        (its completeness cannot be verified)"""
+        self._set_ipv6("no")
+        f6 = self.backend.files["rules6"]
+        os.chmod(f6, 0)
+        try:
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.backend_iptables.UFWBackendIptables,
+                True,
+            )
+        finally:
+            os.chmod(f6, 0o640)
+
     def test__write_rules_failures(self):
         """Test _write_rules() - open/logging/close failures raise"""
         self.backend.dryrun = False
@@ -1180,6 +1335,14 @@ class RulesFileIOTestCase(BackendIptablesTestBase):
             self, ufw.common.UFWError, self.backend._write_rules, False
         )
         self.backend.defaults["loglevel"] = "low"
+
+        with unittest.mock.patch("ufw.util.write_to_file", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+        # the failures above discarded their staging tempfile
+        d = os.path.dirname(self.backend.files["rules"])
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
 
         with unittest.mock.patch("ufw.util.close_files", side_effect=OSError("boom")):
             self.assertRaises(OSError, self.backend._write_rules, False)
@@ -1598,6 +1761,58 @@ class ResetTestCase(BackendIptablesTestBase):
         res = self.backend.reset()
         self.assertTrue("is world writable" in res, res)
         self.assertTrue("is world readable" in res, res)
+
+    def test_reset_installs_pristine_files_atomically(self):
+        """Test reset() - pristine files staged + renamed in"""
+        f = self.backend.files["rules"]
+        os.chmod(f, 0o640)
+        with open(f, "w") as fd:
+            fd.write("not pristine\n")
+
+        res = self.backend.reset()
+        self.assertTrue("Backing up" in res, res)
+
+        # pristine content is in place, keeping the pre-reset mode
+        with open(f) as fd:
+            content = fd.read()
+        self.assertTrue("COMMIT" in content, content)
+        self.assertFalse("not pristine" in content, content)
+        self.assertEqual(os.stat(f).st_mode & 0o7777, 0o640)
+
+        # the old content lives on in the timestamped backup
+        d = os.path.dirname(f)
+        backups = [
+            fn for fn in os.listdir(d) if fn.startswith(os.path.basename(f) + ".")
+        ]
+        self.assertEqual(len(backups), 1, backups)
+        with open(os.path.join(d, backups[0])) as fd:
+            self.assertEqual(fd.read(), "not pristine\n")
+
+        # and no staging tempfile is left behind
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
+    def test_reset_staging_failure_cleans_up(self):
+        """Test reset() - a failed staging copy leaves no tempfile behind
+        and every live rules file still in place (hard-link backups)"""
+        f = self.backend.files["rules"]
+        with open(f, "w") as fd:
+            fd.write("pre-reset content\n")
+
+        with unittest.mock.patch("shutil.copymode", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend.reset)
+        d = os.path.dirname(f)
+        leaks = [fn for fn in os.listdir(d) if fn.startswith(".")]
+        self.assertEqual(leaks, [])
+
+        # an interrupted reset must not leave the live path missing
+        for i in self.backend.files:
+            if self.backend.files[i].endswith(".rules"):
+                self.assertTrue(
+                    os.path.exists(self.backend.files[i]), self.backend.files[i]
+                )
+        with open(f) as fd:
+            self.assertEqual(fd.read(), "pre-reset content\n")
 
     def test_reset_stat_failure(self):
         """Test reset() - unstat-able copied file warns and continues"""

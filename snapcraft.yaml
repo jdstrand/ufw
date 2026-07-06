@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36.3pre
+version: 0.37.0pre
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
 confinement: strict

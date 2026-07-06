@@ -114,16 +114,6 @@ def main_ufw(argv=None):
         msg("Copyright 2008-2023 Canonical Ltd.")
         sys.exit(0)
 
-    ui = None
-    try:
-        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir, datadir=datadir)
-    except UFWError as e:
-        error(e.value)
-    except Exception:
-        raise
-
-    assert ui is not None
-
     if datadir is None:
         lockfile = "/run/ufw.lock"
         if os.getuid() != 0 or "TESTSTATE" in os.environ:
@@ -131,9 +121,25 @@ def main_ufw(argv=None):
     else:
         lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir), "ufw.lock")
 
-    lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
+    # Take the lock before constructing the frontend: it reads the rules and
+    # config files, and acting on -- worse, rewriting from -- a snapshot
+    # taken during another process's update discards that process's changes
+    # (LP: #2126805)
+    try:
+        lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
+    except OSError:
+        if os.getuid() == 0:
+            # root can modify state, so running unlocked would silently
+            # reintroduce the race the lock exists to prevent
+            error(tr("Couldn't create lock '%s'") % (lockfile))
+        # not root: proceed unlocked and let the frontend's own permission
+        # checks report the error
+        lock = None
+
     res = ""
     try:
+        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir, datadir=datadir)
+
         if app_action and "type" in pr.data and pr.data["type"] == "app":
             res = ui.do_application_action(pr.action, pr.data["name"])
         else:
