@@ -3,32 +3,27 @@ ufw (0.36.3) UNRELEASED; urgency=medium
   * tests/unit: update to use assertEqual for python 3.12 (LP: #2051540,
     Closes: 1061763)
   * fix: update 're' invocations for 3.12 syntax warnings
-  * rewrite the functional testsuite in Python (tests/functional/): drive
-    the real ufw entry point in-process against fake iptables binaries,
-    verifying each command's output and the rules files it writes. Runs
-    unprivileged via 'make functest' (part of 'make test')
-  * add an end-to-end testsuite (tests/e2e/) that exercises the installed
-    ufw against the real kernel netfilter: init script equivalence, reapply
-    idempotency, the chain skeleton across log levels, default policies,
-    MANAGE_BUILTINS, xtables lock contention, and route/application/IPv6
-    rules. Destructive and root-only, so it is a separate 'make e2e' gated
-    behind UFW_E2E=1 for use in a disposable VM; also run in CI
-  * archive the previous shell-based test harness to tests.old/, still
-    runnable via 'make old-test' as a transitional safety net, and restore
-    'make snap-test' as a standalone target
-  * tests/unit: run the iptables-dependent tests against the bundled fake
-    binaries so no system iptables is needed, and error out when an
-    explicitly named test does not exist
-  * src/main.py: main_ufw() now takes an optional argv (defaulting to
-    sys.argv) so the testsuite can drive the real entry point in-process;
-    no command line behavior change
-  * src/util.py: close leaked file handles when reading /proc
-  * doc/ufw.8, doc/ufw-framework.8: document that with IPV6=no, enabling or
-    reloading ufw replaces the IPv6 firewall in its entirety, removing any
-    IPv6 rules maintained outside the ufw framework
-  * README.md: document the 'make functest' and 'make e2e' targets
+  * measure test coverage as the union of the unit and functional suites:
+    'make coverage' now runs both runners and combines the results, and CI
+    publishes the per-module table on the workflow summary page, failing
+    only if coverage collapses below a safety-net floor
+  * raise combined test coverage from 92% to 100%: new unit tests for the
+    command line entry point (tests/unit/test_main.py) and for the error
+    paths, interactive prompts, malformed rules files, IPv6 status
+    formatting and running-firewall operations that nothing exercised
+    before
+  * src/util.py: encode the interface name for the SIOCGIFADDR ioctl;
+    every IPv4 interface address lookup has failed since the Python 3
+    port, so 'ufw show listening' could not report interface names or
+    match listening ports against rules with an interface
+  * src/frontend.py: fix a latent infinite loop when removing application
+    rules where an IPv6 rule matches an IPv4 rule except for the address
+    family
+  * src/backend_iptables.py: error out instead of silently reporting
+    success when the rules file cannot be written or the running firewall
+    cannot be updated
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 02 Jul 2026 11:31:11 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 02 Jul 2026 11:39:00 -0500
 
 ufw (0.36.2) RELEASED; urgency=medium
 

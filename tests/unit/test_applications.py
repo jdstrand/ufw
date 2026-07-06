@@ -16,7 +16,10 @@
 #
 
 import os
+import shutil
+import tempfile
 import unittest
+import unittest.mock
 import tests.unit.support
 import ufw.applications
 import ufw.common
@@ -136,8 +139,96 @@ class ApplicationsTestCase(unittest.TestCase):
         )
 
 
+class GetProfilesSkipsTestCase(unittest.TestCase):
+    """get_profiles() validation/skip branches over a crafted profiles dir"""
+
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir)
+
+    def _write(self, fn, contents):
+        path = os.path.join(self.tmpdir, fn)
+        with open(path, "w") as f:
+            f.write(contents)
+        return path
+
+    def _valid_profile(self, name, ports="80/tcp"):
+        return "[%s]\ntitle=t\ndescription=d\nports=%s\n" % (name, ports)
+
+    def test_skips_file_that_cannot_be_stated(self):
+        """Test get_profiles() - skips file that cannot be stat'd"""
+        # simulate the file disappearing between listdir() and stat()
+        path = self._write("gone", self._valid_profile("GoneProfile"))
+        real_stat = os.stat
+
+        def fake_stat(p, *args, **kwargs):
+            if p == path:
+                raise OSError("gone")
+            return real_stat(p, *args, **kwargs)
+
+        # isfile() consults os.stat() too, so pin it to keep the fake
+        # failure scoped to get_profiles()'s own stat() call
+        with unittest.mock.patch("os.path.isfile", return_value=True):
+            with unittest.mock.patch("os.stat", side_effect=fake_stat):
+                profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(profiles, {})
+
+    def test_skips_too_big_file(self):
+        """Test get_profiles() - skips file bigger than 10MB"""
+        path = self._write("big", self._valid_profile("BigProfile"))
+        with open(path, "a") as f:
+            f.truncate(10 * 1024 * 1024 + 1)  # sparse; no real disk use
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(profiles, {})
+
+    def test_skips_file_when_total_size_too_big(self):
+        """Test get_profiles() - skips file once 10MB total is read"""
+        # two 6MB files: each fits, together they exceed the 10MB total
+        pad = "#" + "x" * (6 * 1024 * 1024) + "\n"
+        self._write("aa", self._valid_profile("FirstProfile") + pad)
+        self._write("bb", self._valid_profile("SecondProfile") + pad)
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertTrue("FirstProfile" in profiles)
+        self.assertFalse("SecondProfile" in profiles)
+
+    def test_skips_profile_name_too_long(self):
+        """Test get_profiles() - skips profile name longer than 64"""
+        contents = self._valid_profile("A" * 65) + self._valid_profile("KeptProfile")
+        self._write("profiles", contents)
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(list(profiles.keys()), ["KeptProfile"])
+
+    def test_skips_profile_field_too_long(self):
+        """Test get_profiles() - skips profile with field longer than 64"""
+        contents = self._valid_profile("BadProfile")[:-1] + "\n%s=v\n" % ("k" * 65)
+        self._write("profiles", contents + self._valid_profile("KeptProfile"))
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(list(profiles.keys()), ["KeptProfile"])
+
+    def test_skips_profile_value_too_long(self):
+        """Test get_profiles() - skips profile with value longer than 1024"""
+        contents = self._valid_profile("BadProfile")[:-1] + "\nextra=%s\n" % (
+            "v" * 1025
+        )
+        self._write("profiles", contents + self._valid_profile("KeptProfile"))
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(list(profiles.keys()), ["KeptProfile"])
+
+    def test_duplicate_profile_uses_last_found(self):
+        """Test get_profiles() - duplicate profile uses last found"""
+        self._write("aa", self._valid_profile("DupProfile", ports="80/tcp"))
+        self._write("bb", self._valid_profile("DupProfile", ports="443/tcp"))
+        profiles = ufw.applications.get_profiles(self.tmpdir)
+        self.assertEqual(profiles["DupProfile"]["ports"], "443/tcp")
+
+
 def test_main():  # used by runner.py
-    tests.unit.support.run_unittest(ApplicationsTestCase)
+    tests.unit.support.run_unittest(
+        ApplicationsTestCase,
+        GetProfilesSkipsTestCase,
+    )
 
 
 if __name__ == "__main__":  # used when standalone

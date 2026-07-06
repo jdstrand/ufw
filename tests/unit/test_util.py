@@ -952,6 +952,20 @@ AAA
         self.assertTrue(ufw.util.in_network("ff80::1", "::/0", True))
         self.assertTrue(ufw.util.in_network("::/0", "ff80::1/64", True))
 
+    def test__find_system_iptables(self):
+        """Test _find_system_iptables()"""
+        import unittest.mock
+
+        # pin os.path.exists both ways so the result doesn't depend on
+        # whether the host has iptables installed
+        with unittest.mock.patch("os.path.exists", return_value=True):
+            self.assertEqual(ufw.util._find_system_iptables(), "/sbin/iptables")
+
+        with unittest.mock.patch("os.path.exists", return_value=False):
+            tests.unit.support.check_for_exception(
+                self, OSError, ufw.util._find_system_iptables
+            )
+
     def test_get_iptables_version(self):
         """Test get_iptables_version()"""
         tests.unit.support.check_for_exception(
@@ -979,6 +993,18 @@ AAA
 
         exe = os.path.join(ufw.common.iptables_dir, "ip6tables")
         ufw.util.get_netfilter_capabilities(exe=exe, do_checks=False)
+
+        # exe=None resolves via _find_system_iptables(); pin it to the
+        # harness fake so the result is host-independent
+        import unittest.mock
+
+        with unittest.mock.patch.object(
+            ufw.util,
+            "_find_system_iptables",
+            return_value=os.path.join(ufw.common.iptables_dir, "iptables"),
+        ):
+            caps = ufw.util.get_netfilter_capabilities(exe=None, do_checks=False)
+        self.assertTrue(isinstance(caps, list))
 
     def test_parse_netstat_output(self):
         """Test parse_netstat_output()"""
@@ -1100,39 +1126,65 @@ AAA
 
     def test_get_ip_from_if(self):
         """Test get_ip_from_if()"""
-        # TODO: implement for py3
-        #        ip = ufw.util.get_ip_from_if("lo", False)
-        #        self.assertTrue(ip.startswith("127"))
-        #
-        #        tests.unit.support.check_for_exception(
-        #            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
-        #        )
-        #
-        #        # just run through the code, we may not have an IPv6 address
-        #        try:
-        #            ufw.util.get_ip_from_if("lo", True)
-        #        except IOError:
-        #            pass
+        import unittest.mock
 
-        return tests.unit.support.skipped(self, "TODO: python3")
+        # mock the SIOCGIFADDR ioctl (the address sits at bytes 20:24) so
+        # the result doesn't depend on the host's interfaces; the str ->
+        # bytes struct.pack() argument conversion still runs for real
+        buf = b"\x00" * 20 + b"\x7f\x00\x00\x01"
+        with unittest.mock.patch("fcntl.ioctl", return_value=buf):
+            ip = ufw.util.get_ip_from_if("lo", False)
+        self.assertEqual(ip, "127.0.0.1")
+
+        tests.unit.support.check_for_exception(
+            self, IOError, ufw.util.get_ip_from_if, "nonexistent", False
+        )
 
     def test_get_if_from_ip(self):
         """Test get_if_from_ip()"""
-        # TODO: implement
-        #        iface = ufw.util.get_if_from_ip("127.0.0.1")
-        #        self.assertTrue(iface.startswith("lo"))
-        #        self.assertFalse(ufw.util.get_if_from_ip("127.255.255.255"))
-        #        tests.unit.support.check_for_exception(
-        #            self, IOError, ufw.util.get_if_from_ip, "nonexistent"
-        #        )
-        #
-        #        # just run through the code, we may not have an IPv6 address
-        #        try:
-        #            ufw.util.get_if_from_ip("::1")
-        #        except IOError:
-        #            pass
+        import unittest.mock
 
-        return tests.unit.support.skipped(self, "TODO: python3")
+        # not an address at all
+        tests.unit.support.check_for_exception(
+            self, IOError, ufw.util.get_if_from_ip, "nonexistent"
+        )
+
+        # IPv4: crafted /proc/net/dev (headers have no ':' and are skipped)
+        # with the per-interface address lookup pinned
+        proc_net_dev = (
+            "Inter-|   Receive                    |  Transmit\n"
+            " face |bytes    packets errs        |bytes    packets errs\n"
+            "    lo: 1912 21    0    0    0     0. 1912 21    0    0    0\n"
+            "  eth0: 4919 41    0    0    0     0. 4919 41    0    0    0\n"
+        )
+
+        def fake_get_ip(ifname, v6):
+            return {"lo": "127.0.0.1", "eth0": "10.0.0.1"}[ifname]
+
+        m = unittest.mock.mock_open(read_data=proc_net_dev)
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch.object(
+                ufw.util, "get_ip_from_if", side_effect=fake_get_ip
+            ):
+                self.assertEqual(ufw.util.get_if_from_ip("10.0.0.1"), "eth0")
+
+        m = unittest.mock.mock_open(read_data=proc_net_dev)
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch.object(
+                ufw.util, "get_ip_from_if", side_effect=fake_get_ip
+            ):
+                self.assertEqual(ufw.util.get_if_from_ip("127.255.255.255"), "")
+
+        # IPv6: crafted /proc/net/if_inet6 (lo is an exact /128 match, the
+        # eth0 entry matches by its /64 network)
+        proc_if_inet6 = (
+            "00000000000000000000000000000001 01 80 10 80       lo\n"
+            "20010db8000000000000000000000001 03 40 00 00     eth0\n"
+        )
+        m = unittest.mock.mock_open(read_data=proc_if_inet6)
+        with unittest.mock.patch("os.path.exists", return_value=True):
+            with unittest.mock.patch("builtins.open", m):
+                self.assertEqual(ufw.util.get_if_from_ip("2001:db8::42"), "eth0")
 
     def test__get_proc_inodes(self):
         """Test _get_proc_inodes()"""
@@ -1214,6 +1266,13 @@ AAA
         lock = ufw.util.create_lock(lockfile=fn, dryrun=False)
         self.assertTrue(lock is not None)
         ufw.util.release_lock(lock)
+
+    def test__findpath(self):
+        """Test _findpath()"""
+        self.assertEqual(ufw.util._findpath("/etc/ufw", None), "/etc/ufw")
+        self.assertEqual(ufw.util._findpath("/", "/prefix"), "/prefix")
+        self.assertEqual(ufw.util._findpath("/etc/ufw", "/prefix"), "/prefix/etc/ufw")
+        self.assertEqual(ufw.util._findpath("etc/ufw", "/prefix"), "/prefix/etc/ufw")
 
 
 def test_main():  # used by runner.py

@@ -137,7 +137,9 @@ cp -f $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py $TESTPATH/usr/lib/pyth
 sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
-sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n\\1return normalize_address(addr, v6)[0]\n\\1\\2#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
+# anchor on the def line (stable) rather than the ioctl expression (black may
+# rewrap it); the v6 path falls through to the fixture if_inet6 seded above
+sed -i "s#^def get_ip_from_if(.*#&\n    if not v6:\n        if ifname == 'eth0':\n            return normalize_address('10.0.2.9', False)[0]\n        elif ifname == 'eth1':\n            return normalize_address('10.0.2.101', False)[0]\n        else:\n            raise IOError#" $TESTPATH/usr/lib/python3/dist-packages/ufw/util.py
 
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 

@@ -16,6 +16,7 @@
 #
 
 import unittest
+import unittest.mock
 import tests.unit.support
 import ufw.backend_iptables
 import ufw.common
@@ -31,7 +32,7 @@ from io import StringIO
 from typing import Optional
 
 
-class BackendIptablesTestCase(unittest.TestCase):
+class BackendIptablesTestBase(unittest.TestCase):
     ui: ufw.frontend.UFWFrontend
     backend: ufw.backend_iptables.UFWBackendIptables
     msg_output: Optional[StringIO]
@@ -117,6 +118,8 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.backend.do_checks = False
         self.backend._do_checks()
 
+
+class BackendIptablesTestCase(BackendIptablesTestBase):
     def test_get_default_application_policy(self):
         """Test get_default_application_policy()"""
         s = self.backend.get_default_application_policy()
@@ -854,8 +857,787 @@ ports=80/tcp
         # TODO: verify output
 
 
+class StatusAndPolicyTestCase(BackendIptablesTestBase):
+    """get_status()/get_running_raw() corners and set_default_policy()
+    error paths"""
+
+    def _rule_from_cmd(self, cmd_args, v6=False):
+        pr = ufw.frontend.parse_command(["ufw"] + cmd_args)
+        r = pr.data["rule"].dup_rule()
+        r.set_v6(v6)
+        return r
+
+    def test_get_default_application_policy_values(self):
+        """Test get_default_application_policy() - all policies"""
+        for policy, word in [
+            ("accept", "allow"),
+            ("drop", "deny"),
+            ("reject", "reject"),
+            ("skip", "skip"),
+        ]:
+            self.backend.defaults["default_application_policy"] = policy
+            res = self.backend.get_default_application_policy()
+            self.assertEqual(res, "New profiles: %s" % word)
+
+    def test_set_default_policy_bad(self):
+        """Test set_default_policy() - bad policy and direction"""
+        self.backend.dryrun = False
+        tests.unit.support.check_for_exception(
+            self,
+            ufw.common.UFWError,
+            self.backend.set_default_policy,
+            "bogus",
+            "incoming",
+        )
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.set_default_policy, "allow", "bogus"
+        )
+
+    def test_set_default_policy_failures(self):
+        """Test set_default_policy() - failures are re-raised"""
+        self.backend.dryrun = False
+        for policy in ["allow", "reject", "deny"]:
+            with unittest.mock.patch.object(
+                self.backend, "set_default", side_effect=Exception("boom")
+            ):
+                self.assertRaises(
+                    Exception, self.backend.set_default_policy, policy, "incoming"
+                )
+
+        # set_default() uses open_files()/close_files() too, so scope the
+        # failures to the after_rules edit that follows it
+        after = [self.backend.files["after_rules"], self.backend.files["after6_rules"]]
+        real_open = ufw.util.open_files
+
+        def fake_open(fn):
+            if fn in after:
+                raise Exception("boom")
+            return real_open(fn)
+
+        with unittest.mock.patch("ufw.util.open_files", side_effect=fake_open):
+            self.assertRaises(
+                Exception, self.backend.set_default_policy, "allow", "incoming"
+            )
+
+        real_close = ufw.util.close_files
+        calls = {"n": 0}
+
+        def fake_close(fns, update=True):
+            calls["n"] += 1
+            if calls["n"] > 1:  # first call is set_default()'s
+                raise Exception("boom")
+            return real_close(fns, update)
+
+        with unittest.mock.patch("ufw.util.close_files", side_effect=fake_close):
+            self.assertRaises(
+                Exception, self.backend.set_default_policy, "allow", "incoming"
+            )
+
+    def test_set_default_policy_swaps_log_lines(self):
+        """Test set_default_policy() - catch-all log rules are swapped"""
+        self.backend.dryrun = False
+        f = self.backend.files["after_rules"]
+        with open(f, "a") as fd:
+            fd.write('-A ufw-after-input -j LOG --log-prefix "[UFW BLOCK] "\n')
+        res = self.backend.set_default_policy("allow", "incoming")
+        self.assertTrue("Default incoming policy changed to 'allow'" in res)
+        with open(f) as fd:
+            contents = fd.read()
+        self.assertTrue("[UFW ALLOW] " in contents)
+        self.assertFalse("[UFW BLOCK] " in contents)
+
+    def test_get_running_raw_user_limit6(self):
+        """Test get_running_raw() - user chains with v6 rate limiting"""
+        self.backend.dryrun = False
+        self.backend.initcaps()
+        assert self.backend.caps is not None
+        self.backend.caps["limit"]["6"] = True
+        res = self.backend.get_running_raw("user")
+        self.assertTrue("user" in res)
+
+    def test_get_running_raw_failures(self):
+        """Test get_running_raw() - iptables failures (v4 and v6)"""
+        self.backend.dryrun = False
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "bad")
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.get_running_raw, "raw"
+            )
+
+        # v4 tables succeed, first v6 table fails
+        with unittest.mock.patch.object(
+            ufw.backend_iptables,
+            "cmd",
+            side_effect=[(0, "")] * 4 + [(1, "bad")],
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.get_running_raw, "raw"
+            )
+
+    def test_get_status_not_running(self):
+        """Test get_status() - inactive and iptables failures"""
+        self.backend.dryrun = False
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "")
+        ):
+            res = self.backend.get_status()
+        self.assertEqual(res, "Status: inactive")
+
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(2, "boom")
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.get_status
+            )
+
+        # v4 check succeeds, ip6tables check fails
+        self.backend.defaults["ipv6"] = "yes"
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", side_effect=[(0, ""), (1, "")]
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.get_status
+            )
+
+    def test_get_status_v6(self):
+        """Test get_status() - v6 rule formatting"""
+        self._update_sysctl()
+        self.backend.dryrun = False
+        self.backend.defaults["ipv6"] = "yes"
+
+        self.backend.rules = []
+        self.backend.rules6 = [
+            self._rule_from_cmd(["allow", "to", "any", "app", "WWW"], v6=True),
+            self._rule_from_cmd(["allow", "from", "any", "app", "CIFS"], v6=True),
+            self._rule_from_cmd(["allow", "proto", "tcp", "from", "any"], v6=True),
+            self._rule_from_cmd(["allow", "22"], v6=True),
+        ]
+
+        res = self.backend.get_status()
+        for search in ["WWW (v6)", "CIFS (v6)", "Anywhere/tcp (v6)", "22 (v6)"]:
+            self.assertTrue(
+                search in res, "Could not find '%s' in:\n%s" % (search, res)
+            )
+
+        res = self.backend.get_status(verbose=True)
+        for search in ["(WWW (v6))", "(CIFS (v6))"]:
+            self.assertTrue(
+                search in res, "Could not find '%s' in:\n%s" % (search, res)
+            )
+
+    def test_get_status_route_interfaces(self):
+        """Test get_status() - route rules report interfaces by flow"""
+        self._update_sysctl()
+        self.backend.dryrun = False
+
+        route = self._rule_from_cmd(
+            ["route", "allow", "in", "on", "eth0", "out", "on", "eth1"]
+        )
+        self.backend.rules = [
+            self._rule_from_cmd(["allow", "22"]),
+            self._rule_from_cmd(["allow", "out", "53"]),
+            route,
+        ]
+        self.backend.rules6 = []
+
+        res = self.backend.get_status()
+        self.assertTrue("FWD" in res, "Could not find 'FWD' in:\n%s" % res)
+        self.assertTrue("Anywhere on eth1" in res, "Could not find eth1 in:\n%s" % res)
+        self.assertTrue("Anywhere on eth0" in res, "Could not find eth0 in:\n%s" % res)
+
+
+class RaisedErrorsTestCase(BackendIptablesTestBase):
+    """Failures updating the rules files or the running firewall raise"""
+
+    def test_set_rule_write_failure(self):
+        """Test set_rule() - failure writing the rules file raises"""
+        self.backend.dryrun = False
+        pr = ufw.frontend.parse_command(["ufw", "allow", "22"])
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=OSError("boom")
+        ):
+            try:
+                self.backend.set_rule(pr.data["rule"])
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Couldn't update rules file")
+
+    def test_update_logging_write_failure(self):
+        """Test update_logging() - failure writing the rules file raises"""
+        self.backend.dryrun = False
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=OSError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Couldn't update rules file for logging")
+
+    def test_set_rule_live_apply_failure(self):
+        """Test set_rule() - failure updating the running firewall raises"""
+        import io
+        import sys
+
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+
+        def fake_cmd(args):
+            if "-L" in args:
+                return (0, "")
+            return (1, "boom")
+
+        pr = ufw.frontend.parse_command(["ufw", "allow", "22"])
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            with unittest.mock.patch.object(
+                self.backend, "_need_reload", return_value=False
+            ):
+                with unittest.mock.patch.object(
+                    ufw.backend_iptables, "cmd", side_effect=fake_cmd
+                ):
+                    try:
+                        self.backend.set_rule(pr.data["rule"])
+                        self.fail("UFWError not thrown")
+                    except ufw.common.UFWError as e:
+                        self.assertEqual(e.value, "Could not update running firewall")
+        finally:
+            sys.stderr = old_stderr
+
+
+class RulesFileIOTestCase(BackendIptablesTestBase):
+    """_read_rules()/_write_rules() error paths over crafted rules files"""
+
+    def _append_rules_file(self, lines):
+        f = self.backend.files["rules"]
+        with open(f, "a") as fd:
+            fd.write("\n".join(lines) + "\n")
+
+    def test__read_rules_unreadable(self):
+        """Test _read_rules() - unreadable rules file"""
+        f = self.backend.files["rules"]
+        os.chmod(f, 0)
+        try:
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                ufw.backend_iptables.UFWBackendIptables,
+                True,
+            )
+        finally:
+            os.chmod(f, 0o640)
+
+    def test__read_rules_malformed_tuples(self):
+        """Test _read_rules() - malformed tuples are skipped with a warning"""
+        import io
+        import sys
+
+        self._append_rules_file(
+            [
+                "### tuple ### allow tcp",
+                "### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 xx_foo",
+                "### tuple ### allow tcp 99999 0.0.0.0/0 any 0.0.0.0/0 in",
+                "### tuple ### route:allow any any 0.0.0.0/0 any 0.0.0.0/0 "
+                + "in_eth0!out_eth1",
+            ]
+        )
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            backend = ufw.backend_iptables.UFWBackendIptables(True)
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+
+        # only the route rule is valid
+        self.assertEqual(len(backend.rules), 1)
+        rule = backend.rules[0]
+        self.assertTrue(rule.forward)
+        self.assertEqual(rule.interface_in, "eth0")
+        self.assertEqual(rule.interface_out, "eth1")
+
+        for search in [
+            "Skipping malformed tuple (bad length): allow tcp",
+            "Skipping malformed tuple (iface)",
+            "Skipping malformed tuple: allow tcp 99999",
+        ]:
+            self.assertTrue(
+                search in err, "Could not find '%s' in:\n%s" % (search, err)
+            )
+
+    def test__write_rules_failures(self):
+        """Test _write_rules() - open/logging/close failures raise"""
+        self.backend.dryrun = False
+
+        with unittest.mock.patch("ufw.util.open_files", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+        self.backend.defaults["loglevel"] = "bogus"
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend._write_rules, False
+        )
+        self.backend.defaults["loglevel"] = "low"
+
+        with unittest.mock.patch("ufw.util.close_files", side_effect=OSError("boom")):
+            self.assertRaises(OSError, self.backend._write_rules, False)
+
+    def test__get_lists_from_formatted(self):
+        """Test _get_lists_from_formatted() - log prefix kept as one arg"""
+        res = self.backend._get_lists_from_formatted(
+            "-A ufw-user-input -p tcp --dport 22 -j ACCEPT_log", "ufw", "input"
+        )
+        found = False
+        for args in res:
+            if "--log-prefix" in args:
+                found = True
+                idx = args.index("--log-prefix")
+                self.assertEqual(args[idx + 1], "[UFW ALLOW] ")
+        self.assertTrue(found, "Could not find '--log-prefix' in %s" % res)
+
+
+class LifecycleTestCase(BackendIptablesTestBase):
+    """start/stop/reload/logging failure branches (pinned ufw-init and
+    iptables results)"""
+
+    def test_stop_start_firewall_failure_with_rootdir(self):
+        """Test stop/start_firewall() - rootdir args and init failure"""
+        self.backend.dryrun = False
+        # exercise the --rootdir/--datadir argument building; 'false'
+        # ignores them and fails like a broken ufw-init would
+        self.backend.rootdir = "/nonexistent/root"
+        self.backend.datadir = "/nonexistent/data"
+        self.backend.files["init"] = "false"
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.stop_firewall
+        )
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.start_firewall
+        )
+
+    def test_start_firewall_loglevel(self):
+        """Test start_firewall() - missing/invalid loglevel handling"""
+        self.backend.dryrun = False
+        self.backend.files["init"] = "true"
+
+        # missing loglevel is added
+        del self.backend.defaults["loglevel"]
+        self.backend.start_firewall()
+        self.assertEqual(self.backend.defaults["loglevel"], "low")
+
+        del self.backend.defaults["loglevel"]
+        with unittest.mock.patch.object(
+            self.backend, "set_loglevel", side_effect=Exception("boom")
+        ):
+            try:
+                self.backend.start_firewall()
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Could not set LOGLEVEL")
+
+        self.backend.defaults["loglevel"] = "low"
+        with unittest.mock.patch.object(
+            self.backend, "update_logging", side_effect=Exception("boom")
+        ):
+            try:
+                self.backend.start_firewall()
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "Could not load logging rules")
+
+    def test__need_reload(self):
+        """Test _need_reload() - limit capabilities and missing chains"""
+        self.backend.dryrun = False
+        self.backend.caps = {"limit": {"4": False, "6": False}}
+        self.assertFalse(self.backend._need_reload(False))
+        self.assertFalse(self.backend._need_reload(True))
+
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "")
+        ):
+            self.assertTrue(self.backend._need_reload(False))
+
+    def test__reload_user_rules_failures(self):
+        """Test _reload_user_rules() - restore failures (v4 and v6)"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd_pipe", return_value=(1, "")
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend._reload_user_rules
+            )
+
+        self.backend.defaults["ipv6"] = "yes"
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd_pipe", side_effect=[(0, ""), (1, "")]
+        ):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend._reload_user_rules
+            )
+
+    def test__chain_cmd(self):
+        """Test _chain_cmd() - failures honor fail_ok"""
+        with unittest.mock.patch.object(
+            ufw.backend_iptables, "cmd", return_value=(1, "")
+        ):
+            tests.unit.support.check_for_exception(
+                self,
+                ufw.common.UFWError,
+                self.backend._chain_cmd,
+                "ufw6-user-input",
+                ["-L", "ufw6-user-input", "-n"],
+            )
+            # fail_ok swallows the failure
+            self.backend._chain_cmd(
+                "ufw-user-input", ["-L", "ufw-user-input", "-n"], fail_ok=True
+            )
+
+    def test_update_logging_failures(self):
+        """Test update_logging() - level and running-firewall failures"""
+        self.backend.dryrun = False
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.update_logging, "bogus"
+        )
+
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=ufw.common.UFWError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "boom")
+
+        self.backend.defaults["enabled"] = "yes"
+        err_msg = "Could not update running firewall"
+
+        # chain consistency check fails
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=ufw.common.UFWError("boom")
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+        # flushing the logging chains fails
+        def fail_flush(c, args, fail_ok=False):
+            if args[0] == "-F":
+                raise ufw.common.UFWError("boom")
+
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=fail_flush
+        ):
+            try:
+                self.backend.update_logging("low")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+        # adding the logging rules fails
+        def fail_add(c, args, fail_ok=False):
+            if args[0] == "-I":
+                raise ufw.common.UFWError("boom")
+
+        with unittest.mock.patch.object(
+            self.backend, "_chain_cmd", side_effect=fail_add
+        ):
+            try:
+                self.backend.update_logging("off")
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, err_msg)
+
+
+class SetRuleBranchesTestCase(BackendIptablesTestBase):
+    """set_rule() validation/skip branches and live-firewall paths (fakes)"""
+
+    def _rule(self, cmd_args, v6=False):
+        pr = ufw.frontend.parse_command(["ufw"] + cmd_args)
+        r = pr.data["rule"].dup_rule()
+        if v6:
+            r.set_v6(True)
+        return r
+
+    def test_set_rule_v6_disabled(self):
+        """Test set_rule() - v6 rule with IPv6 disabled"""
+        self.backend.defaults["ipv6"] = "no"
+        tests.unit.support.check_for_exception(
+            self,
+            ufw.common.UFWError,
+            self.backend.set_rule,
+            self._rule(["allow", "22"], v6=True),
+        )
+
+    def test_set_rule_limit_unsupported(self):
+        """Test set_rule() - limit rule without runtime support"""
+        self.backend.caps = {"limit": {"4": False, "6": False}}
+        res = self.backend.set_rule(self._rule(["limit", "22"]))
+        self.assertEqual(res, "Skipping unsupported IPv4 'limit' rule")
+
+    def test_set_rule_old_iptables_app_v6(self):
+        """Test set_rule() - v6 app rule needs iptables 1.4"""
+        self.backend.defaults["ipv6"] = "yes"
+        self.backend.iptables_version = "1.3.0"
+        res = self.backend.set_rule(self._rule(["allow", "WWW"], v6=True))
+        self.assertEqual(
+            res, "Skipping IPv6 application rule. Need at least iptables 1.4"
+        )
+
+    def test_set_rule_bad_position(self):
+        """Test set_rule() - position out of range"""
+        r = self._rule(["allow", "22"])
+        r.set_position(5)
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.set_rule, r
+        )
+
+    def test_set_rule_insert_and_delete(self):
+        """Test set_rule() - cannot combine insert and delete"""
+        self.backend.rules = [self._rule(["allow", "80"])]
+        r = self._rule(["allow", "22"])
+        r.remove = True
+        r.set_position(1)
+        tests.unit.support.check_for_exception(
+            self, ufw.common.UFWError, self.backend.set_rule, r
+        )
+
+    def test_set_rule_normalize_failures(self):
+        """Test set_rule() - normalize() failures are re-raised"""
+
+        def bad_normalize():
+            raise ValueError("boom")
+
+        r = self._rule(["allow", "22"])
+        r.normalize = bad_normalize
+        self.assertRaises(ValueError, self.backend.set_rule, r)
+
+        broken = self._rule(["allow", "80"])
+        broken.normalize = bad_normalize
+        self.backend.rules = [broken]
+        self.assertRaises(
+            ValueError, self.backend.set_rule, self._rule(["allow", "22"])
+        )
+
+    def test_set_rule_skip_inserting_existing_v6(self):
+        """Test set_rule() - inserting an existing v6 rule is skipped"""
+        self.backend.defaults["ipv6"] = "yes"
+        self.backend.rules6 = [
+            self._rule(["allow", "80"], v6=True),
+            self._rule(["allow", "53"], v6=True),
+        ]
+        r = self._rule(["allow", "80"], v6=True)
+        r.set_position(1)
+        res = self.backend.set_rule(r)
+        self.assertEqual(res, "Skipping inserting existing rule (v6)")
+
+    def test_set_rule_live_insert(self):
+        """Test set_rule() - insert into the running firewall"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.rules = [self._rule(["allow", "80"])]
+
+        r = self._rule(["allow", "22"])
+        r.set_position(1)
+        res = self.backend.set_rule(r)
+        self.assertEqual(res, "Rule inserted")
+
+    def test_set_rule_live_reload_failure_and_skip(self):
+        """Test set_rule() - reload failure raises; reload can be skipped"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.rules = [self._rule(["allow", "80"])]
+
+        r = self._rule(["allow", "22"])
+        r.set_position(1)
+        with unittest.mock.patch.object(
+            self.backend, "_reload_user_rules", side_effect=Exception("boom")
+        ):
+            self.assertRaises(Exception, self.backend.set_rule, r)
+
+        self.backend.rules = [self._rule(["allow", "80"])]
+        r = self._rule(["allow", "22"])
+        r.set_position(1)
+        res = self.backend.set_rule(r, allow_reload=False)
+        self.assertEqual(res, "Rule inserted (skipped reloading firewall)")
+
+    def test_set_rule_live_delete(self):
+        """Test set_rule() - delete from the running firewall"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.rules = [self._rule(["allow", "22"])]
+
+        r = self._rule(["allow", "22"])
+        r.remove = True
+        res = self.backend.set_rule(r)
+        self.assertEqual(res, "Rule deleted")
+
+    def test_set_rule_live_delete_v6(self):
+        """Test set_rule() - delete a v6 rule from the running firewall"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.defaults["ipv6"] = "yes"
+        self.backend.rules6 = [self._rule(["allow", "22"], v6=True)]
+
+        r = self._rule(["allow", "22"], v6=True)
+        r.remove = True
+        res = self.backend.set_rule(r)
+        self.assertEqual(res, "Rule deleted (v6)")
+
+    def test_set_rule_live_delete_reload_failure(self):
+        """Test set_rule() - reload failure while deleting raises"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.rules = [self._rule(["allow", "22"])]
+
+        r = self._rule(["allow", "22"])
+        r.remove = True
+        with unittest.mock.patch.object(
+            self.backend, "_reload_user_rules", side_effect=Exception("boom")
+        ):
+            self.assertRaises(Exception, self.backend.set_rule, r)
+
+    def test_set_rule_write_ufwerror(self):
+        """Test set_rule() - UFWError from _write_rules is re-raised"""
+        with unittest.mock.patch.object(
+            self.backend, "_write_rules", side_effect=ufw.common.UFWError("boom")
+        ):
+            try:
+                self.backend.set_rule(self._rule(["allow", "22"]))
+                self.fail("UFWError not thrown")
+            except ufw.common.UFWError as e:
+                self.assertEqual(e.value, "boom")
+
+    def test_set_rule_live_delete_skip_reload(self):
+        """Test set_rule() - delete a route rule without reloading"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        route = ["route", "allow", "in", "on", "eth0", "out", "on", "eth1"]
+        self.backend.rules = [self._rule(route)]
+
+        r = self._rule(route)
+        r.remove = True
+        res = self.backend.set_rule(r, allow_reload=False)
+        self.assertEqual(res, "Rule deleted (skipped reloading firewall)")
+
+    def test_set_rule_live_check_failure(self):
+        """Test set_rule() - failed chain check raises"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+        self.backend.rules = [self._rule(["allow", "22"])]
+
+        r = self._rule(["allow", "22"])
+        r.remove = True
+        with unittest.mock.patch.object(
+            self.backend, "_need_reload", return_value=False
+        ):
+            with unittest.mock.patch.object(
+                ufw.backend_iptables, "cmd", return_value=(1, "")
+            ):
+                try:
+                    self.backend.set_rule(r, allow_reload=False)
+                    self.fail("UFWError not thrown")
+                except ufw.common.UFWError as e:
+                    self.assertEqual(e.value, "Could not update running firewall")
+
+    def test_set_rule_live_add_log_rule(self):
+        """Test set_rule() - lingering RETURN delete may fail (FAILOK)"""
+        self.backend.dryrun = False
+        self.backend.defaults["enabled"] = "yes"
+
+        real_cmd = ufw.util.cmd
+
+        def fake_cmd(args):
+            if "-D" in args and "RETURN" in args:
+                return (1, "")
+            return real_cmd(args)
+
+        with unittest.mock.patch.object(
+            self.backend, "_need_reload", return_value=False
+        ):
+            with unittest.mock.patch.object(
+                ufw.backend_iptables, "cmd", side_effect=fake_cmd
+            ):
+                res = self.backend.set_rule(self._rule(["allow", "log", "22"]))
+        self.assertEqual(res, "Rule added")
+
+
+class ResetTestCase(BackendIptablesTestBase):
+    """reset() coherence checks and permission warnings"""
+
+    def test_reset_missing_share_file(self):
+        """Test reset() - missing pristine rules file aborts"""
+        share = os.path.join(ufw.common.share_dir, "iptables", "user.rules")
+        os.rename(share, share + ".orig")
+        try:
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.reset
+            )
+        finally:
+            os.rename(share + ".orig", share)
+
+    def test_reset_backup_exists(self):
+        """Test reset() - existing backup aborts"""
+        ext = "20990101_000000"
+        fn = "%s.%s" % (self.backend.files["rules"], ext)
+        with open(fn, "w") as fd:
+            fd.write("placeholder\n")
+        with unittest.mock.patch("time.strftime", return_value=ext):
+            tests.unit.support.check_for_exception(
+                self, ufw.common.UFWError, self.backend.reset
+            )
+
+    def test_reset_permission_warnings(self):
+        """Test reset() - world writable/readable rules warn"""
+        os.chmod(self.backend.files["rules"], 0o646)
+        os.chmod(self.backend.files["rules6"], 0o644)
+        res = self.backend.reset()
+        self.assertTrue("is world writable" in res, res)
+        self.assertTrue("is world readable" in res, res)
+
+    def test_reset_stat_failure(self):
+        """Test reset() - unstat-able copied file warns and continues"""
+        import io
+        import sys
+
+        targets = [
+            self.backend.files[i]
+            for i in self.backend.files
+            if self.backend.files[i].endswith(".rules")
+        ]
+        real_stat = os.stat
+
+        def fake_stat(p, *args, **kwargs):
+            if p in targets:
+                raise OSError("gone")
+            return real_stat(p, *args, **kwargs)
+
+        old_stderr = sys.stderr
+        sys.stderr = io.StringIO()
+        try:
+            with unittest.mock.patch("os.stat", side_effect=fake_stat):
+                res = self.backend.reset()
+            err = sys.stderr.getvalue()
+        finally:
+            sys.stderr = old_stderr
+        self.assertTrue("Couldn't stat" in err, err)
+        self.assertTrue("Backing up" in res, res)
+
+
 def test_main():  # used by runner.py
-    tests.unit.support.run_unittest(BackendIptablesTestCase)
+    tests.unit.support.run_unittest(
+        BackendIptablesTestCase,
+        StatusAndPolicyTestCase,
+        RaisedErrorsTestCase,
+        RulesFileIOTestCase,
+        LifecycleTestCase,
+        SetRuleBranchesTestCase,
+        ResetTestCase,
+    )
 
 
 if __name__ == "__main__":  # used when standalone

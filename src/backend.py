@@ -772,7 +772,6 @@ class UFWBackend(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def update_logging(self, level: str) -> None:
         """Update loglevel of running firewall"""
-        pass
         raise NotImplementedError  # pragma: nocover
 
     @abc.abstractmethod
