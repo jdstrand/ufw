@@ -1,4 +1,4 @@
-ufw (0.36.2-10) UNRELEASED; urgency=medium
+ufw (0.36.2-10) unstable; urgency=medium
 
   * debian/ufw.postinst, debian/ufw.postrm, debian/ufw.preinst,
     debian/ufw.prerm: use 'set -e' in the script body rather than passing
